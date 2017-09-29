@@ -64,7 +64,7 @@ var App = function (_React$Component) {
                 null,
                 React.createElement(Login, null)
             );
-            if (true) {
+            if (false) {
 
                 return React.createElement(
                     "div",
@@ -97,9 +97,66 @@ var Login = function (_React$Component2) {
         value: function render() {
 
             return React.createElement(
-                "h1",
+                "div",
                 null,
-                "Login"
+                React.createElement(
+                    "div",
+                    { className: "container" },
+                    React.createElement(
+                        "div",
+                        { className: "row vertical-offset-100" },
+                        React.createElement(
+                            "div",
+                            { className: "col-md-4 col-md-offset-4" },
+                            React.createElement(
+                                "div",
+                                { className: "panel panel-default" },
+                                React.createElement(
+                                    "div",
+                                    { className: "panel-heading" },
+                                    React.createElement(
+                                        "h3",
+                                        { className: "panel-title" },
+                                        "Please sign in"
+                                    )
+                                ),
+                                React.createElement(
+                                    "div",
+                                    { className: "panel-body" },
+                                    React.createElement(
+                                        "form",
+                                        { role: "form" },
+                                        React.createElement(
+                                            "fieldset",
+                                            null,
+                                            React.createElement(
+                                                "div",
+                                                { className: "form-group" },
+                                                React.createElement("input", { className: "form-control", placeholder: "E-mail", name: "email", type: "text" })
+                                            ),
+                                            React.createElement(
+                                                "div",
+                                                { className: "form-group" },
+                                                React.createElement("input", { className: "form-control", placeholder: "Password", name: "password", type: "password", value: "" })
+                                            ),
+                                            React.createElement(
+                                                "div",
+                                                { className: "checkbox" },
+                                                React.createElement(
+                                                    "label",
+                                                    null,
+                                                    React.createElement("input", { name: "remember", type: "checkbox", value: "Remember Me" }),
+                                                    " Remember Me"
+                                                )
+                                            ),
+                                            React.createElement("input", { className: "btn btn-lg btn-success btn-block", type: "submit", value: "Login" })
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             );
         }
     }]);
@@ -487,8 +544,7 @@ var MasterModalSearch = function (_React$Component8) {
                     React.createElement(
                         "div",
                         { className: "col-md-10 col-sm-10" },
-                        React.createElement("input", { type: "text", className: "form-control",
-                            id: "first_name", name: "first_name" })
+                        React.createElement("input", { type: "text", className: "form-control", id: "first_name", name: "first_name" })
                     )
                 )
             );

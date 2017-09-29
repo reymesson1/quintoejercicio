@@ -47,7 +47,7 @@ class App extends React.Component{
           </div>
 
     )
-    if(true){
+    if(false){
 
         return (
 
@@ -71,7 +71,38 @@ class Login extends React.Component{
 
         return(
 
-            <h1>Login</h1>
+            <div>
+                <div className="container">
+                    <div className="row vertical-offset-100">
+                        <div className="col-md-4 col-md-offset-4">
+                            <div className="panel panel-default">
+                                <div className="panel-heading">
+                                    <h3 className="panel-title">Please sign in</h3>
+                                </div>
+                                <div className="panel-body">
+                                    <form role="form">
+                                    <fieldset>
+                                        <div className="form-group">
+                                            <input className="form-control" placeholder="E-mail" name="email" type="text"/>
+                                        </div>
+                                        <div className="form-group">
+                                            <input className="form-control" placeholder="Password" name="password" type="password" value=""/>
+                                        </div>
+                                        <div className="checkbox">
+                                            <label>
+                                                <input name="remember" type="checkbox" value="Remember Me"/> Remember Me
+                                            </label>
+                                        </div>
+                                        <input className="btn btn-lg btn-success btn-block" type="submit" value="Login"/>
+                                    </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         );
     }
 
@@ -249,15 +280,13 @@ class MasterModalSearch extends React.Component{
                       <label>Search:</label>
                     </div>
                     <div className="col-md-10 col-sm-10">
-                      <input type="text" className="form-control"
-id="first_name" name="first_name"/>
+                      <input type="text" className="form-control" id="first_name" name="first_name"/>
                     </div>
                 </div>
               </form>
-
         );
     }
-
+    
 }
 
 class MasterModal extends React.Component{
