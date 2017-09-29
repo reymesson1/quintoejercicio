@@ -1,7 +1,7 @@
 body{
-    background: url(http://imagenesdepaisajes.net/wp-content/uploads/2016/07/bosques-hermosos-1.jpg);
+    background: url(https://cdn.pixabay.com/photo/2013/10/12/19/54/rice-194781_960_720.jpg) no-repeat;
     background-color: #444;
-    background: url(http://imagenesdepaisajes.net/wp-content/uploads/2016/07/bosques-hermosos-1.jpg),url(http://imagenesdepaisajes.net/wp-content/uploads/2016/07/bosques-hermosos-1.jpg),url(http://imagenesdepaisajes.net/wp-content/uploads/2016/07/bosques-hermosos-1.jpg);    
+    background-size: 100%;     
 }
 
 .vertical-offset-100{
