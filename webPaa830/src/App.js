@@ -172,7 +172,7 @@ class Toolbar extends React.Component{
     
     componentDidMount(){
         
-        document.body.style.backgroundImage = 'none';
+        document.body.style.backgroundImage = "none";
 
     }
 

@@ -238,7 +238,7 @@ var Toolbar = function (_React$Component3) {
         key: 'componentDidMount',
         value: function componentDidMount() {
 
-            document.body.style.backgroundImage = 'none';
+            document.body.style.backgroundImage = "none";
         }
     }, {
         key: 'render',
