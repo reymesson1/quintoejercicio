@@ -25,7 +25,7 @@ const Col = ReactBootstrap.Col;
 
 const Table = ReactBootstrap.Table;
 
-const API_URL = 'http://159.203.156.208';
+const API_URL = 'http://localhost';
 const API_HEADERS = {
     
     'Content-Type':'application/json',
@@ -40,7 +40,7 @@ class App extends React.Component{
       this.state = {
           
           cookie: false,
-          cookies: []
+          cookies: false
       }
   }
     
@@ -79,13 +79,14 @@ class App extends React.Component{
           headers: API_HEADERS,
           body: JSON.stringify(newCookie)
       })
+            
       
       window.location.reload();
+      
   }
-
+    
   render() {
 
-    console.log(this.state.cookies); 
     let dashboard = (
 
           <div>
@@ -133,7 +134,7 @@ class Login extends React.Component{
             <div>
                 <div className="container">
                     <div className="row vertical-offset-100">
-                        <div className="col-md-4 col-md-offset-4">
+                        <div className="col-md-4 col-md-offset-4 col-sm-8  col-xs-12">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
                                     <h3 className="panel-title">Please sign in</h3>
@@ -168,6 +169,12 @@ class Login extends React.Component{
 }
 
 class Toolbar extends React.Component{
+    
+    componentDidMount(){
+        
+        document.body.style.backgroundImage = 'none';
+
+    }
 
     render(){
 
