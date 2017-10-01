@@ -25,10 +25,67 @@ const Col = ReactBootstrap.Col;
 
 const Table = ReactBootstrap.Table;
 
+const API_URL = 'http://localhost';
+const API_HEADERS = {
+    
+    'Content-Type':'application/json',
+    Authentication: 'any-string-you-like'
+}
+
 class App extends React.Component{
+    
+  constructor(){
+      
+      super();
+      this.state = {
+          
+          cookie: false,
+          cookies: []
+      }
+  }
+    
+  componentDidMount(){
+      
+      fetch(API_URL+'/cookies',{headers: API_HEADERS})
+      .then((response)=>response.json())
+      .then((responseData)=>{
+          this.setState({
+              
+              cookies: responseData
+          })
+      })
+      .catch((error)=>{
+          console.log('Error fetching and parsing data', error);
+      })
+  }
+    
+  setCookie(event){
+      
+      event.preventDefault();
+      
+      console.log(event.target.email.value);
+      console.log(event.target.password.value);
+      
+      let newCookie = {
+          
+          "id":"1",
+          "username": event.target.email.value,
+          "password": event.target.password.value
+      }
+      
+      fetch(API_URL+'/cookies', {
+          
+          method: 'post',
+          headers: API_HEADERS,
+          body: JSON.stringify(newCookie)
+      })
+      
+      window.location.reload();
+  }
 
   render() {
 
+    console.log(this.state.cookies); 
     let dashboard = (
 
           <div>
@@ -37,17 +94,19 @@ class App extends React.Component{
                 {this.props.children}
             </div>
           </div>
-
+        
     )
 
     let login = (
 
           <div>
-            <Login />
+            <Login 
+                    setcookie={this.setCookie}
+            />
           </div>
 
     )
-    if(false){
+    if(this.state.cookies){
 
         return (
 
@@ -80,20 +139,20 @@ class Login extends React.Component{
                                     <h3 className="panel-title">Please sign in</h3>
                                 </div>
                                 <div className="panel-body">
-                                    <form role="form">
+                                    <form onSubmit={this.props.setcookie.bind(this)}>
                                     <fieldset>
                                         <div className="form-group">
                                             <input className="form-control" placeholder="E-mail" name="email" type="text"/>
                                         </div>
                                         <div className="form-group">
-                                            <input className="form-control" placeholder="Password" name="password" type="password" value=""/>
+                                            <input className="form-control" placeholder="Password" name="password" type="password"/>
                                         </div>
                                         <div className="checkbox">
                                             <label>
                                                 <input name="remember" type="checkbox" value="Remember Me"/> Remember Me
                                             </label>
                                         </div>
-                                        <input className="btn btn-lg btn-success btn-block" type="submit" value="Login"/>
+                                            <button  className="btn btn-lg btn-success btn-block">Login</button>
                                     </fieldset>
                                     </form>
                                 </div>
@@ -406,11 +465,9 @@ class MasterTableBody extends React.Component{
                     <td>{this.props.name}</td>
                     <td>{this.props.items}</td>
                     <td>{this.props.status}</td>
-                    <td textAlign>
-                        <Button><i className="fa fa-eye"
-aria-hidden="true"></i></Button>{' '}
-                        <Button><i className="fa fa-trash"
-aria-hidden="true"></i></Button>
+                    <td>
+                        <Button><i className="fa fa-eye" aria-hidden="true"></i></Button>{' '}
+                        <Button><i className="fa fa-trash" aria-hidden="true"></i></Button>
                     </td>
                   </tr>
         );
@@ -418,7 +475,7 @@ aria-hidden="true"></i></Button>
 }
 
 ReactDOM.render((
-  <Router>
+  <Router history={browserHistory}>
     <Route path="/" component={App}>
         <Route path="about" component={About}/>
         <Route path="repos" component={Repos}/>
