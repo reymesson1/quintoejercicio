@@ -25,7 +25,7 @@ const Col = ReactBootstrap.Col;
 
 const Table = ReactBootstrap.Table;
 
-const API_URL = 'http://159.203.156.208';
+const API_URL = 'http://localhost';
 const API_HEADERS = {
     
     'Content-Type':'application/json',
