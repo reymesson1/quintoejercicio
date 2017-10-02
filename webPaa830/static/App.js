@@ -22,6 +22,7 @@ var NavItem = ReactBootstrap.NavItem;
 var NavDropdown = ReactBootstrap.NavDropdown;
 var MenuItem = ReactBootstrap.MenuItem;
 
+var Grid = ReactBootstrap.Grid;
 var Row = ReactBootstrap.Row;
 var Panel = ReactBootstrap.Panel;
 
@@ -35,7 +36,10 @@ var Col = ReactBootstrap.Col;
 
 var Table = ReactBootstrap.Table;
 
-var API_URL = 'http://localhost';
+var Autosuggest = Autosuggest;
+
+var API_URL = 'http://localhost:8080';
+
 var API_HEADERS = {
 
     'Content-Type': 'application/json',
@@ -164,7 +168,7 @@ var Login = function (_React$Component2) {
                         { className: 'row vertical-offset-100' },
                         React.createElement(
                             'div',
-                            { className: 'col-md-4 col-md-offset-4 col-sm-8  col-xs-12' },
+                            { className: 'col-md-4 col-md-offset-4' },
                             React.createElement(
                                 'div',
                                 { className: 'panel panel-default' },
@@ -241,6 +245,12 @@ var Toolbar = function (_React$Component3) {
             document.body.style.backgroundImage = "none";
         }
     }, {
+        key: 'onClicked',
+        value: function onClicked() {
+
+            window.location.reload();
+        }
+    }, {
         key: 'render',
         value: function render() {
 
@@ -255,7 +265,7 @@ var Toolbar = function (_React$Component3) {
                         { className: 'navbar-brand' },
                         React.createElement(
                             Link,
-                            { to: '/' },
+                            { to: '/', onClick: this.onClicked.bind(this) },
                             'React-Bootstrap'
                         )
                     )
@@ -277,14 +287,13 @@ var Toolbar = function (_React$Component3) {
                         null,
                         React.createElement(
                             Link,
-                            { to: '/repos' },
+                            { to: '/detail' },
                             'Details'
                         )
                     ),
                     React.createElement(
                         NavDropdown,
-                        { eventKey: 3, title: 'Dropdown',
-                            id: 'basic-nav-dropdown' },
+                        { eventKey: 3, title: 'Dropdown', id: 'basic-nav-dropdown' },
                         React.createElement(
                             MenuItem,
                             { eventKey: 3.1 },
@@ -305,6 +314,15 @@ var Toolbar = function (_React$Component3) {
                             MenuItem,
                             { eventKey: 3.4 },
                             'Separated link'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        { style: { 'float': 'right', 'position': 'absolute', 'left': '80%' } },
+                        React.createElement(
+                            Link,
+                            { to: '/detail' },
+                            'Login'
                         )
                     )
                 )
@@ -387,19 +405,78 @@ var Master = function (_React$Component6) {
 
         var _this7 = _possibleConstructorReturn(this, (Master.__proto__ || Object.getPrototypeOf(Master)).call(this));
 
-        _this7.state = { showModal: false };
+        _this7.state = {
+            showModal: false,
+            masterDetail: [{
+
+                "id": "1",
+                "firstname": "juanperez",
+                "item": "masterdetail"
+            }]
+        };
         return _this7;
     }
 
     _createClass(Master, [{
         key: 'close',
         value: function close() {
-            this.setState({ showModal: false });
+            this.setState({
+                showModal: false
+            });
         }
     }, {
         key: 'open',
         value: function open() {
-            this.setState({ showModal: true });
+            this.setState({
+                showModal: true
+            });
+        }
+    }, {
+        key: 'onSaveMaster',
+        value: function onSaveMaster(event) {
+
+            event.preventDefault();
+
+            var newMaster = {
+
+                "id": Date.now(),
+                "date": "2017-10-02",
+                "name": "empty",
+                "item": this.state.masterDetail,
+                "status": "pending"
+
+            };
+
+            masterAPI.push(newMaster);
+
+            this.setState({
+                showModal: false,
+                masterDetail: []
+            });
+        }
+    }, {
+        key: 'onSaveDetail',
+        value: function onSaveDetail(event) {
+
+            event.preventDefault();
+            console.log(event.target.firstname.value);
+            console.log(event.target.suggest.value);
+
+            var nextState = this.state.masterDetail;
+
+            var newItem = {
+
+                "id": Date.now(),
+                "firstname": event.target.firstname.value,
+                "item": event.target.suggest.value
+            };
+
+            nextState.push(newItem);
+
+            this.setState({
+
+                masterDetail: nextState
+            });
         }
     }, {
         key: 'render',
@@ -424,10 +501,14 @@ var Master = function (_React$Component6) {
                             { onClick: this.open.bind(this) },
                             'Add Master'
                         ),
-                        React.createElement(MasterModal, {
+                        React.createElement(MasterModal, { masterDetail: this.state.masterDetail,
                             showModal: this.state.showModal,
                             open: this.open,
-                            close: this.close
+                            close: this.close.bind(this),
+                            masterCallback: {
+                                onsavedetail: this.onSaveDetail.bind(this),
+                                onsavemaster: this.onSaveMaster.bind(this)
+                            }
                         })
                     )
                 ),
@@ -454,221 +535,8 @@ var Master = function (_React$Component6) {
     return Master;
 }(React.Component);
 
-var MasterModalTable = function (_React$Component7) {
-    _inherits(MasterModalTable, _React$Component7);
-
-    function MasterModalTable() {
-        _classCallCheck(this, MasterModalTable);
-
-        return _possibleConstructorReturn(this, (MasterModalTable.__proto__ || Object.getPrototypeOf(MasterModalTable)).apply(this, arguments));
-    }
-
-    _createClass(MasterModalTable, [{
-        key: 'render',
-        value: function render() {
-
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    Table,
-                    { striped: true, bordered: true, condensed: true, hover: true },
-                    React.createElement(
-                        'thead',
-                        null,
-                        React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'th',
-                                null,
-                                '#'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'First Name'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Last Name'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Username'
-                            )
-                        )
-                    ),
-                    React.createElement(
-                        'tbody',
-                        null,
-                        React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'td',
-                                null,
-                                '1'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                'Mark'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                'Otto'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                '@mdo'
-                            )
-                        ),
-                        React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'td',
-                                null,
-                                '2'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                'Jacob'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                'Thornton'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                '@fat'
-                            )
-                        ),
-                        React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'td',
-                                null,
-                                '3'
-                            ),
-                            React.createElement(
-                                'td',
-                                { colSpan: '2' },
-                                'Larry the Bird'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                '@twitter'
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MasterModalTable;
-}(React.Component);
-
-var MasterModalSearch = function (_React$Component8) {
-    _inherits(MasterModalSearch, _React$Component8);
-
-    function MasterModalSearch() {
-        _classCallCheck(this, MasterModalSearch);
-
-        return _possibleConstructorReturn(this, (MasterModalSearch.__proto__ || Object.getPrototypeOf(MasterModalSearch)).apply(this, arguments));
-    }
-
-    _createClass(MasterModalSearch, [{
-        key: 'render',
-        value: function render() {
-
-            return React.createElement(
-                'form',
-                null,
-                React.createElement(
-                    'div',
-                    { className: 'form-group' },
-                    React.createElement(
-                        'div',
-                        { className: 'col-md-2 col-sm-2' },
-                        React.createElement(
-                            'label',
-                            null,
-                            'Search:'
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'col-md-10 col-sm-10' },
-                        React.createElement('input', { type: 'text', className: 'form-control', id: 'first_name', name: 'first_name' })
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MasterModalSearch;
-}(React.Component);
-
-var MasterModal = function (_React$Component9) {
-    _inherits(MasterModal, _React$Component9);
-
-    function MasterModal() {
-        _classCallCheck(this, MasterModal);
-
-        return _possibleConstructorReturn(this, (MasterModal.__proto__ || Object.getPrototypeOf(MasterModal)).apply(this, arguments));
-    }
-
-    _createClass(MasterModal, [{
-        key: 'render',
-        value: function render() {
-
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    Modal,
-                    { show: this.props.showModal,
-                        onHide: this.props.close.bind(this) },
-                    React.createElement(
-                        Modal.Header,
-                        { closeButton: true },
-                        React.createElement(
-                            Modal.Title,
-                            null,
-                            'Modal heading'
-                        )
-                    ),
-                    React.createElement(
-                        Modal.Body,
-                        null,
-                        React.createElement(MasterModalSearch, null),
-                        React.createElement('br', null),
-                        React.createElement('br', null),
-                        React.createElement('br', null),
-                        React.createElement(MasterModalTable, null)
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MasterModal;
-}(React.Component);
-
-var MasterPagination = function (_React$Component10) {
-    _inherits(MasterPagination, _React$Component10);
+var MasterPagination = function (_React$Component7) {
+    _inherits(MasterPagination, _React$Component7);
 
     function MasterPagination() {
         _classCallCheck(this, MasterPagination);
@@ -684,8 +552,14 @@ var MasterPagination = function (_React$Component10) {
                 'div',
                 null,
                 React.createElement(Pagination, {
+                    prev: true,
+                    next: true,
+                    first: true,
+                    last: true,
+                    ellipsis: true,
+                    boundaryLinks: true,
                     bsSize: 'small',
-                    items: 10
+                    items: 5
                 }),
                 React.createElement('br', null)
             );
@@ -695,8 +569,8 @@ var MasterPagination = function (_React$Component10) {
     return MasterPagination;
 }(React.Component);
 
-var MasterSearch = function (_React$Component11) {
-    _inherits(MasterSearch, _React$Component11);
+var MasterSearch = function (_React$Component8) {
+    _inherits(MasterSearch, _React$Component8);
 
     function MasterSearch() {
         _classCallCheck(this, MasterSearch);
@@ -732,8 +606,7 @@ var MasterSearch = function (_React$Component11) {
                             React.createElement(
                                 'div',
                                 { className: 'col-md-10 col-sm-10' },
-                                React.createElement('input', { type: 'text', className: 'form-control',
-                                    id: 'first_name', name: 'first_name' })
+                                React.createElement('input', { type: 'text', className: 'form-control', id: 'first_name', name: 'first_name' })
                             )
                         )
                     )
@@ -745,8 +618,8 @@ var MasterSearch = function (_React$Component11) {
     return MasterSearch;
 }(React.Component);
 
-var MasterTable = function (_React$Component12) {
-    _inherits(MasterTable, _React$Component12);
+var MasterTable = function (_React$Component9) {
+    _inherits(MasterTable, _React$Component9);
 
     function MasterTable() {
         _classCallCheck(this, MasterTable);
@@ -816,7 +689,6 @@ var MasterTable = function (_React$Component12) {
                                 items: master.name,
 
                                 status: master.status
-
                             });
                         })
                     )
@@ -828,8 +700,8 @@ var MasterTable = function (_React$Component12) {
     return MasterTable;
 }(React.Component);
 
-var MasterTableBody = function (_React$Component13) {
-    _inherits(MasterTableBody, _React$Component13);
+var MasterTableBody = function (_React$Component10) {
+    _inherits(MasterTableBody, _React$Component10);
 
     function MasterTableBody() {
         _classCallCheck(this, MasterTableBody);
@@ -875,13 +747,15 @@ var MasterTableBody = function (_React$Component13) {
                     React.createElement(
                         Button,
                         null,
-                        React.createElement('i', { className: 'fa fa-eye', 'aria-hidden': 'true' })
+                        React.createElement('i', { className: 'fa fa-eye',
+                            'aria-hidden': 'true' })
                     ),
                     ' ',
                     React.createElement(
                         Button,
                         null,
-                        React.createElement('i', { className: 'fa fa-trash', 'aria-hidden': 'true' })
+                        React.createElement('i', { className: 'fa fa-trash',
+                            'aria-hidden': 'true' })
                     )
                 )
             );
@@ -889,6 +763,822 @@ var MasterTableBody = function (_React$Component13) {
     }]);
 
     return MasterTableBody;
+}(React.Component);
+
+var MasterModalButton = function (_React$Component11) {
+    _inherits(MasterModalButton, _React$Component11);
+
+    function MasterModalButton() {
+        _classCallCheck(this, MasterModalButton);
+
+        return _possibleConstructorReturn(this, (MasterModalButton.__proto__ || Object.getPrototypeOf(MasterModalButton)).apply(this, arguments));
+    }
+
+    _createClass(MasterModalButton, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                Row,
+                null,
+                React.createElement(
+                    Col,
+                    { md: 12 },
+                    React.createElement(
+                        Button,
+                        {
+                            style: { 'margin-left': '70%' },
+                            bsStyle: 'default',
+
+                            onClick: this.props.masterCallback.onsavemaster.bind(this) },
+                        'Save'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MasterModalButton;
+}(React.Component);
+
+var MasterModal = function (_React$Component12) {
+    _inherits(MasterModal, _React$Component12);
+
+    function MasterModal() {
+        _classCallCheck(this, MasterModal);
+
+        return _possibleConstructorReturn(this, (MasterModal.__proto__ || Object.getPrototypeOf(MasterModal)).apply(this, arguments));
+    }
+
+    _createClass(MasterModal, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Modal,
+                    { show: this.props.showModal, onHide: this.props.close },
+                    React.createElement(
+                        Modal.Header,
+                        { closeButton: true },
+                        React.createElement(
+                            Modal.Title,
+                            null,
+                            'Modal heading'
+                        )
+                    ),
+                    React.createElement(
+                        Modal.Body,
+                        null,
+                        React.createElement(MasterModalField, {
+                            masterCallback: this.props.masterCallback
+                        }),
+                        React.createElement('br', null),
+                        React.createElement(MasterModalTable, {
+
+                            masterDetail: this.props.masterDetail,
+
+                            masterCallback: this.props.masterCallback
+                        }),
+                        React.createElement(MasterModalButton, {
+
+                            masterCallback: this.props.masterCallback
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MasterModal;
+}(React.Component);
+
+var languages = [{
+    name: 'C',
+    year: 1972
+}, {
+    name: 'C#',
+    year: 2000
+}, {
+    name: 'C++',
+    year: 1983
+}, {
+    name: 'Clojure',
+    year: 2007
+}, {
+    name: 'Elm',
+    year: 2012
+}, {
+    name: 'Go',
+    year: 2009
+}, {
+    name: 'Haskell',
+    year: 1990
+}, {
+    name: 'Java',
+    year: 1995
+}, {
+    name: 'Javascript',
+    year: 1995
+}, {
+    name: 'Perl',
+    year: 1987
+}, {
+    name: 'PHP',
+    year: 1995
+}, {
+    name: 'Python',
+    year: 1991
+}, {
+    name: 'Ruby',
+    year: 1995
+}, {
+    name: 'Scala',
+    year: 2003
+}];
+
+function escapeRegexCharacters(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getSuggestions(value) {
+
+    var escapedValue = escapeRegexCharacters(value.trim());
+
+    if (escapedValue === '') {
+        return [];
+    }
+
+    var regex = new RegExp('^' + escapedValue, 'i');
+
+    return languages.filter(function (language) {
+        return regex.test(language.name);
+    });
+}
+
+function renderSuggestion(suggestion) {
+    return React.createElement(
+        'span',
+        null,
+        suggestion.name
+    );
+}
+
+function getSuggestionValue(suggestion) {
+    return suggestion.name;
+}
+
+var MasterModalField = function (_React$Component13) {
+    _inherits(MasterModalField, _React$Component13);
+
+    function MasterModalField() {
+        _classCallCheck(this, MasterModalField);
+
+        var _this14 = _possibleConstructorReturn(this, (MasterModalField.__proto__ || Object.getPrototypeOf(MasterModalField)).call(this));
+
+        _this14.state = {
+
+            value: '',
+            suggestions: []
+        };
+        return _this14;
+    }
+
+    _createClass(MasterModalField, [{
+        key: 'onChange',
+        value: function onChange(event, _ref) {
+            var newValue = _ref.newValue,
+                method = _ref.method;
+
+            this.setState({
+
+                value: newValue
+            });
+        }
+    }, {
+        key: 'onSuggestionsFetchRequested',
+        value: function onSuggestionsFetchRequested(_ref2) {
+            var value = _ref2.value;
+
+            this.setState({
+
+                suggestions: getSuggestions(value)
+            });
+        }
+    }, {
+        key: 'onSuggestionsClearRequested',
+        value: function onSuggestionsClearRequested() {
+
+            this.setState({
+                suggestions: []
+            });
+        }
+    }, {
+        key: 'onSave',
+        value: function onSave(event) {
+
+            event.preventDefault();
+
+            console.log(event.target.firstname.value);
+            console.log(this.state.value);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state = this.state,
+                value = _state.value,
+                suggestions = _state.suggestions;
+
+            var inputProps = {
+                placeholder: "Type 'c'",
+                value: value,
+                onChange: this.onChange.bind(this)
+            };
+
+            return React.createElement(
+                Grid,
+                null,
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(
+                        Form,
+                        { horizontal: true, onSubmit: this.props.masterCallback.onsavedetail.bind(this) },
+                        React.createElement(
+                            Row,
+                            null,
+                            React.createElement(
+                                FormGroup,
+                                { controlId: 'formHorizontalName' },
+                                React.createElement(
+                                    Col,
+                                    { componentClass: ControlLabel, md: 2, sm: 2 },
+                                    'Name'
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 3, sm: 6 },
+                                    React.createElement(FormControl, { type: 'text', name: 'firstname', placeholder: 'Name' })
+                                )
+                            )
+                        ),
+                        React.createElement('br', null),
+                        React.createElement(
+                            Row,
+                            null,
+                            React.createElement(
+                                FormGroup,
+                                { controlId: 'formHorizontalItem' },
+                                React.createElement(
+                                    Col,
+                                    { componentClass: ControlLabel, md: 2, sm: 2 },
+                                    'Item'
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 3, sm: 6 },
+                                    React.createElement(Autosuggest, {
+                                        suggestions: suggestions,
+                                        onSuggestionsFetchRequested: this.onSuggestionsFetchRequested.bind(this),
+                                        onSuggestionsClearRequested: this.onSuggestionsClearRequested.bind(this),
+                                        renderSuggestion: renderSuggestion,
+                                        getSuggestionValue: getSuggestionValue,
+                                        inputProps: inputProps
+                                    })
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 2, sm: 2 },
+                                    React.createElement(
+                                        Button,
+                                        { type: 'submit' },
+                                        React.createElement('i', { className: 'fa fa-plus', 'aria-hidden': 'true' })
+                                    )
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            Row,
+                            null,
+                            React.createElement('input', { style: { 'width': '70px', 'display': 'none' }, type: 'text', name: 'suggest', placeholder: 'Name', value: this.state.value })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MasterModalField;
+}(React.Component);
+
+var MasterModalTable = function (_React$Component14) {
+    _inherits(MasterModalTable, _React$Component14);
+
+    function MasterModalTable() {
+        _classCallCheck(this, MasterModalTable);
+
+        return _possibleConstructorReturn(this, (MasterModalTable.__proto__ || Object.getPrototypeOf(MasterModalTable)).apply(this, arguments));
+    }
+
+    _createClass(MasterModalTable, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Table,
+                    { striped: true, bordered: true, condensed: true, hover: true },
+                    React.createElement(
+                        'thead',
+                        null,
+                        React.createElement(
+                            'tr',
+                            null,
+                            React.createElement(
+                                'th',
+                                null,
+                                '#'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'First Name'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Last Name'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Username'
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        'tbody',
+                        null,
+                        this.props.masterDetail.map(function (masterdetail, index) {
+                            return React.createElement(MasterModalTableBody, {
+
+                                key: index,
+
+                                id: masterdetail.id,
+
+                                firstname: masterdetail.firstname,
+
+                                item: masterdetail.item
+                            });
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MasterModalTable;
+}(React.Component);
+
+var MasterModalTableBody = function (_React$Component15) {
+    _inherits(MasterModalTableBody, _React$Component15);
+
+    function MasterModalTableBody() {
+        _classCallCheck(this, MasterModalTableBody);
+
+        return _possibleConstructorReturn(this, (MasterModalTableBody.__proto__ || Object.getPrototypeOf(MasterModalTableBody)).apply(this, arguments));
+    }
+
+    _createClass(MasterModalTableBody, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.key
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.id
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.firstname
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.item
+                )
+            );
+        }
+    }]);
+
+    return MasterModalTableBody;
+}(React.Component);
+
+var Detail = function (_React$Component16) {
+    _inherits(Detail, _React$Component16);
+
+    function Detail() {
+        _classCallCheck(this, Detail);
+
+        var _this17 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
+
+        _this17.state = {
+            showModal: false,
+            detailData: [{
+
+                "id": "1",
+                "date": "2017-10-02",
+                "name": "detail",
+                "item": "detailcomponent"
+            }]
+        };
+        return _this17;
+    }
+
+    _createClass(Detail, [{
+        key: 'close',
+        value: function close() {
+            this.setState({
+                showModal: false
+            });
+        }
+    }, {
+        key: 'open',
+        value: function open() {
+            this.setState({
+                showModal: true
+            });
+        }
+    }, {
+        key: 'onSaveDetail',
+        value: function onSaveDetail(event) {
+
+            event.preventDefault();
+
+            var newDetail = {
+
+                "id": Date.now(),
+                "date": "2017-10-02",
+                "name": event.target.name.value,
+                "item": event.target.name.value
+            };
+
+            var nextState = this.state.detailData;
+
+            nextState.push(newDetail);
+
+            this.setState({
+
+                detailData: nextState,
+                showModal: false
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                Grid,
+                null,
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(DetailSearch, null)
+                ),
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'pull-right' },
+                        React.createElement(
+                            Button,
+                            { onClick: this.open.bind(this) },
+                            'Add Detail'
+                        ),
+                        React.createElement(DetailModal, {
+                            showModal: this.state.showModal,
+                            detailCallback: {
+                                open: this.open,
+                                close: this.close.bind(this),
+                                onsavedetail: this.onSaveDetail.bind(this)
+                            }
+                        })
+                    )
+                ),
+                React.createElement('br', null),
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(DetailTable, {
+                        detailData: this.state.detailData
+                    })
+                )
+            );
+        }
+    }]);
+
+    return Detail;
+}(React.Component);
+
+var DetailPagination = function (_React$Component17) {
+    _inherits(DetailPagination, _React$Component17);
+
+    function DetailPagination() {
+        _classCallCheck(this, DetailPagination);
+
+        var _this18 = _possibleConstructorReturn(this, (DetailPagination.__proto__ || Object.getPrototypeOf(DetailPagination)).call(this));
+
+        _this18.state = {
+            activePage: 1
+        };
+        return _this18;
+    }
+
+    _createClass(DetailPagination, [{
+        key: 'handleSelect',
+        value: function handleSelect(eventKey) {
+            this.setState({
+                activePage: eventKey
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(Pagination, {
+                prev: true,
+                next: true,
+                first: true,
+                last: true,
+                ellipsis: true,
+                boundaryLinks: true,
+                items: 5,
+                maxButtons: 5,
+                activePage: this.state.activePage,
+                onSelect: this.handleSelect
+            });
+        }
+    }]);
+
+    return DetailPagination;
+}(React.Component);
+
+var DetailSearch = function (_React$Component18) {
+    _inherits(DetailSearch, _React$Component18);
+
+    function DetailSearch() {
+        _classCallCheck(this, DetailSearch);
+
+        return _possibleConstructorReturn(this, (DetailSearch.__proto__ || Object.getPrototypeOf(DetailSearch)).apply(this, arguments));
+    }
+
+    _createClass(DetailSearch, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Panel,
+                    { header: 'Search Detail' },
+                    React.createElement(
+                        'form',
+                        null,
+                        React.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            React.createElement(
+                                'div',
+                                { className: 'col-md-2 col-sm-2' },
+                                React.createElement(
+                                    'label',
+                                    null,
+                                    'Search:'
+                                )
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'col-md-10 col-sm-10' },
+                                React.createElement('input', { type: 'text', className: 'form-control', id: 'first_name', name: 'first_name' })
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return DetailSearch;
+}(React.Component);
+
+var DetailTable = function (_React$Component19) {
+    _inherits(DetailTable, _React$Component19);
+
+    function DetailTable() {
+        _classCallCheck(this, DetailTable);
+
+        return _possibleConstructorReturn(this, (DetailTable.__proto__ || Object.getPrototypeOf(DetailTable)).apply(this, arguments));
+    }
+
+    _createClass(DetailTable, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                Panel,
+                { header: 'Search List' },
+                React.createElement(
+                    Table,
+                    { striped: true, bordered: true, condensed: true, hover: true },
+                    React.createElement(
+                        'thead',
+                        null,
+                        React.createElement(
+                            'tr',
+                            null,
+                            React.createElement(
+                                'th',
+                                null,
+                                '#'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'First Name'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Last Name'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Username'
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        'tbody',
+                        null,
+                        this.props.detailData.map(function (detail, index) {
+                            return React.createElement(DetailTableBody, {
+                                key: index,
+                                id: detail.id,
+                                name: detail.name,
+                                item: detail.item
+                            });
+                        })
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'pull-right' },
+                    React.createElement(DetailPagination, null)
+                )
+            );
+        }
+    }]);
+
+    return DetailTable;
+}(React.Component);
+
+var DetailTableBody = function (_React$Component20) {
+    _inherits(DetailTableBody, _React$Component20);
+
+    function DetailTableBody() {
+        _classCallCheck(this, DetailTableBody);
+
+        return _possibleConstructorReturn(this, (DetailTableBody.__proto__ || Object.getPrototypeOf(DetailTableBody)).apply(this, arguments));
+    }
+
+    _createClass(DetailTableBody, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.key
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.id
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.name
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.item
+                )
+            );
+        }
+    }]);
+
+    return DetailTableBody;
+}(React.Component);
+
+var DetailModal = function (_React$Component21) {
+    _inherits(DetailModal, _React$Component21);
+
+    function DetailModal() {
+        _classCallCheck(this, DetailModal);
+
+        return _possibleConstructorReturn(this, (DetailModal.__proto__ || Object.getPrototypeOf(DetailModal)).apply(this, arguments));
+    }
+
+    _createClass(DetailModal, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Modal,
+                    { show: this.props.showModal, onHide: this.props.detailCallback.close },
+                    React.createElement(
+                        Modal.Header,
+                        { closeButton: true },
+                        React.createElement(
+                            Modal.Title,
+                            null,
+                            'Modal heading'
+                        )
+                    ),
+                    React.createElement(
+                        Form,
+                        { horizontal: true, onSubmit: this.props.detailCallback.onsavedetail.bind(this) },
+                        React.createElement(
+                            Modal.Body,
+                            null,
+                            React.createElement(
+                                FormGroup,
+                                { controlId: 'formHorizontalname' },
+                                React.createElement(
+                                    Col,
+                                    { componentClass: ControlLabel, md: 2, sm: 2 },
+                                    'Name'
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 6, sm: 10 },
+                                    React.createElement(FormControl, { type: 'text', name: 'name', placeholder: 'Name' })
+                                )
+                            ),
+                            React.createElement(
+                                FormGroup,
+                                { controlId: 'formHorizontalItem' },
+                                React.createElement(
+                                    Col,
+                                    { componentClass: ControlLabel, md: 2, sm: 2 },
+                                    'Item'
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 6, sm: 10 },
+                                    React.createElement(FormControl, { type: 'text', name: 'item', placeholder: 'Item' })
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            Modal.Footer,
+                            null,
+                            React.createElement(
+                                Button,
+                                { type: 'submit', pullRight: true },
+                                'Save'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return DetailModal;
 }(React.Component);
 
 ReactDOM.render(React.createElement(
@@ -899,6 +1589,7 @@ ReactDOM.render(React.createElement(
         { path: '/', component: App },
         React.createElement(Route, { path: 'about', component: About }),
         React.createElement(Route, { path: 'repos', component: Repos }),
+        React.createElement(Route, { path: 'detail', component: Detail }),
         React.createElement(Route, { path: 'master', component: Master })
     )
 ), document.getElementById('contents'));
