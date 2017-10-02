@@ -433,13 +433,9 @@ class MasterTable extends React.Component{
                             (master, index) => <MasterTableBody
                                                                 key={master.id}
                                                                 id={master.id}
-
 date={master.date}
-
 name={master.name}
-
 items={master.name}
-
 status={master.status}
                                                 />
                         )}

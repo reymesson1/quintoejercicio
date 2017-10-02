@@ -681,13 +681,9 @@ var MasterTable = function (_React$Component9) {
                             return React.createElement(MasterTableBody, {
                                 key: master.id,
                                 id: master.id,
-
                                 date: master.date,
-
                                 name: master.name,
-
                                 items: master.name,
-
                                 status: master.status
                             });
                         })
