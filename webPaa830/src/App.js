@@ -28,7 +28,7 @@ const Table = ReactBootstrap.Table;
 
 const Autosuggest = Autosuggest;
 
-const API_URL = 'http://159.203.156.208';
+const API_URL = 'http://localhost';
 
 const API_HEADERS = {
 
@@ -209,7 +209,7 @@ class Actions extends React.Component{
 masterAPI={this.state.masterAPI.filter((master)=> master.id ==
 this.state.parameter)}
                 />
-                <Button onClick={this.onPrinted.bind(this)}>&nbsp;</Button>
+                <Button onClick={this.onPrinted.bind(this)} >i&nbsp;</Button>
             </div>
         );
     }
@@ -231,7 +231,9 @@ class ActionsTable extends React.Component{
                             <h6>Ubicado en la Plaza Carmen Renata III</h6>
                             <h6>Tel.: 809-937-5052 Cel:.809-817-3349</h6>
                             <br/>                            
-                            <h5 className="col-xs-offset-7">Fecha: 04-10-17</h5>
+                            <br/>                            
+                            <h5 className="col-xs-offset-7">Fecha: 04-10-17</h5>                            
+                            <br/>                            
                         </Col>
                     </Row>
                     <Row>
@@ -636,8 +638,7 @@ onhandleuserinput:this.onHandleUserInput.bind(this)
                 </Row>
                 <Row>
                         <div className="pull-right">
-                            <Button onClick={this.open.bind(this)}>Add
-Master</Button>
+                            <Button onClick={this.open.bind(this)}>Agregar Factura</Button>
                             <MasterModal
 
 masterDetail={this.state.masterDetail}
@@ -655,7 +656,7 @@ onsavemaster:this.onSaveMaster.bind(this)
                 </Row>
                 <br/>
                 <Row>
-                    <Panel header="Master List">
+                    <Panel header="Listado de Facturas">
                         <MasterTable
                                         filterText={this.state.filterText}
                                         masterData={this.state.masterAPI}
@@ -717,11 +718,11 @@ class MasterSearch extends React.Component{
 
         return(
             <div>
-                <Panel header="Search Master">
+                <Panel header="Busqueda de Factura">
                   <form>
                     <div className="form-group">
                         <div className="col-md-2 col-sm-2">
-                          <label>Search:</label>
+                          <label>Buscar:</label>
                         </div>
                         <div className="col-md-10 col-sm-10">
                           <input
@@ -755,11 +756,11 @@ class MasterTable extends React.Component{
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Date</th>
-                            <th>Name</th>
-                            <th>Items</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Fecha</th>
+                            <th>Nombre</th>
+                            <th>Articulo</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -821,7 +822,7 @@ class MasterModalButton extends React.Component{
                                 style={{'margin-left':'70%'}}
                                 bsStyle={'default'}
 
-onClick={this.props.masterCallback.onsavemaster.bind(this)}>Save</Button>
+onClick={this.props.masterCallback.onsavemaster.bind(this)}>Guardar</Button>
                 </Col>
             </Row>
         );
@@ -837,7 +838,7 @@ class MasterModal extends React.Component{
             <div >
                 <Modal show={this.props.showModal} onHide={this.props.close}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Agregar Factura</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                         <MasterModalField
@@ -1091,10 +1092,10 @@ class MasterModalTable extends React.Component{
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Item</th>
-                        <th>Development</th>
-                        <th>Project</th>
+                        <th>Nombre</th>
+                        <th>Articulo</th>
+                        <th>Peluquera</th>
+                        <th>Precio</th>
                       </tr>
                     </thead>
                     <tbody>

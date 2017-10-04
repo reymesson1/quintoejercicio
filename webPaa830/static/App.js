@@ -38,7 +38,7 @@ var Table = ReactBootstrap.Table;
 
 var Autosuggest = Autosuggest;
 
-var API_URL = 'http://localhost:8080';
+var API_URL = 'http://localhost';
 
 var API_HEADERS = {
 
@@ -56,7 +56,6 @@ var App = function (_React$Component) {
 
         _this.state = {
 
-            cookie: false,
             cookies: false
         };
         return _this;
@@ -84,9 +83,6 @@ var App = function (_React$Component) {
 
             event.preventDefault();
 
-            console.log(event.target.email.value);
-            console.log(event.target.password.value);
-
             var newCookie = {
 
                 "id": "1",
@@ -111,6 +107,7 @@ var App = function (_React$Component) {
                 'div',
                 null,
                 React.createElement(Toolbar, null),
+                React.createElement(SidebarContainer, null),
                 React.createElement(
                     'div',
                     { className: 'container' },
@@ -144,8 +141,439 @@ var App = function (_React$Component) {
     return App;
 }(React.Component);
 
-var Login = function (_React$Component2) {
-    _inherits(Login, _React$Component2);
+var SidebarContainer = function (_React$Component2) {
+    _inherits(SidebarContainer, _React$Component2);
+
+    function SidebarContainer() {
+        _classCallCheck(this, SidebarContainer);
+
+        return _possibleConstructorReturn(this, (SidebarContainer.__proto__ || Object.getPrototypeOf(SidebarContainer)).apply(this, arguments));
+    }
+
+    _createClass(SidebarContainer, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'div',
+                { className: 'sidebar', style: { display: 'none' } },
+                React.createElement(
+                    'h1',
+                    null,
+                    '\xA0'
+                ),
+                React.createElement(
+                    'ul',
+                    null,
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/dashboard' },
+                            React.createElement('i', { className: 'fa\r\nfa-tachometer', 'aria-hidden': 'true' }),
+                            '\xA0Dashboard'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/orders' },
+                            React.createElement('i', { className: 'fa fa-plus',
+                                'aria-hidden': 'true' }),
+                            '\xA0Orders'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/accounts' },
+                            React.createElement('i', { className: 'fa\r\nfa-university', 'aria-hidden': 'true' }),
+                            '\xA0Accounts'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/tasks' },
+                            React.createElement('i', { className: 'fa fa-tasks',
+                                'aria-hidden': 'true' }),
+                            '\xA0Tasks'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/schedule' },
+                            React.createElement('i', { className: 'fa\r\nfa-calendar', 'aria-hidden': 'true' }),
+                            '\xA0Schedule'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/jobs' },
+                            React.createElement('i', { className: 'fa fa-tasks',
+                                'aria-hidden': 'true' }),
+                            '\xA0Jobs'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/timesheet' },
+                            React.createElement('i', { className: 'fa\r\nfa-user', 'aria-hidden': 'true' }),
+                            '\xA0TimeSheet'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SidebarContainer;
+}(React.Component);
+
+var Actions = function (_React$Component3) {
+    _inherits(Actions, _React$Component3);
+
+    function Actions() {
+        _classCallCheck(this, Actions);
+
+        var _this4 = _possibleConstructorReturn(this, (Actions.__proto__ || Object.getPrototypeOf(Actions)).call(this));
+
+        _this4.state = {
+
+            masterAPI: [],
+            parameter: ''
+        };
+
+        return _this4;
+    }
+
+    _createClass(Actions, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this5 = this;
+
+            fetch(API_URL + '/master', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this5.setState({
+
+                    masterAPI: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+
+            this.setState({
+
+                parameter: this.props.params.actionid
+            });
+        }
+    }, {
+        key: 'onPrinted',
+        value: function onPrinted() {
+
+            window.print();
+
+            window.location.href = '/';
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this6 = this;
+
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(ActionsTable, {
+                    parameter: this.state.parameter,
+
+                    masterAPI: this.state.masterAPI.filter(function (master) {
+                        return master.id == _this6.state.parameter;
+                    })
+                }),
+                React.createElement(
+                    Button,
+                    { onClick: this.onPrinted.bind(this) },
+                    'i\xA0'
+                )
+            );
+        }
+    }]);
+
+    return Actions;
+}(React.Component);
+
+var ActionsTable = function (_React$Component4) {
+    _inherits(ActionsTable, _React$Component4);
+
+    function ActionsTable() {
+        _classCallCheck(this, ActionsTable);
+
+        return _possibleConstructorReturn(this, (ActionsTable.__proto__ || Object.getPrototypeOf(ActionsTable)).apply(this, arguments));
+    }
+
+    _createClass(ActionsTable, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'div',
+                { id: 'printcss', style: { 'margin': '0' } },
+                React.createElement(
+                    Grid,
+                    null,
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            Col,
+                            { xs: 12 },
+                            React.createElement('img', { src: '/logoprint.png' }),
+                            React.createElement(
+                                'h6',
+                                null,
+                                '"Las mejores adaptaciones de pelos de todo el pais"'
+                            ),
+                            React.createElement(
+                                'h6',
+                                null,
+                                'Ubicado en la Plaza Carmen Renata III'
+                            ),
+                            React.createElement(
+                                'h6',
+                                null,
+                                'Tel.: 809-937-5052 Cel:.809-817-3349'
+                            ),
+                            React.createElement('br', null),
+                            React.createElement('br', null),
+                            React.createElement(
+                                'h5',
+                                { className: 'col-xs-offset-7' },
+                                'Fecha: 04-10-17'
+                            ),
+                            React.createElement('br', null)
+                        )
+                    ),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            Col,
+                            { xs: 12 },
+                            React.createElement(
+                                Table,
+                                { striped: true, bordered: true, condensed: true, hover: true, style: { 'position': 'relative', 'width': '55%', 'margin': '0' } },
+                                React.createElement(
+                                    'thead',
+                                    null,
+                                    React.createElement(
+                                        'tr',
+                                        null,
+                                        React.createElement(
+                                            'th',
+                                            { style: { 'width': '15px', 'font-size': '25px', 'border-spacing': '0 30px' } },
+                                            '#'
+                                        ),
+                                        React.createElement(
+                                            'th',
+                                            { style: { 'width': '15px', 'font-size': '25px' } },
+                                            'Articulo'
+                                        ),
+                                        React.createElement(
+                                            'th',
+                                            { style: { 'width': '15px', 'font-size': '25px' } },
+                                            'Precio'
+                                        ),
+                                        React.createElement(
+                                            'th',
+                                            { style: { 'width': '15px', 'font-size': '25px' } },
+                                            'Peluquera'
+                                        )
+                                    )
+                                ),
+                                this.props.masterAPI.map(function (master, index) {
+                                    return React.createElement(ActionsTableBody, {
+                                        key: index,
+                                        index: index,
+                                        id: master.id,
+                                        item: master.item
+                                    });
+                                }),
+                                React.createElement(
+                                    'tfoot',
+                                    null,
+                                    React.createElement(ActionsTableBodyFooter, {
+                                        parameter: this.props.parameter,
+                                        masterAPI: this.props.masterAPI
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ActionsTable;
+}(React.Component);
+
+var ActionsTableBodyFooter = function (_React$Component5) {
+    _inherits(ActionsTableBodyFooter, _React$Component5);
+
+    function ActionsTableBodyFooter() {
+        _classCallCheck(this, ActionsTableBodyFooter);
+
+        return _possibleConstructorReturn(this, (ActionsTableBodyFooter.__proto__ || Object.getPrototypeOf(ActionsTableBodyFooter)).apply(this, arguments));
+    }
+
+    _createClass(ActionsTableBodyFooter, [{
+        key: 'render',
+        value: function render() {
+
+            var nextState = this.props.masterAPI;
+
+            var zoom = 0;
+
+            if (nextState[0]) {
+
+                zoom = nextState[0].project;
+            }
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    '\xA0'
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    '\xA0'
+                ),
+                React.createElement(
+                    'td',
+                    { style: { 'width': '15px', 'font-size': '20px' } },
+                    'Total'
+                ),
+                React.createElement(
+                    'td',
+                    { style: { 'width': '15px', 'font-size': '20px' } },
+                    'RD$',
+                    zoom,
+                    '.00'
+                ),
+                React.createElement('br', null),
+                React.createElement('br', null),
+                React.createElement('br', null),
+                React.createElement('br', null),
+                React.createElement('br', null),
+                React.createElement('br', null)
+            );
+        }
+    }]);
+
+    return ActionsTableBodyFooter;
+}(React.Component);
+
+var ActionsTableBody = function (_React$Component6) {
+    _inherits(ActionsTableBody, _React$Component6);
+
+    function ActionsTableBody() {
+        _classCallCheck(this, ActionsTableBody);
+
+        return _possibleConstructorReturn(this, (ActionsTableBody.__proto__ || Object.getPrototypeOf(ActionsTableBody)).apply(this, arguments));
+    }
+
+    _createClass(ActionsTableBody, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'tbody',
+                null,
+                this.props.item.map(function (master, index) {
+                    return React.createElement(ActionsTableBodyDetail, {
+                        key: index,
+                        index: index + 1,
+                        id: master.id,
+                        name: master.firstname,
+                        item: master.item,
+                        development: master.development,
+                        project: master.project
+                    });
+                })
+            );
+        }
+    }]);
+
+    return ActionsTableBody;
+}(React.Component);
+
+var ActionsTableBodyDetail = function (_React$Component7) {
+    _inherits(ActionsTableBodyDetail, _React$Component7);
+
+    function ActionsTableBodyDetail() {
+        _classCallCheck(this, ActionsTableBodyDetail);
+
+        return _possibleConstructorReturn(this, (ActionsTableBodyDetail.__proto__ || Object.getPrototypeOf(ActionsTableBodyDetail)).apply(this, arguments));
+    }
+
+    _createClass(ActionsTableBodyDetail, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    { style: { 'font-size': '20px' } },
+                    '\xA0'
+                ),
+                React.createElement(
+                    'td',
+                    { style: { 'font-size': '20px' } },
+                    this.props.item
+                ),
+                React.createElement(
+                    'td',
+                    { style: { 'font-size': '20px' } },
+                    this.props.project,
+                    '.00'
+                ),
+                React.createElement(
+                    'td',
+                    { style: { 'font-size': '20px' } },
+                    this.props.development
+                )
+            );
+        }
+    }]);
+
+    return ActionsTableBodyDetail;
+}(React.Component);
+
+var Login = function (_React$Component8) {
+    _inherits(Login, _React$Component8);
 
     function Login() {
         _classCallCheck(this, Login);
@@ -159,7 +587,7 @@ var Login = function (_React$Component2) {
 
             return React.createElement(
                 'div',
-                null,
+                { id: 'login' },
                 React.createElement(
                     'div',
                     { className: 'container' },
@@ -186,19 +614,24 @@ var Login = function (_React$Component2) {
                                     { className: 'panel-body' },
                                     React.createElement(
                                         'form',
-                                        { onSubmit: this.props.setcookie.bind(this) },
+                                        {
+                                            onSubmit: this.props.setcookie.bind(this) },
                                         React.createElement(
                                             'fieldset',
                                             null,
                                             React.createElement(
                                                 'div',
                                                 { className: 'form-group' },
-                                                React.createElement('input', { className: 'form-control', placeholder: 'E-mail', name: 'email', type: 'text' })
+                                                React.createElement('input', {
+                                                    className: 'form-control', placeholder: 'E-mail', name: 'email',
+                                                    type: 'text' })
                                             ),
                                             React.createElement(
                                                 'div',
                                                 { className: 'form-group' },
-                                                React.createElement('input', { className: 'form-control', placeholder: 'Password', name: 'password', type: 'password' })
+                                                React.createElement('input', {
+                                                    className: 'form-control', placeholder: 'Password', name: 'password',
+                                                    type: 'password' })
                                             ),
                                             React.createElement(
                                                 'div',
@@ -206,13 +639,14 @@ var Login = function (_React$Component2) {
                                                 React.createElement(
                                                     'label',
                                                     null,
-                                                    React.createElement('input', { name: 'remember', type: 'checkbox', value: 'Remember Me' }),
+                                                    React.createElement('input', { name: 'remember',
+                                                        type: 'checkbox', value: 'Remember Me' }),
                                                     ' Remember Me'
                                                 )
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn btn-lg btn-success btn-block' },
+                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -229,8 +663,8 @@ var Login = function (_React$Component2) {
     return Login;
 }(React.Component);
 
-var Toolbar = function (_React$Component3) {
-    _inherits(Toolbar, _React$Component3);
+var Toolbar = function (_React$Component9) {
+    _inherits(Toolbar, _React$Component9);
 
     function Toolbar() {
         _classCallCheck(this, Toolbar);
@@ -265,8 +699,9 @@ var Toolbar = function (_React$Component3) {
                         { className: 'navbar-brand' },
                         React.createElement(
                             Link,
-                            { to: '/', onClick: this.onClicked.bind(this) },
-                            'React-Bootstrap'
+                            { to: '/',
+                                onClick: this.onClicked.bind(this) },
+                            'Info-Solutions SYS'
                         )
                     )
                 ),
@@ -279,7 +714,7 @@ var Toolbar = function (_React$Component3) {
                         React.createElement(
                             Link,
                             { to: '/master' },
-                            'Master'
+                            'Facturacion'
                         )
                     ),
                     React.createElement(
@@ -288,16 +723,22 @@ var Toolbar = function (_React$Component3) {
                         React.createElement(
                             Link,
                             { to: '/detail' },
-                            'Details'
+                            'Inventario'
                         )
                     ),
                     React.createElement(
                         NavDropdown,
-                        { eventKey: 3, title: 'Dropdown', id: 'basic-nav-dropdown' },
+                        { eventKey: 3, title: 'Dropdown',
+                            id: 'basic-nav-dropdown' },
                         React.createElement(
                             MenuItem,
                             { eventKey: 3.1 },
-                            'Actions'
+                            React.createElement(
+                                Link,
+                                {
+                                    to: '/actions' },
+                                'Actions'
+                            )
                         ),
                         React.createElement(
                             MenuItem,
@@ -318,11 +759,13 @@ var Toolbar = function (_React$Component3) {
                     ),
                     React.createElement(
                         'li',
-                        { style: { 'float': 'right', 'position': 'absolute', 'left': '80%' } },
+                        {
+                            style: { 'float': 'right', 'position': 'absolute', 'left': '80%' } },
                         React.createElement(
                             Link,
-                            { to: '/detail' },
-                            'Login'
+                            {
+                                onClick: this.onClicked, to: '/logout' },
+                            'Logout'
                         )
                     )
                 )
@@ -333,8 +776,8 @@ var Toolbar = function (_React$Component3) {
     return Toolbar;
 }(React.Component);
 
-var About = function (_React$Component4) {
-    _inherits(About, _React$Component4);
+var About = function (_React$Component10) {
+    _inherits(About, _React$Component10);
 
     function About() {
         _classCallCheck(this, About);
@@ -357,8 +800,8 @@ var About = function (_React$Component4) {
     return About;
 }(React.Component);
 
-var Repos = function (_React$Component5) {
-    _inherits(Repos, _React$Component5);
+var Repos = function (_React$Component11) {
+    _inherits(Repos, _React$Component11);
 
     function Repos() {
         _classCallCheck(this, Repos);
@@ -373,7 +816,8 @@ var Repos = function (_React$Component5) {
             return React.createElement(
                 'h1',
                 null,
-                'Repos'
+                'Repos ',
+                this.props.params.repo_name
             );
         }
     }]);
@@ -381,43 +825,46 @@ var Repos = function (_React$Component5) {
     return Repos;
 }(React.Component);
 
-/*components*/
-
-
-var masterAPI = [{
-
-    "id": "1",
-    "date": "2017-04-01",
-    "name": "Juan Perez",
-    "items": [{
-        "id": "1",
-        "name": "sample",
-        "details": "data"
-    }],
-    "status": "pending"
-}];
-
-var Master = function (_React$Component6) {
-    _inherits(Master, _React$Component6);
+var Master = function (_React$Component12) {
+    _inherits(Master, _React$Component12);
 
     function Master() {
         _classCallCheck(this, Master);
 
-        var _this7 = _possibleConstructorReturn(this, (Master.__proto__ || Object.getPrototypeOf(Master)).call(this));
+        var _this15 = _possibleConstructorReturn(this, (Master.__proto__ || Object.getPrototypeOf(Master)).call(this));
 
-        _this7.state = {
+        _this15.state = {
             showModal: false,
-            masterDetail: [{
-
-                "id": "1",
-                "firstname": "juanperez",
-                "item": "masterdetail"
-            }]
+            filterText: '',
+            activePage: 1,
+            masterAPI: [],
+            masterDetail: []
         };
-        return _this7;
+        return _this15;
     }
 
     _createClass(Master, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this16 = this;
+
+            fetch(API_URL + '/master', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this16.setState({
+
+                    masterAPI: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+
+            this.setState({
+
+                parameter: this.props.params.actionid
+            });
+        }
+    }, {
         key: 'close',
         value: function close() {
             this.setState({
@@ -437,21 +884,46 @@ var Master = function (_React$Component6) {
 
             event.preventDefault();
 
+            var details = this.state.masterDetail;
+
+            var name = details[0].firstname;
+
+            var zoom = 0;
+
+            for (var x = 0; x < details.length; x++) {
+                zoom += parseInt(details[x].project);
+            }
+
             var newMaster = {
 
                 "id": Date.now(),
                 "date": "2017-10-02",
-                "name": "empty",
+                "name": name,
                 "item": this.state.masterDetail,
+                "project": zoom,
                 "status": "pending"
 
             };
 
-            masterAPI.push(newMaster);
+            var nextState = this.state.masterAPI;
+
+            nextState.push(newMaster);
+
+            this.setState({
+
+                masterAPI: nextState
+            });
 
             this.setState({
                 showModal: false,
                 masterDetail: []
+            });
+
+            fetch(API_URL + '/master', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify(newMaster)
             });
         }
     }, {
@@ -459,8 +931,6 @@ var Master = function (_React$Component6) {
         value: function onSaveDetail(event) {
 
             event.preventDefault();
-            console.log(event.target.firstname.value);
-            console.log(event.target.suggest.value);
 
             var nextState = this.state.masterDetail;
 
@@ -468,7 +938,9 @@ var Master = function (_React$Component6) {
 
                 "id": Date.now(),
                 "firstname": event.target.firstname.value,
-                "item": event.target.suggest.value
+                "item": event.target.suggest.value,
+                "development": event.target.development.value,
+                "project": event.target.project.value
             };
 
             nextState.push(newItem);
@@ -476,6 +948,48 @@ var Master = function (_React$Component6) {
             this.setState({
 
                 masterDetail: nextState
+            });
+        }
+    }, {
+        key: 'onDeleteMaster',
+        value: function onDeleteMaster(value) {
+
+            var nextState = this.state.masterAPI;
+
+            var index = nextState.findIndex(function (x) {
+                return x.id == value;
+            });
+
+            nextState.splice(index, 1);
+
+            this.setState({
+
+                masterAPI: nextState
+            });
+
+            fetch(API_URL + '/deletemaster', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify({ "id": index })
+            });
+        }
+    }, {
+        key: 'onHandleUserInput',
+        value: function onHandleUserInput(event) {
+
+            this.setState({
+
+                filterText: event.target.value
+            });
+        }
+    }, {
+        key: 'handleSelect',
+        value: function handleSelect(eventKey) {
+
+            this.setState({
+
+                activePage: eventKey
             });
         }
     }, {
@@ -488,7 +1002,18 @@ var Master = function (_React$Component6) {
                 React.createElement(
                     Row,
                     null,
-                    React.createElement(MasterSearch, null)
+                    React.createElement(MasterSearch, {
+                        filterText: this.state.filterText,
+                        masterCallback: {
+
+                            onsavedetail: this.onSaveDetail.bind(this),
+
+                            onsavemaster: this.onSaveMaster.bind(this),
+
+                            onhandleuserinput: this.onHandleUserInput.bind(this)
+                        }
+
+                    })
                 ),
                 React.createElement(
                     Row,
@@ -499,14 +1024,18 @@ var Master = function (_React$Component6) {
                         React.createElement(
                             Button,
                             { onClick: this.open.bind(this) },
-                            'Add Master'
+                            'Agregar Factura'
                         ),
-                        React.createElement(MasterModal, { masterDetail: this.state.masterDetail,
+                        React.createElement(MasterModal, {
+
+                            masterDetail: this.state.masterDetail,
                             showModal: this.state.showModal,
                             open: this.open,
                             close: this.close.bind(this),
                             masterCallback: {
+
                                 onsavedetail: this.onSaveDetail.bind(this),
+
                                 onsavemaster: this.onSaveMaster.bind(this)
                             }
                         })
@@ -518,13 +1047,29 @@ var Master = function (_React$Component6) {
                     null,
                     React.createElement(
                         Panel,
-                        null,
-                        React.createElement(MasterTable, { masterData: masterAPI
+                        { header: 'Listado de Facturas' },
+                        React.createElement(MasterTable, {
+                            filterText: this.state.filterText,
+                            masterData: this.state.masterAPI,
+                            masterCallback: {
+
+                                onsavedetail: this.onSaveDetail.bind(this),
+
+                                onsavemaster: this.onSaveMaster.bind(this),
+
+                                ondeletemaster: this.onDeleteMaster.bind(this)
+                            }
                         }),
                         React.createElement(
                             'div',
                             { className: 'pull-right' },
-                            React.createElement(MasterPagination, null)
+                            React.createElement(MasterPagination, {
+                                masterCallback: {
+                                    handleSelect: this.handleSelect.bind(this)
+                                },
+
+                                activePage: this.state.activePage
+                            })
                         )
                     )
                 )
@@ -535,8 +1080,8 @@ var Master = function (_React$Component6) {
     return Master;
 }(React.Component);
 
-var MasterPagination = function (_React$Component7) {
-    _inherits(MasterPagination, _React$Component7);
+var MasterPagination = function (_React$Component13) {
+    _inherits(MasterPagination, _React$Component13);
 
     function MasterPagination() {
         _classCallCheck(this, MasterPagination);
@@ -559,7 +1104,9 @@ var MasterPagination = function (_React$Component7) {
                     ellipsis: true,
                     boundaryLinks: true,
                     bsSize: 'small',
-                    items: 5
+                    items: 5,
+                    activePage: this.props.activePage,
+                    onSelect: this.props.masterCallback.handleSelect
                 }),
                 React.createElement('br', null)
             );
@@ -569,8 +1116,8 @@ var MasterPagination = function (_React$Component7) {
     return MasterPagination;
 }(React.Component);
 
-var MasterSearch = function (_React$Component8) {
-    _inherits(MasterSearch, _React$Component8);
+var MasterSearch = function (_React$Component14) {
+    _inherits(MasterSearch, _React$Component14);
 
     function MasterSearch() {
         _classCallCheck(this, MasterSearch);
@@ -587,7 +1134,7 @@ var MasterSearch = function (_React$Component8) {
                 null,
                 React.createElement(
                     Panel,
-                    { header: 'Search Master' },
+                    { header: 'Busqueda de Factura' },
                     React.createElement(
                         'form',
                         null,
@@ -600,13 +1147,18 @@ var MasterSearch = function (_React$Component8) {
                                 React.createElement(
                                     'label',
                                     null,
-                                    'Search:'
+                                    'Buscar:'
                                 )
                             ),
                             React.createElement(
                                 'div',
                                 { className: 'col-md-10 col-sm-10' },
-                                React.createElement('input', { type: 'text', className: 'form-control', id: 'first_name', name: 'first_name' })
+                                React.createElement('input', {
+
+                                    onChange: this.props.masterCallback.onhandleuserinput.bind(this),
+                                    type: 'text',
+                                    className: 'form-control',
+                                    id: 'first_name', name: 'first_name' })
                             )
                         )
                     )
@@ -618,8 +1170,8 @@ var MasterSearch = function (_React$Component8) {
     return MasterSearch;
 }(React.Component);
 
-var MasterTable = function (_React$Component9) {
-    _inherits(MasterTable, _React$Component9);
+var MasterTable = function (_React$Component15) {
+    _inherits(MasterTable, _React$Component15);
 
     function MasterTable() {
         _classCallCheck(this, MasterTable);
@@ -630,6 +1182,12 @@ var MasterTable = function (_React$Component9) {
     _createClass(MasterTable, [{
         key: 'render',
         value: function render() {
+            var _this20 = this;
+
+            var filteredMaster = this.props.masterData.filter(function (master) {
+                return master.name.indexOf(_this20.props.filterText) !== -1;
+            });
+
             return React.createElement(
                 'div',
                 null,
@@ -650,41 +1208,47 @@ var MasterTable = function (_React$Component9) {
                             React.createElement(
                                 'th',
                                 null,
-                                'Date'
+                                'Fecha'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Name'
+                                'Nombre'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Items'
+                                'Articulo'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Status'
+                                'Estatus'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Actions'
+                                'Acciones'
                             )
                         )
                     ),
                     React.createElement(
                         'tbody',
                         null,
-                        this.props.masterData.map(function (master, index) {
+                        filteredMaster.map(function (master, index) {
                             return React.createElement(MasterTableBody, {
                                 key: master.id,
                                 id: master.id,
+
                                 date: master.date,
+
                                 name: master.name,
+
                                 items: master.name,
-                                status: master.status
+
+                                status: master.status,
+
+                                masterCallback: _this20.props.masterCallback
                             });
                         })
                     )
@@ -696,8 +1260,8 @@ var MasterTable = function (_React$Component9) {
     return MasterTable;
 }(React.Component);
 
-var MasterTableBody = function (_React$Component10) {
-    _inherits(MasterTableBody, _React$Component10);
+var MasterTableBody = function (_React$Component16) {
+    _inherits(MasterTableBody, _React$Component16);
 
     function MasterTableBody() {
         _classCallCheck(this, MasterTableBody);
@@ -741,17 +1305,18 @@ var MasterTableBody = function (_React$Component10) {
                     'td',
                     null,
                     React.createElement(
-                        Button,
-                        null,
+                        Link,
+                        { className: 'btn btn-default',
+                            to: '/actions/' + this.props.id },
                         React.createElement('i', { className: 'fa fa-eye',
                             'aria-hidden': 'true' })
                     ),
                     ' ',
                     React.createElement(
                         Button,
-                        null,
-                        React.createElement('i', { className: 'fa fa-trash',
-                            'aria-hidden': 'true' })
+                        { onClick: this.props.masterCallback.ondeletemaster.bind(this, this.props.id) },
+                        React.createElement('i', {
+                            className: 'fa fa-trash', 'aria-hidden': 'true' })
                     )
                 )
             );
@@ -761,8 +1326,8 @@ var MasterTableBody = function (_React$Component10) {
     return MasterTableBody;
 }(React.Component);
 
-var MasterModalButton = function (_React$Component11) {
-    _inherits(MasterModalButton, _React$Component11);
+var MasterModalButton = function (_React$Component17) {
+    _inherits(MasterModalButton, _React$Component17);
 
     function MasterModalButton() {
         _classCallCheck(this, MasterModalButton);
@@ -787,7 +1352,7 @@ var MasterModalButton = function (_React$Component11) {
                             bsStyle: 'default',
 
                             onClick: this.props.masterCallback.onsavemaster.bind(this) },
-                        'Save'
+                        'Guardar'
                     )
                 )
             );
@@ -797,8 +1362,8 @@ var MasterModalButton = function (_React$Component11) {
     return MasterModalButton;
 }(React.Component);
 
-var MasterModal = function (_React$Component12) {
-    _inherits(MasterModal, _React$Component12);
+var MasterModal = function (_React$Component18) {
+    _inherits(MasterModal, _React$Component18);
 
     function MasterModal() {
         _classCallCheck(this, MasterModal);
@@ -822,13 +1387,14 @@ var MasterModal = function (_React$Component12) {
                         React.createElement(
                             Modal.Title,
                             null,
-                            'Modal heading'
+                            'Agregar Factura'
                         )
                     ),
                     React.createElement(
                         Modal.Body,
                         null,
                         React.createElement(MasterModalField, {
+
                             masterCallback: this.props.masterCallback
                         }),
                         React.createElement('br', null),
@@ -852,46 +1418,46 @@ var MasterModal = function (_React$Component12) {
 }(React.Component);
 
 var languages = [{
-    name: 'C',
+    name: 'LAVADO',
     year: 1972
 }, {
-    name: 'C#',
+    name: 'PELO CORTO',
     year: 2000
 }, {
-    name: 'C++',
+    name: 'PELO LARGO',
     year: 1983
 }, {
-    name: 'Clojure',
+    name: 'EXTENSIONES',
     year: 2007
 }, {
-    name: 'Elm',
+    name: 'LAVADO CON LINEA',
     year: 2012
 }, {
-    name: 'Go',
+    name: 'TRATAMIENTO PROFUNDO',
     year: 2009
 }, {
-    name: 'Haskell',
+    name: 'CELOFEN',
     year: 1990
 }, {
-    name: 'Java',
+    name: 'CEJAS',
     year: 1995
 }, {
-    name: 'Javascript',
+    name: 'POSTURAS DE UNAS',
     year: 1995
 }, {
-    name: 'Perl',
+    name: 'PINTADAS',
     year: 1987
 }, {
-    name: 'PHP',
+    name: 'MANOS Y PIES',
     year: 1995
 }, {
-    name: 'Python',
+    name: 'KERATINA',
     year: 1991
 }, {
     name: 'Ruby',
     year: 1995
 }, {
-    name: 'Scala',
+    name: 'ALIZADO',
     year: 2003
 }];
 
@@ -926,20 +1492,20 @@ function getSuggestionValue(suggestion) {
     return suggestion.name;
 }
 
-var MasterModalField = function (_React$Component13) {
-    _inherits(MasterModalField, _React$Component13);
+var MasterModalField = function (_React$Component19) {
+    _inherits(MasterModalField, _React$Component19);
 
     function MasterModalField() {
         _classCallCheck(this, MasterModalField);
 
-        var _this14 = _possibleConstructorReturn(this, (MasterModalField.__proto__ || Object.getPrototypeOf(MasterModalField)).call(this));
+        var _this24 = _possibleConstructorReturn(this, (MasterModalField.__proto__ || Object.getPrototypeOf(MasterModalField)).call(this));
 
-        _this14.state = {
+        _this24.state = {
 
             value: '',
             suggestions: []
         };
-        return _this14;
+        return _this24;
     }
 
     _createClass(MasterModalField, [{
@@ -972,15 +1538,6 @@ var MasterModalField = function (_React$Component13) {
             });
         }
     }, {
-        key: 'onSave',
-        value: function onSave(event) {
-
-            event.preventDefault();
-
-            console.log(event.target.firstname.value);
-            console.log(this.state.value);
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _state = this.state,
@@ -1001,7 +1558,8 @@ var MasterModalField = function (_React$Component13) {
                     null,
                     React.createElement(
                         Form,
-                        { horizontal: true, onSubmit: this.props.masterCallback.onsavedetail.bind(this) },
+                        {
+                            onSubmit: this.props.masterCallback.onsavedetail.bind(this) },
                         React.createElement(
                             Row,
                             null,
@@ -1010,13 +1568,14 @@ var MasterModalField = function (_React$Component13) {
                                 { controlId: 'formHorizontalName' },
                                 React.createElement(
                                     Col,
-                                    { componentClass: ControlLabel, md: 2, sm: 2 },
-                                    'Name'
+                                    { componentClass: ControlLabel, md: 1, sm: 2 },
+                                    'Cliente'
                                 ),
                                 React.createElement(
                                     Col,
-                                    { md: 3, sm: 6 },
-                                    React.createElement(FormControl, { type: 'text', name: 'firstname', placeholder: 'Name' })
+                                    { md: 4, sm: 6 },
+                                    React.createElement(FormControl, { type: 'text',
+                                        name: 'firstname', placeholder: 'Cliente', required: true })
                                 )
                             )
                         ),
@@ -1029,20 +1588,82 @@ var MasterModalField = function (_React$Component13) {
                                 { controlId: 'formHorizontalItem' },
                                 React.createElement(
                                     Col,
-                                    { componentClass: ControlLabel, md: 2, sm: 2 },
-                                    'Item'
+                                    { componentClass: ControlLabel,
+                                        md: 1, sm: 2 },
+                                    'Articulo'
                                 ),
                                 React.createElement(
                                     Col,
-                                    { md: 3, sm: 6 },
+                                    { md: 4, sm: 6 },
                                     React.createElement(Autosuggest, {
                                         suggestions: suggestions,
+
                                         onSuggestionsFetchRequested: this.onSuggestionsFetchRequested.bind(this),
+
                                         onSuggestionsClearRequested: this.onSuggestionsClearRequested.bind(this),
+
                                         renderSuggestion: renderSuggestion,
+
                                         getSuggestionValue: getSuggestionValue,
                                         inputProps: inputProps
                                     })
+                                )
+                            )
+                        ),
+                        React.createElement('br', null),
+                        React.createElement(
+                            Row,
+                            null,
+                            React.createElement(
+                                FormGroup,
+                                { controlId: 'formControlsSelect' },
+                                React.createElement(
+                                    Col,
+                                    { md: 1, sm: 2 },
+                                    React.createElement(
+                                        ControlLabel,
+                                        null,
+                                        'Peluquera'
+                                    )
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 4, sm: 6 },
+                                    React.createElement(
+                                        FormControl,
+                                        { componentClass: 'select',
+                                            name: 'development', placeholder: 'Peluquera', required: true },
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Alexandra' },
+                                            'Alexandra'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'other' },
+                                            '...'
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                        React.createElement('br', null),
+                        React.createElement(
+                            Row,
+                            null,
+                            React.createElement(
+                                FormGroup,
+                                { controlId: 'formHorizontalName' },
+                                React.createElement(
+                                    Col,
+                                    { componentClass: ControlLabel, md: 1, sm: 2 },
+                                    'Precio'
+                                ),
+                                React.createElement(
+                                    Col,
+                                    { md: 4, sm: 6 },
+                                    React.createElement(FormControl, { type: 'text',
+                                        name: 'project', placeholder: 'Precio', required: true })
                                 ),
                                 React.createElement(
                                     Col,
@@ -1050,15 +1671,19 @@ var MasterModalField = function (_React$Component13) {
                                     React.createElement(
                                         Button,
                                         { type: 'submit' },
-                                        React.createElement('i', { className: 'fa fa-plus', 'aria-hidden': 'true' })
+                                        React.createElement('i', {
+                                            className: 'fa fa-plus', 'aria-hidden': 'true' })
                                     )
                                 )
                             )
                         ),
+                        React.createElement('br', null),
                         React.createElement(
                             Row,
                             null,
-                            React.createElement('input', { style: { 'width': '70px', 'display': 'none' }, type: 'text', name: 'suggest', placeholder: 'Name', value: this.state.value })
+                            React.createElement('input', {
+                                style: { 'width': '70px', 'display': 'none' }, type: 'text', name: 'suggest',
+                                placeholder: 'Name', value: this.state.value })
                         )
                     )
                 )
@@ -1069,8 +1694,8 @@ var MasterModalField = function (_React$Component13) {
     return MasterModalField;
 }(React.Component);
 
-var MasterModalTable = function (_React$Component14) {
-    _inherits(MasterModalTable, _React$Component14);
+var MasterModalTable = function (_React$Component20) {
+    _inherits(MasterModalTable, _React$Component20);
 
     function MasterModalTable() {
         _classCallCheck(this, MasterModalTable);
@@ -1102,17 +1727,22 @@ var MasterModalTable = function (_React$Component14) {
                             React.createElement(
                                 'th',
                                 null,
-                                'First Name'
+                                'Nombre'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Last Name'
+                                'Articulo'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Username'
+                                'Peluquera'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Precio'
                             )
                         )
                     ),
@@ -1122,13 +1752,19 @@ var MasterModalTable = function (_React$Component14) {
                         this.props.masterDetail.map(function (masterdetail, index) {
                             return React.createElement(MasterModalTableBody, {
 
+                                index: index + 1,
+
                                 key: index,
 
                                 id: masterdetail.id,
 
                                 firstname: masterdetail.firstname,
 
-                                item: masterdetail.item
+                                item: masterdetail.item,
+
+                                development: masterdetail.development,
+
+                                project: masterdetail.project
                             });
                         })
                     )
@@ -1140,8 +1776,8 @@ var MasterModalTable = function (_React$Component14) {
     return MasterModalTable;
 }(React.Component);
 
-var MasterModalTableBody = function (_React$Component15) {
-    _inherits(MasterModalTableBody, _React$Component15);
+var MasterModalTableBody = function (_React$Component21) {
+    _inherits(MasterModalTableBody, _React$Component21);
 
     function MasterModalTableBody() {
         _classCallCheck(this, MasterModalTableBody);
@@ -1159,12 +1795,7 @@ var MasterModalTableBody = function (_React$Component15) {
                 React.createElement(
                     'td',
                     null,
-                    this.props.key
-                ),
-                React.createElement(
-                    'td',
-                    null,
-                    this.props.id
+                    this.props.index
                 ),
                 React.createElement(
                     'td',
@@ -1175,6 +1806,16 @@ var MasterModalTableBody = function (_React$Component15) {
                     'td',
                     null,
                     this.props.item
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.development
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.project
                 )
             );
         }
@@ -1183,16 +1824,17 @@ var MasterModalTableBody = function (_React$Component15) {
     return MasterModalTableBody;
 }(React.Component);
 
-var Detail = function (_React$Component16) {
-    _inherits(Detail, _React$Component16);
+var Detail = function (_React$Component22) {
+    _inherits(Detail, _React$Component22);
 
     function Detail() {
         _classCallCheck(this, Detail);
 
-        var _this17 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
+        var _this27 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
 
-        _this17.state = {
+        _this27.state = {
             showModal: false,
+            filterText: '',
             detailData: [{
 
                 "id": "1",
@@ -1201,7 +1843,7 @@ var Detail = function (_React$Component16) {
                 "item": "detailcomponent"
             }]
         };
-        return _this17;
+        return _this27;
     }
 
     _createClass(Detail, [{
@@ -1243,6 +1885,15 @@ var Detail = function (_React$Component16) {
             });
         }
     }, {
+        key: 'onHandleChange',
+        value: function onHandleChange(event) {
+
+            this.setState({
+
+                filterText: event.target.value
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
 
@@ -1252,7 +1903,12 @@ var Detail = function (_React$Component16) {
                 React.createElement(
                     Row,
                     null,
-                    React.createElement(DetailSearch, null)
+                    React.createElement(DetailSearch, {
+                        filterText: this.state.filterText,
+                        detailCallback: {
+                            onHandleChange: this.onHandleChange.bind(this)
+                        }
+                    })
                 ),
                 React.createElement(
                     Row,
@@ -1266,10 +1922,12 @@ var Detail = function (_React$Component16) {
                             'Add Detail'
                         ),
                         React.createElement(DetailModal, {
+
                             showModal: this.state.showModal,
                             detailCallback: {
                                 open: this.open,
                                 close: this.close.bind(this),
+
                                 onsavedetail: this.onSaveDetail.bind(this)
                             }
                         })
@@ -1280,6 +1938,7 @@ var Detail = function (_React$Component16) {
                     Row,
                     null,
                     React.createElement(DetailTable, {
+                        filterText: this.state.filterText,
                         detailData: this.state.detailData
                     })
                 )
@@ -1290,18 +1949,18 @@ var Detail = function (_React$Component16) {
     return Detail;
 }(React.Component);
 
-var DetailPagination = function (_React$Component17) {
-    _inherits(DetailPagination, _React$Component17);
+var DetailPagination = function (_React$Component23) {
+    _inherits(DetailPagination, _React$Component23);
 
     function DetailPagination() {
         _classCallCheck(this, DetailPagination);
 
-        var _this18 = _possibleConstructorReturn(this, (DetailPagination.__proto__ || Object.getPrototypeOf(DetailPagination)).call(this));
+        var _this28 = _possibleConstructorReturn(this, (DetailPagination.__proto__ || Object.getPrototypeOf(DetailPagination)).call(this));
 
-        _this18.state = {
+        _this28.state = {
             activePage: 1
         };
-        return _this18;
+        return _this28;
     }
 
     _createClass(DetailPagination, [{
@@ -1325,7 +1984,7 @@ var DetailPagination = function (_React$Component17) {
                 items: 5,
                 maxButtons: 5,
                 activePage: this.state.activePage,
-                onSelect: this.handleSelect
+                onSelect: this.handleSelect.bind(this)
             });
         }
     }]);
@@ -1333,8 +1992,8 @@ var DetailPagination = function (_React$Component17) {
     return DetailPagination;
 }(React.Component);
 
-var DetailSearch = function (_React$Component18) {
-    _inherits(DetailSearch, _React$Component18);
+var DetailSearch = function (_React$Component24) {
+    _inherits(DetailSearch, _React$Component24);
 
     function DetailSearch() {
         _classCallCheck(this, DetailSearch);
@@ -1370,7 +2029,10 @@ var DetailSearch = function (_React$Component18) {
                             React.createElement(
                                 'div',
                                 { className: 'col-md-10 col-sm-10' },
-                                React.createElement('input', { type: 'text', className: 'form-control', id: 'first_name', name: 'first_name' })
+                                React.createElement('input', {
+                                    onChange: this.props.detailCallback.onHandleChange.bind(this),
+                                    type: 'text', className: 'form-control', id: 'first_name',
+                                    name: 'first_name' })
                             )
                         )
                     )
@@ -1382,8 +2044,8 @@ var DetailSearch = function (_React$Component18) {
     return DetailSearch;
 }(React.Component);
 
-var DetailTable = function (_React$Component19) {
-    _inherits(DetailTable, _React$Component19);
+var DetailTable = function (_React$Component25) {
+    _inherits(DetailTable, _React$Component25);
 
     function DetailTable() {
         _classCallCheck(this, DetailTable);
@@ -1394,6 +2056,12 @@ var DetailTable = function (_React$Component19) {
     _createClass(DetailTable, [{
         key: 'render',
         value: function render() {
+            var _this31 = this;
+
+            var filteredTable = this.props.detailData.filter(function (detail) {
+                return detail.name.indexOf(_this31.props.filterText) !== -1;
+            });
+
             return React.createElement(
                 Panel,
                 { header: 'Search List' },
@@ -1431,7 +2099,7 @@ var DetailTable = function (_React$Component19) {
                     React.createElement(
                         'tbody',
                         null,
-                        this.props.detailData.map(function (detail, index) {
+                        filteredTable.map(function (detail, index) {
                             return React.createElement(DetailTableBody, {
                                 key: index,
                                 id: detail.id,
@@ -1453,8 +2121,8 @@ var DetailTable = function (_React$Component19) {
     return DetailTable;
 }(React.Component);
 
-var DetailTableBody = function (_React$Component20) {
-    _inherits(DetailTableBody, _React$Component20);
+var DetailTableBody = function (_React$Component26) {
+    _inherits(DetailTableBody, _React$Component26);
 
     function DetailTableBody() {
         _classCallCheck(this, DetailTableBody);
@@ -1496,8 +2164,8 @@ var DetailTableBody = function (_React$Component20) {
     return DetailTableBody;
 }(React.Component);
 
-var DetailModal = function (_React$Component21) {
-    _inherits(DetailModal, _React$Component21);
+var DetailModal = function (_React$Component27) {
+    _inherits(DetailModal, _React$Component27);
 
     function DetailModal() {
         _classCallCheck(this, DetailModal);
@@ -1514,7 +2182,8 @@ var DetailModal = function (_React$Component21) {
                 null,
                 React.createElement(
                     Modal,
-                    { show: this.props.showModal, onHide: this.props.detailCallback.close },
+                    { show: this.props.showModal,
+                        onHide: this.props.detailCallback.close },
                     React.createElement(
                         Modal.Header,
                         { closeButton: true },
@@ -1526,7 +2195,8 @@ var DetailModal = function (_React$Component21) {
                     ),
                     React.createElement(
                         Form,
-                        { horizontal: true, onSubmit: this.props.detailCallback.onsavedetail.bind(this) },
+                        { horizontal: true,
+                            onSubmit: this.props.detailCallback.onsavedetail.bind(this) },
                         React.createElement(
                             Modal.Body,
                             null,
@@ -1535,13 +2205,14 @@ var DetailModal = function (_React$Component21) {
                                 { controlId: 'formHorizontalname' },
                                 React.createElement(
                                     Col,
-                                    { componentClass: ControlLabel, md: 2, sm: 2 },
+                                    { componentClass: ControlLabel, sm: 2 },
                                     'Name'
                                 ),
                                 React.createElement(
                                     Col,
-                                    { md: 6, sm: 10 },
-                                    React.createElement(FormControl, { type: 'text', name: 'name', placeholder: 'Name' })
+                                    { sm: 10 },
+                                    React.createElement(FormControl, { type: 'text',
+                                        name: 'name', placeholder: 'Name' })
                                 )
                             ),
                             React.createElement(
@@ -1549,13 +2220,14 @@ var DetailModal = function (_React$Component21) {
                                 { controlId: 'formHorizontalItem' },
                                 React.createElement(
                                     Col,
-                                    { componentClass: ControlLabel, md: 2, sm: 2 },
+                                    { componentClass: ControlLabel, sm: 2 },
                                     'Item'
                                 ),
                                 React.createElement(
                                     Col,
-                                    { md: 6, sm: 10 },
-                                    React.createElement(FormControl, { type: 'text', name: 'item', placeholder: 'Item' })
+                                    { sm: 10 },
+                                    React.createElement(FormControl, { type: 'text',
+                                        name: 'item', placeholder: 'Item' })
                                 )
                             )
                         ),
@@ -1584,7 +2256,8 @@ ReactDOM.render(React.createElement(
         Route,
         { path: '/', component: App },
         React.createElement(Route, { path: 'about', component: About }),
-        React.createElement(Route, { path: 'repos', component: Repos }),
+        React.createElement(Route, { path: 'repos/:repo_name', component: Repos }),
+        React.createElement(Route, { path: 'actions/:actionid', component: Actions }),
         React.createElement(Route, { path: 'detail', component: Detail }),
         React.createElement(Route, { path: 'master', component: Master })
     )
