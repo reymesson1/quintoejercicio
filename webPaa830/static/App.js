@@ -346,17 +346,17 @@ var ActionsTable = function (_React$Component4) {
                             { xs: 12 },
                             React.createElement('img', { src: '/logoprint.png' }),
                             React.createElement(
-                                'h6',
+                                'h5',
                                 null,
                                 '"Las mejores adaptaciones de pelos de todo el pais"'
                             ),
                             React.createElement(
-                                'h6',
+                                'h5',
                                 null,
                                 'Ubicado en la Plaza Carmen Renata III'
                             ),
                             React.createElement(
-                                'h6',
+                                'h5',
                                 null,
                                 'Tel.: 809-937-5052 Cel:.809-817-3349'
                             ),
@@ -1640,8 +1640,63 @@ var MasterModalField = function (_React$Component19) {
                                         ),
                                         React.createElement(
                                             'option',
-                                            { value: 'other' },
-                                            '...'
+                                            { value: 'Dania' },
+                                            'Dania'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Daneuri' },
+                                            'Daneuri'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Damirky' },
+                                            'Damirky'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Dayiana' },
+                                            'Dayiana'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Juribel' },
+                                            'Juribel'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Kandy' },
+                                            'Kandy'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Massiel' },
+                                            'Massiel'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Marionaisi' },
+                                            'Marionaisi'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Naty' },
+                                            'Naty'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Tati' },
+                                            'Tati'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'Mayi' },
+                                            'Mayi'
+                                        ),
+                                        React.createElement(
+                                            'option',
+                                            { value: 'otras' },
+                                            'otras'
                                         )
                                     )
                                 )

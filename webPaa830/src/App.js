@@ -227,9 +227,9 @@ class ActionsTable extends React.Component{
                     <Row>
                         <Col xs={12}>
                             <img src="/logoprint.png"/>
-                            <h6>"Las mejores adaptaciones de pelos de todo el pais"</h6>
-                            <h6>Ubicado en la Plaza Carmen Renata III</h6>
-                            <h6>Tel.: 809-937-5052 Cel:.809-817-3349</h6>
+                            <h5>"Las mejores adaptaciones de pelos de todo el pais"</h5>
+                            <h5>Ubicado en la Plaza Carmen Renata III</h5>
+                            <h5>Tel.: 809-937-5052 Cel:.809-817-3349</h5>
                             <br/>                            
                             <br/>                            
                             <h5 className="col-xs-offset-7">Fecha: 04-10-17</h5>                            
@@ -1045,7 +1045,18 @@ getSuggestionValue={getSuggestionValue}
                                   <FormControl componentClass="select"
 name="development" placeholder="Peluquera" required >
                                     <option value="Alexandra">Alexandra</option>
-                                    <option value="other">...</option>
+                                    <option value="Dania">Dania</option>
+                                    <option value="Daneuri">Daneuri</option>
+                                    <option value="Damirky">Damirky</option>
+                                    <option value="Dayiana">Dayiana</option>
+                                    <option value="Juribel">Juribel</option>
+                                    <option value="Kandy">Kandy</option>
+                                    <option value="Massiel">Massiel</option>
+                                    <option value="Marionaisi">Marionaisi</option>
+                                    <option value="Naty">Naty</option>
+                                    <option value="Tati">Tati</option>
+                                    <option value="Mayi">Mayi</option>
+                                    <option value="otras">otras</option>
                                   </FormControl>
                                 </Col>
                             </FormGroup>
