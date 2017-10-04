@@ -28,7 +28,7 @@ const Table = ReactBootstrap.Table;
 
 const Autosuggest = Autosuggest;
 
-const API_URL = 'http://localhost:8080';
+const API_URL = 'http://localhost';
 
 const API_HEADERS = {
 
@@ -43,7 +43,6 @@ class App extends React.Component{
       super();
       this.state = {
 
-          cookie: false,
           cookies: false
       }
   }
@@ -61,14 +60,15 @@ class App extends React.Component{
       .catch((error)=>{
           console.log('Error fetching and parsing data', error);
       })
+
+
+
+
   }
 
   setCookie(event){
 
       event.preventDefault();
-
-      console.log(event.target.email.value);
-      console.log(event.target.password.value);
 
       let newCookie = {
 
@@ -129,35 +129,127 @@ class App extends React.Component{
   }
 }
 
-class Login extends React.Component{
+class Actions extends React.Component{
+
+    constructor(){
+
+        super();
+        this.state = {
+
+            showTable: false
+        }
+    }
+
+    close(){
+
+        this.setState({
+
+            showTable: false
+        });
+    }
+
+    open(){
+
+        this.setState({
+
+            showTable: false
+        });
+    }
 
     render(){
 
         return(
 
             <div>
+                <Grid show={this.state.showTable} onHide={this.close}>
+                    <Row>
+                        <Col xs={12}>
+                            <h1>Actions</h1>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12}>
+                            <Table striped bordered condensed hover
+style={{'width':'55%'}}>
+                                <thead>
+                                  <tr>
+                                    <th style={{'width':'5px'}}>#</th>
+                                    <th style={{'width':'5px'}}>Name</th>
+                                    <th
+style={{'width':'5px'}}>Item</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                  </tr>
+                                  <tr>
+                                    <td>2</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                  </tr>
+                                  <tr>
+                                    <td>3</td>
+                                    <td colSpan="2">Larry the
+Bird</td>
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>Quantity</td>
+                                        <td>Quantity</td>
+                                    </tr>
+                                </tfoot>
+
+                              </Table>
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>
+        );
+    }
+}
+
+class Login extends React.Component{
+
+    render(){
+
+        return(
+
+            <div id="login">
                 <div className="container">
                     <div className="row vertical-offset-100">
                         <div className="col-md-4 col-md-offset-4">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
-                                    <h3 className="panel-title">Please sign in</h3>
+                                    <h3 className="panel-title">Please
+sign in</h3>
                                 </div>
                                 <div className="panel-body">
-                                    <form onSubmit={this.props.setcookie.bind(this)}>
+                                    <form
+onSubmit={this.props.setcookie.bind(this)}>
                                     <fieldset>
                                         <div className="form-group">
-                                            <input className="form-control" placeholder="E-mail" name="email" type="text"/>
+                                            <input
+className="form-control" placeholder="E-mail" name="email"
+type="text"/>
                                         </div>
                                         <div className="form-group">
-                                            <input className="form-control" placeholder="Password" name="password" type="password"/>
+                                            <input
+className="form-control" placeholder="Password" name="password"
+type="password"/>
                                         </div>
                                         <div className="checkbox">
                                             <label>
-                                                <input name="remember" type="checkbox" value="Remember Me"/> Remember Me
+                                                <input name="remember"
+type="checkbox" value="Remember Me"/> Remember Me
                                             </label>
                                         </div>
-                                            <button  className="btn btn-lg btn-success btn-block">Login</button>
+                                            <button  className="btn
+btn-lg btn-success btn-block">Login</button>
                                     </fieldset>
                                     </form>
                                 </div>
@@ -191,20 +283,26 @@ class Toolbar extends React.Component{
                 <Navbar>
                     <div className="navbar-header">
                         <div className="navbar-brand">
-                            <Link to={'/'} onClick={this.onClicked.bind(this)}>React-Bootstrap</Link>
+                            <Link to={'/'}
+onClick={this.onClicked.bind(this)}>React-Bootstrap</Link>
                         </div>
                     </div>
                     <Nav>
                       <li><Link to={'/master'}>Master</Link></li>
                       <li><Link to={'/detail'}>Details</Link></li>
-                      <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-                            <MenuItem eventKey={3.1}>Actions</MenuItem>
+                      <NavDropdown eventKey={3} title="Dropdown"
+id="basic-nav-dropdown">
+                            <MenuItem eventKey={3.1}><Link
+to="/actions">Actions</Link></MenuItem>
                             <MenuItem eventKey={3.2}>Another action</MenuItem>
-                            <MenuItem eventKey={3.3}>Something else here</MenuItem>
+                            <MenuItem eventKey={3.3}>Something else
+here</MenuItem>
                             <MenuItem divider />
                             <MenuItem eventKey={3.4}>Separated link</MenuItem>
                       </NavDropdown>
-                      <li style={{'float':'right','position':'absolute','left':'80%'}}><Link to={'/detail'}>Login</Link></li>
+                      <li
+style={{'float':'right','position':'absolute','left':'80%'}}><Link
+onClick={this.onClicked} to={'/logout'}>Logout</Link></li>
                     </Nav>
                 </Navbar>
         );
@@ -234,25 +332,6 @@ class Repos extends React.Component{
     }
 }
 
-/*components*/
-const masterAPI = [
-
-    {
-
-        "id": "1",
-        "date": "2017-04-01",
-        "name": "Juan Perez",
-        "items": [
-            {
-                "id":"1",
-                "name":"sample",
-                "details": "data"
-            }
-        ],
-        "status": "pending",
-    }
-]
-
 class Master extends React.Component{
 
     constructor() {
@@ -260,6 +339,23 @@ class Master extends React.Component{
         super();
         this.state = {
             showModal: false,
+            filterText: '',
+            activePage: 1,
+            masterAPI: [
+                {
+                    "id": "1",
+                    "date": "2017-04-01",
+                    "name": "Juan Perez",
+                    "items": [
+                        {
+                            "id":"1",
+                            "name":"sample",
+                            "details": "data"
+                        }
+                    ],
+                    "status": "pending"
+                }
+            ],
             masterDetail: [
                 {
 
@@ -287,17 +383,28 @@ class Master extends React.Component{
 
         event.preventDefault();
 
+        let details = this.state.masterDetail;
+
+        let name = details[0].firstname;
+
         let newMaster = {
 
             "id": Date.now(),
             "date": "2017-10-02",
-            "name": "empty",
+            "name": name,
             "item": this.state.masterDetail,
             "status":"pending"
 
         }
 
-        masterAPI.push(newMaster);
+        let nextState = this.state.masterAPI;
+
+        nextState.push(newMaster);
+
+        this.setState({
+
+            masterAPI: nextState
+        });
 
         this.setState({
             showModal: false,
@@ -309,8 +416,6 @@ class Master extends React.Component{
     onSaveDetail(event){
 
         event.preventDefault();
-        console.log(event.target.firstname.value);
-        console.log(event.target.suggest.value);
 
         let nextState = this.state.masterDetail;
 
@@ -330,34 +435,100 @@ class Master extends React.Component{
 
     }
 
+    onDeleteMaster(value){
+
+        let nextState = this.state.masterAPI;
+
+        var index = nextState.findIndex(x=> x.id==value);
+
+        nextState.splice(index,1);
+
+        this.setState({
+
+            masterAPI: nextState
+        });
+    }
+
+    onHandleUserInput(event){
+
+
+        this.setState({
+
+            filterText: event.target.value
+        });
+    }
+
+    handleSelect(eventKey){
+
+        this.setState({
+
+            activePage: eventKey
+        });
+
+    }
+
+
     render(){
 
         return(
             <div>
                 <Row>
-                    <MasterSearch />
+                    <MasterSearch
+                                    filterText={this.state.filterText}
+                                    masterCallback = {{
+
+onsavedetail:this.onSaveDetail.bind(this),
+
+onsavemaster:this.onSaveMaster.bind(this),
+
+onhandleuserinput:this.onHandleUserInput.bind(this)
+                                    }}
+
+                    />
                 </Row>
                 <Row>
                         <div className="pull-right">
-                            <Button onClick={this.open.bind(this)}>Add Master</Button>
-                            <MasterModal    masterDetail={this.state.masterDetail}
+                            <Button onClick={this.open.bind(this)}>Add
+Master</Button>
+                            <MasterModal
+
+masterDetail={this.state.masterDetail}
                                             showModal={this.state.showModal}
                                             open={this.open}
                                             close={this.close.bind(this)}
                                             masterCallback = {{
-                                                onsavedetail:this.onSaveDetail.bind(this),
-                                                onsavemaster:this.onSaveMaster.bind(this)
+
+onsavedetail:this.onSaveDetail.bind(this),
+
+onsavemaster:this.onSaveMaster.bind(this)
                                             }}
                             />
                         </div>
                 </Row>
                 <br/>
                 <Row>
-                    <Panel>
-                        <MasterTable masterData={masterAPI}
+                    <Panel header="Master List">
+                        <MasterTable
+                                        filterText={this.state.filterText}
+                                        masterData={this.state.masterAPI}
+                                        masterCallback = {{
+
+onsavedetail:this.onSaveDetail.bind(this),
+
+onsavemaster:this.onSaveMaster.bind(this),
+
+ondeletemaster:this.onDeleteMaster.bind(this)
+                                        }}
                         />
                         <div className="pull-right">
-                            <MasterPagination />
+                            <MasterPagination
+                                                masterCallback={{
+                                                      handleSelect:
+this.handleSelect.bind(this)
+                                                }}
+
+activePage={this.state.activePage}
+                            />
                         </div>
                     </Panel>
                 </Row>
@@ -381,6 +552,8 @@ class MasterPagination extends React.Component{
                   boundaryLinks
                   bsSize="small"
                   items={5}
+                  activePage={this.props.activePage}
+                  onSelect={this.props.masterCallback.handleSelect}
                   />
                   <br />
             </div>
@@ -392,6 +565,8 @@ class MasterSearch extends React.Component{
 
     render(){
 
+
+
         return(
             <div>
                 <Panel header="Search Master">
@@ -401,7 +576,12 @@ class MasterSearch extends React.Component{
                           <label>Search:</label>
                         </div>
                         <div className="col-md-10 col-sm-10">
-                          <input type="text" className="form-control" id="first_name" name="first_name"/>
+                          <input
+
+onChange={this.props.masterCallback.onhandleuserinput.bind(this)}
+                                 type="text"
+                                 className="form-control"
+id="first_name" name="first_name"/>
                         </div>
                     </div>
                   </form>
@@ -414,6 +594,12 @@ class MasterSearch extends React.Component{
 class MasterTable extends React.Component{
 
     render(){
+
+        let filteredMaster = this.props.masterData.filter(
+
+            (master) => master.name.indexOf(this.props.filterText) !== -1
+        );
+
         return(
             <div>
 
@@ -429,14 +615,20 @@ class MasterTable extends React.Component{
                           </tr>
                         </thead>
                         <tbody>
-                        {this.props.masterData.map(
+                        {filteredMaster.map(
                             (master, index) => <MasterTableBody
                                                                 key={master.id}
                                                                 id={master.id}
+
 date={master.date}
+
 name={master.name}
+
 items={master.name}
+
 status={master.status}
+
+masterCallback={this.props.masterCallback}
                                                 />
                         )}
                         </tbody>
@@ -459,10 +651,11 @@ class MasterTableBody extends React.Component{
                     <td>{this.props.items}</td>
                     <td>{this.props.status}</td>
                     <td>
-                        <Button><i className="fa fa-eye"
-aria-hidden="true"></i></Button>{' '}
-                        <Button><i className="fa fa-trash"
-aria-hidden="true"></i></Button>
+                        <Link className="btn btn-default"
+to={'/actions'}><i className="fa fa-eye"
+aria-hidden="true"></i></Link>{' '}
+<Button onClick={this.props.masterCallback.ondeletemaster.bind(this,this.props.id)}><i
+className="fa fa-trash" aria-hidden="true"></i></Button>
                     </td>
                   </tr>
         );
@@ -500,7 +693,8 @@ class MasterModal extends React.Component{
                   </Modal.Header>
                   <Modal.Body>
                         <MasterModalField
-                                          masterCallback={this.props.masterCallback}
+
+masterCallback={this.props.masterCallback}
                         />
                         <br/>
                         <MasterModalTable
@@ -641,13 +835,7 @@ class MasterModalField extends React.Component{
 
     }
 
-    onSave(event){
 
-        event.preventDefault();
-
-        console.log(event.target.firstname.value);
-        console.log(this.state.value);
-    }
 
     render(){
 
@@ -662,40 +850,49 @@ class MasterModalField extends React.Component{
 
             <Grid>
                 <Row>
-                    <Form horizontal onSubmit={this.props.masterCallback.onsavedetail.bind(this)}>
+                    <Form
+onSubmit={this.props.masterCallback.onsavedetail.bind(this)}>
                         <Row>
                             <FormGroup controlId="formHorizontalName">
-                              <Col componentClass={ControlLabel} md={2} sm={2}>
+                              <Col componentClass={ControlLabel} sm={2}>
                                 Name
                               </Col>
-                              <Col md={3} sm={6}>
-                                <FormControl type="text" name="firstname" placeholder="Name" />
+                              <Col sm={6}>
+                                <FormControl type="text"
+name="firstname" placeholder="Name" />
                               </Col>
                             </FormGroup>
                         </Row>
                         <br/>
                         <Row>
                             <FormGroup controlId="formHorizontalItem">
-                                  <Col componentClass={ControlLabel} md={2} sm={2}>
+                                  <Col componentClass={ControlLabel} sm={2}>
                                     Item
                                   </Col>
-                                  <Col md={3} sm={6}>
+                                  <Col sm={6}>
                                     <Autosuggest
                                                suggestions={suggestions}
-                                               onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
-                                               onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
-                                               renderSuggestion={renderSuggestion}
-                                               getSuggestionValue={getSuggestionValue}
+
+onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
+
+onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
+
+renderSuggestion={renderSuggestion}
+
+getSuggestionValue={getSuggestionValue}
                                                inputProps={inputProps}
                                     />
                                   </Col>
-                                  <Col md={2} sm={2} >
-                                    <Button type="submit"><i className="fa fa-plus" aria-hidden="true"></i></Button>
+                                  <Col sm={2} >
+                                    <Button type="submit"><i
+className="fa fa-plus" aria-hidden="true"></i></Button>
                                 </Col>
                             </FormGroup>
                         </Row>
                         <Row>
-                            <input style={{'width':'70px','display':'none'}} type="text" name="suggest" placeholder="Name" value={this.state.value} />
+                            <input
+style={{'width':'70px','display':'none'}} type="text" name="suggest"
+placeholder="Name" value={this.state.value} />
                         </Row>
                     </Form>
 
@@ -767,6 +964,7 @@ class Detail extends React.Component{
         super();
         this.state = {
             showModal: false,
+            filterText: '',
             detailData: [
                 {
 
@@ -815,23 +1013,40 @@ class Detail extends React.Component{
 
     }
 
+    onHandleChange(event){
+
+        this.setState({
+
+            filterText: event.target.value
+        });
+    }
+
     render(){
 
         return(
             <Grid>
 
                 <Row>
-                    <DetailSearch />
+                    <DetailSearch
+                                    filterText={this.state.filterText}
+                                    detailCallback={{
+                                                onHandleChange:
+this.onHandleChange.bind(this)
+                                    }}
+                    />
                 </Row>
                 <Row>
                         <div className="pull-right">
-                            <Button onClick={this.open.bind(this)}>Add Detail</Button>
+                            <Button onClick={this.open.bind(this)}>Add
+Detail</Button>
                             <DetailModal
-                                            showModal={this.state.showModal}
+
+showModal={this.state.showModal}
                                             detailCallback={{
                                                 open:this.open,
                                                 close:this.close.bind(this),
-                                                onsavedetail:this.onSaveDetail.bind(this)
+
+onsavedetail:this.onSaveDetail.bind(this)
                                             }}
                             />
                         </div>
@@ -839,6 +1054,7 @@ class Detail extends React.Component{
                 <br/>
                 <Row>
                     <DetailTable
+                                    filterText={this.state.filterText}
                                     detailData={this.state.detailData}
                     />
                 </Row>
@@ -877,7 +1093,7 @@ class DetailPagination extends React.Component{
                 items={5}
                 maxButtons={5}
                 activePage={this.state.activePage}
-                onSelect={this.handleSelect}
+                onSelect={this.handleSelect.bind(this)}
             />
         );
     }
@@ -896,7 +1112,10 @@ class DetailSearch extends React.Component{
                           <label>Search:</label>
                         </div>
                         <div className="col-md-10 col-sm-10">
-                          <input type="text" className="form-control" id="first_name" name="first_name"/>
+                          <input
+onChange={this.props.detailCallback.onHandleChange.bind(this)}
+type="text" className="form-control" id="first_name"
+name="first_name"/>
                         </div>
                     </div>
                   </form>
@@ -909,6 +1128,10 @@ class DetailSearch extends React.Component{
 class DetailTable extends React.Component{
 
     render(){
+        let filteredTable = this.props.detailData.filter(
+            (detail) => detail.name.indexOf(this.props.filterText) !== -1
+        )
+
         return(
             <Panel header="Search List">
               <Table striped bordered condensed hover>
@@ -921,7 +1144,7 @@ class DetailTable extends React.Component{
                   </tr>
                 </thead>
                 <tbody>
-                {this.props.detailData.map(
+                {filteredTable.map(
                     (detail,index) => <DetailTableBody
                                                     key={index}
                                                     id={detail.id}
@@ -965,26 +1188,30 @@ class DetailModal extends React.Component{
 
         return(
             <div >
-                <Modal show={this.props.showModal} onHide={this.props.detailCallback.close}>
+                <Modal show={this.props.showModal}
+onHide={this.props.detailCallback.close}>
                   <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                   </Modal.Header>
-                  <Form horizontal onSubmit={this.props.detailCallback.onsavedetail.bind(this)}>
+                  <Form horizontal
+onSubmit={this.props.detailCallback.onsavedetail.bind(this)}>
                       <Modal.Body>
                                 <FormGroup controlId="formHorizontalname">
-                                  <Col componentClass={ControlLabel} md={2} sm={2}>
+                                  <Col componentClass={ControlLabel} sm={2}>
                                     Name
                                   </Col>
-                                  <Col md={6} sm={10}>
-                                    <FormControl type="text" name="name" placeholder="Name" />
+                                  <Col sm={10}>
+                                    <FormControl type="text"
+name="name" placeholder="Name" />
                                   </Col>
                                 </FormGroup>
                                 <FormGroup controlId="formHorizontalItem">
-                                  <Col componentClass={ControlLabel} md={2} sm={2}>
+                                  <Col componentClass={ControlLabel} sm={2}>
                                     Item
                                   </Col>
-                                  <Col md={6} sm={10}>
-                                    <FormControl type="text" name="item" placeholder="Item" />
+                                  <Col sm={10}>
+                                    <FormControl type="text"
+name="item" placeholder="Item" />
                                   </Col>
                                 </FormGroup>
 
@@ -1004,6 +1231,7 @@ ReactDOM.render((
     <Route path="/" component={App}>
         <Route path="about" component={About}/>
         <Route path="repos" component={Repos}/>
+        <Route path="actions" component={Actions}/>
         <Route path="detail" component={Detail}/>
         <Route path="master" component={Master}/>
     </Route>
