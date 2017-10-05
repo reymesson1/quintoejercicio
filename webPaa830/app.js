@@ -18,10 +18,28 @@ app.post('/cookies', function(req,res){
 
     var newCookie = req.body;
 
-    if(newCookie.username=='admin'){
+    if(newCookie.username=='mechy'){
         console.log(req.body);
         cookies=true;
     }
+});
+
+var master = [];
+
+app.get('/master', function(req,res){
+
+    res.send(master);
+})
+
+app.post('/master', function(req,res){
+
+    master.push(req.body);
+});
+
+app.post('/deletemaster', function(req,res){
+
+    var index = req.body;
+    master.splice(index,1);
 });
 
 app.get('/logout',function(req,res){
