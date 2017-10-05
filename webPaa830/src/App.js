@@ -95,6 +95,7 @@ class App extends React.Component{
 
           <div>
             <Toolbar />
+            <SidebarContainer />
             <div className="container">
                 {this.props.children}
             </div>
@@ -129,86 +130,210 @@ class App extends React.Component{
   }
 }
 
+class SidebarContainer extends React.Component{
+
+    render(){
+
+        return(
+            <div className="sidebar" style={{display:'none'}}>
+                <h1>&nbsp;</h1>
+                <ul>
+                    <li><Link to="/dashboard"><i className="fa
+fa-tachometer" aria-hidden="true"></i>&nbsp;Dashboard</Link></li>
+                    <li><Link to="/orders"><i className="fa fa-plus"
+aria-hidden="true"></i>&nbsp;Orders</Link></li>
+                    <li><Link to="/accounts"><i className="fa
+fa-university" aria-hidden="true"></i>&nbsp;Accounts</Link></li>
+                    <li><Link to="/tasks"><i className="fa fa-tasks"
+aria-hidden="true"></i>&nbsp;Tasks</Link></li>
+                    <li><Link to="/schedule"><i className="fa
+fa-calendar" aria-hidden="true"></i>&nbsp;Schedule</Link></li>
+                    <li><Link to="/jobs"><i className="fa fa-tasks"
+aria-hidden="true"></i>&nbsp;Jobs</Link></li>
+                    <li><Link to="/timesheet"><i className="fa
+fa-user" aria-hidden="true"></i>&nbsp;TimeSheet</Link></li>
+                </ul>
+            </div>
+        );
+    }
+}
+
 class Actions extends React.Component{
 
     constructor(){
 
-        super();
-        this.state = {
+          super();
+          this.state = {
 
-            showTable: false
-        }
+              masterAPI: [],
+              parameter: ''
+          }
+
     }
 
-    close(){
+    componentDidMount(){
 
-        this.setState({
+          fetch(API_URL+'/master',{headers: API_HEADERS})
+          .then((response)=>response.json())
+          .then((responseData)=>{
+              this.setState({
 
-            showTable: false
-        });
+                  masterAPI: responseData
+              })
+          })
+          .catch((error)=>{
+              console.log('Error fetching and parsing data', error);
+          })
+
+          this.setState({
+
+             parameter: this.props.params.actionid
+          });
+
     }
 
-    open(){
+    onPrinted(){
 
-        this.setState({
+        window.print();
 
-            showTable: false
-        });
+        window.location.href = '/';
     }
 
     render(){
 
         return(
-
             <div>
-                <Grid show={this.state.showTable} onHide={this.close}>
+                <ActionsTable
+                                parameter={this.state.parameter}
+
+masterAPI={this.state.masterAPI.filter((master)=> master.id ==
+this.state.parameter)}
+                />
+                <Button onClick={this.onPrinted.bind(this)}>&nbsp;</Button>
+            </div>
+        );
+    }
+}
+
+class ActionsTable extends React.Component{
+
+
+    render(){
+
+        return(
+
+            <div  id="printcss" style={{'margin':'0'}}>
+                <Grid>
                     <Row>
                         <Col xs={12}>
-                            <h1>Actions</h1>
+                            <img src="/logoprint.png"/>
+                            <h6>"Las mejores adaptaciones de pelos de todo el pais"</h6>
+                            <h6>Ubicado en la Plaza Carmen Renata III</h6>
+                            <h6>Tel.: 809-937-5052 Cel:.809-817-3349</h6>
+                            <br/>                            
+                            <h5 className="col-xs-offset-7">Fecha: 04-10-17</h5>
                         </Col>
                     </Row>
                     <Row>
                         <Col xs={12}>
-                            <Table striped bordered condensed hover
-style={{'width':'55%'}}>
+                            <Table striped bordered condensed hover style={{'position':'relative','width':'55%', 'margin':'0'}}>
                                 <thead>
                                   <tr>
-                                    <th style={{'width':'5px'}}>#</th>
-                                    <th style={{'width':'5px'}}>Name</th>
-                                    <th
-style={{'width':'5px'}}>Item</th>
+                                    <th style={{'width':'15px', 'font-size':'25px', 'border-spacing':'0 30px'}}>#</th>
+                                    <th style={{'width':'15px', 'font-size':'25px'}}>Articulo</th>
+                                    <th style={{'width':'15px', 'font-size':'25px'}}>Precio</th>
+                                    <th style={{'width':'15px', 'font-size':'25px'}}>Peluquera</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                  </tr>
-                                  <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3</td>
-                                    <td colSpan="2">Larry the
-Bird</td>
-                                  </tr>
-                                </tbody>
+                                    {this.props.masterAPI.map(
+                                        (master,index) => <ActionsTableBody
+                                                                 key={index}
+                                                                 index={index}
+                                                                 id={master.id}
+                                                                 item={master.item}
+                                                          />
+                                    )}
                                 <tfoot>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                        <td>Quantity</td>
-                                        <td>Quantity</td>
-                                    </tr>
+                                    <ActionsTableBodyFooter
+                                                 parameter = {this.props.parameter}
+                                                 masterAPI = {this.props.masterAPI}
+                                    />
                                 </tfoot>
-
+                                
                               </Table>
                         </Col>
                     </Row>
                 </Grid>
             </div>
+        );
+    }
+}
+
+class ActionsTableBodyFooter extends React.Component{
+
+    render(){
+
+        let nextState = this.props.masterAPI;
+
+        let zoom = 0;
+
+        if(nextState[0]){
+
+            zoom = nextState[0].project;
+        }
+
+        return(
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style={{'width':'15px', 'font-size':'20px'}}>Total</td>
+                <td style={{'width':'15px', 'font-size':'20px'}}>RD${zoom}.00</td>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </tr>
+        );
+    }
+
+}
+
+class ActionsTableBody extends React.Component{
+
+    render(){
+
+        return(
+
+                <tbody>
+                {this.props.item.map(
+                    (master, index) =>  <ActionsTableBodyDetail
+                                                key={index}
+                                                index={index+1}
+                                                id={master.id}
+                                                name={master.firstname}
+                                                item={master.item}
+                                                development={master.development}
+                                                project={master.project}
+                                        />
+                )}
+               </tbody>
+        );
+    }
+}
+
+class ActionsTableBodyDetail extends React.Component{
+
+    render(){
+
+        return(
+            <tr>
+                    <td style={{'font-size':'20px'}}>&nbsp;</td>
+                    <td style={{'font-size':'20px'}}>{this.props.item}</td>
+                    <td style={{'font-size':'20px'}}>{this.props.project}.00</td>
+                    <td style={{'font-size':'20px'}}>{this.props.development}</td>                    
+            </tr>
         );
     }
 }
@@ -284,12 +409,12 @@ class Toolbar extends React.Component{
                     <div className="navbar-header">
                         <div className="navbar-brand">
                             <Link to={'/'}
-onClick={this.onClicked.bind(this)}>React-Bootstrap</Link>
+onClick={this.onClicked.bind(this)}>Info-Solutions SYS</Link>
                         </div>
                     </div>
                     <Nav>
-                      <li><Link to={'/master'}>Master</Link></li>
-                      <li><Link to={'/detail'}>Details</Link></li>
+                      <li><Link to={'/master'}>Facturacion</Link></li>
+                      <li><Link to={'/detail'}>Inventario</Link></li>
                       <NavDropdown eventKey={3} title="Dropdown"
 id="basic-nav-dropdown">
                             <MenuItem eventKey={3.1}><Link
@@ -327,7 +452,7 @@ class Repos extends React.Component{
 
         return(
 
-            <h1>Repos</h1>
+            <h1>Repos {this.props.params.repo_name}</h1>
         );
     }
 }
@@ -341,30 +466,30 @@ class Master extends React.Component{
             showModal: false,
             filterText: '',
             activePage: 1,
-            masterAPI: [
-                {
-                    "id": "1",
-                    "date": "2017-04-01",
-                    "name": "Juan Perez",
-                    "items": [
-                        {
-                            "id":"1",
-                            "name":"sample",
-                            "details": "data"
-                        }
-                    ],
-                    "status": "pending"
-                }
-            ],
-            masterDetail: [
-                {
-
-                    "id":"1",
-                    "firstname":"juanperez",
-                    "item":"masterdetail"
-                }
-            ]
+            masterAPI: [],
+            masterDetail: []
         };
+    }
+
+    componentDidMount(){
+
+          fetch(API_URL+'/master',{headers: API_HEADERS})
+          .then((response)=>response.json())
+          .then((responseData)=>{
+              this.setState({
+
+                  masterAPI: responseData
+              })
+          })
+          .catch((error)=>{
+              console.log('Error fetching and parsing data', error);
+          })
+
+          this.setState({
+
+             parameter: this.props.params.actionid
+          });
+
     }
 
     close() {
@@ -387,12 +512,19 @@ class Master extends React.Component{
 
         let name = details[0].firstname;
 
+        let zoom = 0;
+
+        for(var x=0;x<details.length;x++){
+            zoom+=parseInt(details[x].project);
+        }
+
         let newMaster = {
 
             "id": Date.now(),
             "date": "2017-10-02",
             "name": name,
             "item": this.state.masterDetail,
+            "project": zoom,
             "status":"pending"
 
         }
@@ -411,6 +543,13 @@ class Master extends React.Component{
             masterDetail: []
         });
 
+        fetch(API_URL+'/master', {
+
+              method: 'post',
+              headers: API_HEADERS,
+              body: JSON.stringify(newMaster)
+        })
+
     }
 
     onSaveDetail(event){
@@ -423,7 +562,9 @@ class Master extends React.Component{
 
             "id": Date.now(),
             "firstname":event.target.firstname.value,
-            "item":event.target.suggest.value
+            "item":event.target.suggest.value,
+            "development":event.target.development.value,
+            "project":event.target.project.value,
         }
 
         nextState.push(newItem);
@@ -447,6 +588,13 @@ class Master extends React.Component{
 
             masterAPI: nextState
         });
+
+        fetch(API_URL+'/deletemaster', {
+
+              method: 'post',
+              headers: API_HEADERS,
+              body: JSON.stringify({"id":index})
+        })
     }
 
     onHandleUserInput(event){
@@ -652,7 +800,7 @@ class MasterTableBody extends React.Component{
                     <td>{this.props.status}</td>
                     <td>
                         <Link className="btn btn-default"
-to={'/actions'}><i className="fa fa-eye"
+to={'/actions/'+this.props.id}><i className="fa fa-eye"
 aria-hidden="true"></i></Link>{' '}
 <Button onClick={this.props.masterCallback.ondeletemaster.bind(this,this.props.id)}><i
 className="fa fa-trash" aria-hidden="true"></i></Button>
@@ -716,51 +864,51 @@ masterCallback={this.props.masterCallback}
 
 const languages = [
   {
-    name: 'C',
+    name: 'LAVADO',
     year: 1972
   },
   {
-    name: 'C#',
+    name: 'PELO CORTO',
     year: 2000
   },
   {
-    name: 'C++',
+    name: 'PELO LARGO',
     year: 1983
   },
   {
-    name: 'Clojure',
+    name: 'EXTENSIONES',
     year: 2007
   },
   {
-    name: 'Elm',
+    name: 'LAVADO CON LINEA',
     year: 2012
   },
   {
-    name: 'Go',
+    name: 'TRATAMIENTO PROFUNDO',
     year: 2009
   },
   {
-    name: 'Haskell',
+    name: 'CELOFEN',
     year: 1990
   },
   {
-    name: 'Java',
+    name: 'CEJAS',
     year: 1995
   },
   {
-    name: 'Javascript',
+    name: 'POSTURAS DE UNAS',
     year: 1995
   },
   {
-    name: 'Perl',
+    name: 'PINTADAS',
     year: 1987
   },
   {
-    name: 'PHP',
+    name: 'MANOS Y PIES',
     year: 1995
   },
   {
-    name: 'Python',
+    name: 'KERATINA',
     year: 1991
   },
   {
@@ -768,7 +916,7 @@ const languages = [
     year: 1995
   },
   {
-    name: 'Scala',
+    name: 'ALIZADO',
     year: 2003
   }
 ];
@@ -854,22 +1002,23 @@ class MasterModalField extends React.Component{
 onSubmit={this.props.masterCallback.onsavedetail.bind(this)}>
                         <Row>
                             <FormGroup controlId="formHorizontalName">
-                              <Col componentClass={ControlLabel} sm={2}>
-                                Name
+                              <Col componentClass={ControlLabel} md={1} sm={2}>
+                                Cliente
                               </Col>
-                              <Col sm={6}>
+                              <Col md={4} sm={6}>
                                 <FormControl type="text"
-name="firstname" placeholder="Name" />
+name="firstname" placeholder="Cliente" required />
                               </Col>
                             </FormGroup>
                         </Row>
                         <br/>
                         <Row>
                             <FormGroup controlId="formHorizontalItem">
-                                  <Col componentClass={ControlLabel} sm={2}>
-                                    Item
+                                  <Col componentClass={ControlLabel}
+md={1} sm={2}>
+                                    Articulo
                                   </Col>
-                                  <Col sm={6}>
+                                  <Col md={4} sm={6}>
                                     <Autosuggest
                                                suggestions={suggestions}
 
@@ -883,12 +1032,40 @@ getSuggestionValue={getSuggestionValue}
                                                inputProps={inputProps}
                                     />
                                   </Col>
-                                  <Col sm={2} >
-                                    <Button type="submit"><i
-className="fa fa-plus" aria-hidden="true"></i></Button>
+                            </FormGroup>
+                        </Row>
+                        <br/>
+                        <Row>
+                            <FormGroup controlId="formControlsSelect">
+                                <Col md={1} sm={2}>
+                                  <ControlLabel>Peluquera</ControlLabel>
+                                </Col>
+                                <Col md={4} sm={6}>
+                                  <FormControl componentClass="select"
+name="development" placeholder="Peluquera" required >
+                                    <option value="Alexandra">Alexandra</option>
+                                    <option value="other">...</option>
+                                  </FormControl>
                                 </Col>
                             </FormGroup>
                         </Row>
+                        <br/>
+                        <Row>
+                            <FormGroup controlId="formHorizontalName">
+                              <Col componentClass={ControlLabel} md={1} sm={2}>
+                                Precio
+                              </Col>
+                              <Col md={4} sm={6}>
+                                <FormControl type="text"
+name="project" placeholder="Precio" required />
+                              </Col>
+                              <Col md={2} sm={2} >
+                                    <Button type="submit"><i
+className="fa fa-plus" aria-hidden="true"></i></Button>
+                              </Col>
+                            </FormGroup>
+                        </Row>
+                        <br/>
                         <Row>
                             <input
 style={{'width':'70px','display':'none'}} type="text" name="suggest"
@@ -914,14 +1091,17 @@ class MasterModalTable extends React.Component{
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Item</th>
+                        <th>Development</th>
+                        <th>Project</th>
                       </tr>
                     </thead>
                     <tbody>
                         {this.props.masterDetail.map(
                             (masterdetail,index) => <MasterModalTableBody
+
+ index={index+1}
 
  key={index}
 
@@ -930,6 +1110,10 @@ class MasterModalTable extends React.Component{
  firstname={masterdetail.firstname}
 
  item={masterdetail.item}
+
+ development={masterdetail.development}
+
+ project={masterdetail.project}
                                               />
                         )}
                     </tbody>
@@ -946,10 +1130,11 @@ class MasterModalTableBody extends React.Component{
         return(
 
             <tr>
-                <td>{this.props.key}</td>
-                <td>{this.props.id}</td>
+                <td>{this.props.index}</td>
                 <td>{this.props.firstname}</td>
                 <td>{this.props.item}</td>
+                <td>{this.props.development}</td>
+                <td>{this.props.project}</td>
             </tr>
 
         );
@@ -1230,8 +1415,8 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
         <Route path="about" component={About}/>
-        <Route path="repos" component={Repos}/>
-        <Route path="actions" component={Actions}/>
+        <Route path="repos/:repo_name" component={Repos}/>
+        <Route path="actions/:actionid" component={Actions}/>
         <Route path="detail" component={Detail}/>
         <Route path="master" component={Master}/>
     </Route>
