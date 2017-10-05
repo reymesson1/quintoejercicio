@@ -28,7 +28,7 @@ const Table = ReactBootstrap.Table;
 
 const Autosuggest = Autosuggest;
 
-const API_URL = 'http://localhost';
+const API_URL = 'http://159.203.156.208';
 
 const API_HEADERS = {
 
