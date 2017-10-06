@@ -35,7 +35,7 @@ app.get('/master', function(req,res){
 
 app.post('/master', function(req,res){
 
-    dba.addMaster(req.body);
+    //dba.addMaster(req.body);
     master.push(req.body);
 });
 
@@ -44,6 +44,13 @@ app.post('/deletemaster', function(req,res){
     var index = req.body;
     master.splice(index,1);
 });
+
+app.get('/reporte', function(req,res){
+
+    var masterDBA = dba.getMaster({});
+
+    res.send(masterDBA);
+})
 
 app.get('/logout',function(req,res){
 

@@ -30,7 +30,7 @@ const Autosuggest = Autosuggest;
 
 const moment = moment;
 
-const API_URL = 'http://159.203.156.208';
+const API_URL = 'http://localhost';
 
 const API_HEADERS = {
 
@@ -421,10 +421,10 @@ onClick={this.onClicked.bind(this)}>Info-Solutions SYS</Link>
                     <Nav>
                       <li><Link to={'/master'}>Facturacion</Link></li>
                       <li><Link to={'/detail'}>Inventario</Link></li>
-                      <NavDropdown eventKey={3} title="Dropdown"
+                      <NavDropdown eventKey={3} title="Reportes"
 id="basic-nav-dropdown">
                             <MenuItem eventKey={3.1}><Link
-to="/actions">Actions</Link></MenuItem>
+to="/partials">Cuadre</Link></MenuItem>
                             <MenuItem eventKey={3.2}>Another action</MenuItem>
                             <MenuItem eventKey={3.3}>Something else
 here</MenuItem>
@@ -514,7 +514,7 @@ class Master extends React.Component{
 
         event.preventDefault();
 
-	let today = moment(new Date()).format('DD-MM-YYYY hh:mm:ss');
+	let today = moment(new Date()).format('YYYY-MM-DD');
 
         let details = this.state.masterDetail;
 
@@ -1429,9 +1429,220 @@ name="item" placeholder="Item" />
     }
 }
 
+class Partials extends React.Component{
+
+     constructor(){
+
+          super();
+          this.state = {
+
+              masterAPI: [],
+              searchData: '2017-10-06',
+              total: 0
+          }
+
+    }
+
+    componentDidMount(){
+
+          fetch(API_URL+'/reporte',{headers: API_HEADERS})
+          .then((response)=>response.json())
+          .then((responseData)=>{
+              this.setState({
+
+                  masterAPI: responseData
+              })
+          })
+          .catch((error)=>{
+              console.log('Error fetching and parsing data', error);
+          })
+
+          let today = moment(new Date()).format('YYYY-MM-DD');
+
+          this.setState({
+
+              searchData: today
+          });
+
+
+          var time = setInterval(() => {
+
+
+                let nextState = this.state.masterAPI.filter((master) => master.date == this.state.searchData);
+
+                let grand = 0;
+
+                for(var x=0;x<nextState.length;x++){
+                    grand+=parseInt(nextState[x].project);
+                }
+
+                this.setState({
+
+                    total: grand
+                })
+
+
+          }, 1000);
+
+
+    }
+
+    componentWillUnmount(){
+
+        clearInterval(time);
+    }
+
+    onChanged(event){
+
+
+        this.setState({
+
+            searchData: event.target.value
+        });
+
+    }
+
+    onRun(){
+
+        
+
+        
+
+        window.print();
+    }
+
+    render(){
+
+        return(
+
+             <Grid>
+                    <Row>
+                        <Col xs={6}>
+                            <h1>Reporte Cuadre</h1>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <PartialsSearch
+                                        onChanged={this.onChanged.bind(this)}
+                        />
+                        <PartialsTable
+
+masterAPI={this.state.masterAPI.filter((master)=> master.date ==
+this.state.searchData)}
+                            total={this.state.total}
+                        />
+                    </Row>
+                    <Row>
+                        <Button onClick={this.onRun.bind(this)}>i</Button>
+                    </Row>
+            </Grid>
+        );
+    }
+}
+
+class PartialsSearch extends React.Component{
+
+    render(){
+
+        return(
+
+
+
+                    <Col xs={6}>
+                        <Form horizontal
+onChange={this.props.onChanged.bind(this)}>
+                            <FormGroup controlId="formHorizontalEmail">
+                              <Col componentClass={ControlLabel} xs={2}>
+                                
+                              </Col>
+                              <Col xs={6}>
+                                <FormControl type="date" placeholder="Email" />
+                              </Col>
+                            </FormGroup>
+                        </Form>
+                    </Col>
+
+
+        );
+    }
+}
+
+class PartialsTable extends React.Component{
+
+
+
+    render(){
+
+        return(
+
+
+                    <Row>
+                        <Col xs={12}>
+                            <Table striped bordered condensed hover
+style={{'width':'55%'}}>
+                                <thead>
+                                  <tr>
+                                    <th style={{'width':'15px', 'font-size':'25px', 'border-spacing':'0 30px'}}>#</th>
+                                    <th style={{'width':'15px', 'font-size':'25px'}}>Fecha</th>
+                                    <th style={{'width':'15px', 'font-size':'25px'}}>Cliente</th>
+                                    <th style={{'width':'15px', 'font-size':'25px'}}>Precio</th>                                    
+                                  </tr>
+                                </thead>
+                                <tbody>
+            {this.props.masterAPI.map(
+
+                (master, index) => <PartialsTableBody
+                                                key={index}
+                                                index={index+1}
+                                                id={master.id}
+                                                date={master.date}
+                                                name={master.name}
+                                                project={master.project}
+                                                total={this.props.total}
+                                    />
+            )}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td style={{'width':'15px', 'font-size':'30px'}}>Total</td>
+                                        <td style={{'width':'15px', 'font-size':'30px'}}>RD${this.props.total}.00</td>
+                                        <br/>                                       
+                                        <br/>
+                                    </tr>
+                                </tfoot>
+                            </Table>
+                        </Col>
+                    </Row>
+
+        );
+    }
+
+}
+
+class PartialsTableBody extends React.Component{
+
+    render(){
+
+            console.log(this.props.total)
+
+        return(
+
+              <tr>
+                <td></td>                
+                <td style={{'font-size':'20px'}}>{this.props.date}</td>
+                <td style={{'font-size':'20px'}}>{this.props.name}</td>                
+                <td style={{'font-size':'20px'}}>{this.props.project}.00</td>
+              </tr>
+        );
+    }
+}
+
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
+        <Route path="partials" component={Partials}/>
         <Route path="about" component={About}/>
         <Route path="repos/:repo_name" component={Repos}/>
         <Route path="actions/:actionid" component={Actions}/>
