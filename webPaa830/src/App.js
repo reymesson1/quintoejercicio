@@ -1465,24 +1465,7 @@ class Partials extends React.Component{
           });
 
 
-          var time = setInterval(() => {
-
-
-                let nextState = this.state.masterAPI.filter((master) => master.date == this.state.searchData);
-
-                let grand = 0;
-
-                for(var x=0;x<nextState.length;x++){
-                    grand+=parseInt(nextState[x].project);
-                }
-
-                this.setState({
-
-                    total: grand
-                })
-
-
-          }, 1000);
+          
 
 
     }
@@ -1504,7 +1487,22 @@ class Partials extends React.Component{
 
     onRun(){
 
-        
+
+
+
+
+                let nextState = this.state.masterAPI.filter((master) => master.date == this.state.searchData);
+
+                let grand = 0;
+
+                for(var x=0;x<nextState.length;x++){
+                    grand+=parseInt(nextState[x].project);
+                }
+
+                this.setState({
+
+                    total: grand
+                })
 
         
 
@@ -1625,7 +1623,7 @@ class PartialsTableBody extends React.Component{
 
     render(){
 
-            console.log(this.props.total)
+            console.log(this.props.masterAPI)
 
         return(
 
