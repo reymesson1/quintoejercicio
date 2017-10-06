@@ -45,11 +45,14 @@ app.post('/deletemaster', function(req,res){
     master.splice(index,1);
 });
 
+
 app.get('/reporte', function(req,res){
 
-    var masterDBA = dba.getMaster({});
+    dba.getMaster({}, function(data){
 
-    res.send(masterDBA);
+        res.send(data);
+
+    });
 })
 
 app.get('/logout',function(req,res){
