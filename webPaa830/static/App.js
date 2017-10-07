@@ -38,7 +38,9 @@ var Table = ReactBootstrap.Table;
 
 var Autosuggest = Autosuggest;
 
-var API_URL = 'http://localhost';
+var moment = moment;
+
+var API_URL = 'http://159.203.156.208';
 
 var API_HEADERS = {
 
@@ -171,7 +173,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/dashboard' },
-                            React.createElement('i', { className: 'fa\r\nfa-tachometer', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-tachometer', 'aria-hidden': 'true' }),
                             '\xA0Dashboard'
                         )
                     ),
@@ -192,7 +194,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/accounts' },
-                            React.createElement('i', { className: 'fa\r\nfa-university', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-university', 'aria-hidden': 'true' }),
                             '\xA0Accounts'
                         )
                     ),
@@ -213,7 +215,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/schedule' },
-                            React.createElement('i', { className: 'fa\r\nfa-calendar', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-calendar', 'aria-hidden': 'true' }),
                             '\xA0Schedule'
                         )
                     ),
@@ -234,7 +236,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/timesheet' },
-                            React.createElement('i', { className: 'fa\r\nfa-user', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-user', 'aria-hidden': 'true' }),
                             '\xA0TimeSheet'
                         )
                     )
@@ -332,6 +334,8 @@ var ActionsTable = function (_React$Component4) {
         key: 'render',
         value: function render() {
 
+            var today = moment(new Date()).format('DD-MM-YYYY');
+
             return React.createElement(
                 'div',
                 { id: 'printcss', style: { 'margin': '0' } },
@@ -365,7 +369,8 @@ var ActionsTable = function (_React$Component4) {
                             React.createElement(
                                 'h5',
                                 { className: 'col-xs-offset-7' },
-                                'Fecha: 04-10-17'
+                                'Fecha: ',
+                                today
                             ),
                             React.createElement('br', null)
                         )
@@ -646,7 +651,7 @@ var Login = function (_React$Component8) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -884,6 +889,8 @@ var Master = function (_React$Component12) {
 
             event.preventDefault();
 
+            var today = moment(new Date()).format('DD-MM-YYYY hh:mm:ss');
+
             var details = this.state.masterDetail;
 
             var name = details[0].firstname;
@@ -897,7 +904,7 @@ var Master = function (_React$Component12) {
             var newMaster = {
 
                 "id": Date.now(),
-                "date": "2017-10-02",
+                "date": today,
                 "name": name,
                 "item": this.state.masterDetail,
                 "project": zoom,

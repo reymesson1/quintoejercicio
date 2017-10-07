@@ -28,7 +28,9 @@ const Table = ReactBootstrap.Table;
 
 const Autosuggest = Autosuggest;
 
-const API_URL = 'http://localhost';
+const moment = moment;
+
+const API_URL = 'http://159.203.156.208';
 
 const API_HEADERS = {
 
@@ -220,6 +222,8 @@ class ActionsTable extends React.Component{
 
     render(){
 
+	let today = moment(new Date()).format('DD-MM-YYYY');
+
         return(
 
             <div  id="printcss" style={{'margin':'0'}}>
@@ -232,7 +236,7 @@ class ActionsTable extends React.Component{
                             <h5>Tel.: 809-937-5052 Cel:.809-817-3349</h5>
                             <br/>                            
                             <br/>                            
-                            <h5 className="col-xs-offset-7">Fecha: 04-10-17</h5>                            
+                            <h5 className="col-xs-offset-7">Fecha: {today}</h5>                            
                             <br/>                            
                         </Col>
                     </Row>
@@ -510,6 +514,8 @@ class Master extends React.Component{
 
         event.preventDefault();
 
+	let today = moment(new Date()).format('DD-MM-YYYY hh:mm:ss');
+
         let details = this.state.masterDetail;
 
         let name = details[0].firstname;
@@ -523,7 +529,7 @@ class Master extends React.Component{
         let newMaster = {
 
             "id": Date.now(),
-            "date": "2017-10-02",
+            "date": today,
             "name": name,
             "item": this.state.masterDetail,
             "project": zoom,

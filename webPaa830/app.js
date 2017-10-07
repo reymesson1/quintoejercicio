@@ -5,6 +5,8 @@ var app = express();
 
 app.use(express.static('static'))
 
+var dba = require('./lib/dba-helper.js')();
+
 app.use(bodyParser.json());
 
 var cookies = false;
@@ -33,6 +35,7 @@ app.get('/master', function(req,res){
 
 app.post('/master', function(req,res){
 
+    dba.addMaster(req.body);
     master.push(req.body);
 });
 
