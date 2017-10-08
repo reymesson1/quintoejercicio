@@ -1470,11 +1470,6 @@ class Partials extends React.Component{
 
     }
 
-    componentWillUnmount(){
-
-        clearInterval(time);
-    }
-
     onChanged(event){
 
 
@@ -1604,8 +1599,8 @@ style={{'width':'55%'}}>
                                     <tr>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
-                                        <td style={{'width':'15px', 'font-size':'30px'}}>Total</td>
-                                        <td style={{'width':'15px', 'font-size':'30px'}}>RD${this.props.total}.00</td>
+                                        <td style={{'width':'10px', 'font-size':'20px'}}>Total</td>
+                                        <td style={{'width':'10px', 'font-size':'20px'}}>RD${this.props.total}.00</td>
                                         <br/>                                       
                                         <br/>
                                     </tr>

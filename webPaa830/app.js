@@ -35,7 +35,7 @@ app.get('/master', function(req,res){
 
 app.post('/master', function(req,res){
 
-    //dba.addMaster(req.body);
+    dba.addMaster(req.body);
     master.push(req.body);
 });
 

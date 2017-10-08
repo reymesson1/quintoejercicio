@@ -40,7 +40,7 @@ var Autosuggest = Autosuggest;
 
 var moment = moment;
 
-var API_URL = 'http://localhost';
+var API_URL = 'http://159.203.156.208';
 
 var API_HEADERS = {
 
@@ -173,7 +173,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/dashboard' },
-                            React.createElement('i', { className: 'fa\r\nfa-tachometer', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-tachometer', 'aria-hidden': 'true' }),
                             '\xA0Dashboard'
                         )
                     ),
@@ -194,7 +194,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/accounts' },
-                            React.createElement('i', { className: 'fa\r\nfa-university', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-university', 'aria-hidden': 'true' }),
                             '\xA0Accounts'
                         )
                     ),
@@ -215,7 +215,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/schedule' },
-                            React.createElement('i', { className: 'fa\r\nfa-calendar', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-calendar', 'aria-hidden': 'true' }),
                             '\xA0Schedule'
                         )
                     ),
@@ -236,7 +236,7 @@ var SidebarContainer = function (_React$Component2) {
                         React.createElement(
                             Link,
                             { to: '/timesheet' },
-                            React.createElement('i', { className: 'fa\r\nfa-user', 'aria-hidden': 'true' }),
+                            React.createElement('i', { className: 'fa\nfa-user', 'aria-hidden': 'true' }),
                             '\xA0TimeSheet'
                         )
                     )
@@ -651,7 +651,7 @@ var Login = function (_React$Component8) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -2351,30 +2351,6 @@ var Partials = function (_React$Component28) {
 
                 searchData: today
             });
-
-            var time = setInterval(function () {
-
-                var nextState = _this35.state.masterAPI.filter(function (master) {
-                    return master.date == _this35.state.searchData;
-                });
-
-                var grand = 0;
-
-                for (var x = 0; x < nextState.length; x++) {
-                    grand += parseInt(nextState[x].project);
-                }
-
-                _this35.setState({
-
-                    total: grand
-                });
-            }, 1000);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-
-            clearInterval(time);
         }
     }, {
         key: 'onChanged',
@@ -2388,13 +2364,29 @@ var Partials = function (_React$Component28) {
     }, {
         key: 'onRun',
         value: function onRun() {
+            var _this36 = this;
+
+            var nextState = this.state.masterAPI.filter(function (master) {
+                return master.date == _this36.state.searchData;
+            });
+
+            var grand = 0;
+
+            for (var x = 0; x < nextState.length; x++) {
+                grand += parseInt(nextState[x].project);
+            }
+
+            this.setState({
+
+                total: grand
+            });
 
             window.print();
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this36 = this;
+            var _this37 = this;
 
             return React.createElement(
                 Grid,
@@ -2421,7 +2413,7 @@ var Partials = function (_React$Component28) {
                     React.createElement(PartialsTable, {
 
                         masterAPI: this.state.masterAPI.filter(function (master) {
-                            return master.date == _this36.state.searchData;
+                            return master.date == _this37.state.searchData;
                         }),
                         total: this.state.total
                     })
@@ -2492,7 +2484,7 @@ var PartialsTable = function (_React$Component30) {
     _createClass(PartialsTable, [{
         key: 'render',
         value: function render() {
-            var _this39 = this;
+            var _this40 = this;
 
             return React.createElement(
                 Row,
@@ -2543,7 +2535,7 @@ var PartialsTable = function (_React$Component30) {
                                     date: master.date,
                                     name: master.name,
                                     project: master.project,
-                                    total: _this39.props.total
+                                    total: _this40.props.total
                                 });
                             })
                         ),
@@ -2565,12 +2557,12 @@ var PartialsTable = function (_React$Component30) {
                                 ),
                                 React.createElement(
                                     'td',
-                                    { style: { 'width': '15px', 'font-size': '30px' } },
+                                    { style: { 'width': '10px', 'font-size': '20px' } },
                                     'Total'
                                 ),
                                 React.createElement(
                                     'td',
-                                    { style: { 'width': '15px', 'font-size': '30px' } },
+                                    { style: { 'width': '10px', 'font-size': '20px' } },
                                     'RD$',
                                     this.props.total,
                                     '.00'
@@ -2601,7 +2593,7 @@ var PartialsTableBody = function (_React$Component31) {
         key: 'render',
         value: function render() {
 
-            console.log(this.props.total);
+            console.log(this.props.masterAPI);
 
             return React.createElement(
                 'tr',

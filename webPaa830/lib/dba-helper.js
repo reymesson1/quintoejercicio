@@ -1,5 +1,10 @@
 module.exports = function(){ 
 
+        var moment = require('moment');
+
+        var today = moment(new Date()).format('YYYY-MM-DD');
+
+
 	function getUsers(user,callback){ 
 
 		var MongoClient = require('mongodb').MongoClient;
@@ -20,7 +25,7 @@ module.exports = function(){
 		var url = "mongodb://localhost:27017/mechy";
 		MongoClient.connect(url, function(err, db) {
 	            if (err) throw err;        
-	              db.collection("master").find(master).toArray(function(err,result){            
+	              db.collection("master").find({"date":today}).toArray(function(err,result){            
         	          callback(result);   
 	        })        
 	        db.close();
