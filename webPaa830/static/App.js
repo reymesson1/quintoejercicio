@@ -1724,7 +1724,7 @@ var MasterModalField = function (_React$Component19) {
                                 React.createElement(
                                     Col,
                                     { md: 4, sm: 6 },
-                                    React.createElement(FormControl, { type: 'text',
+                                    React.createElement(FormControl, { type: 'number',
                                         name: 'project', placeholder: 'Precio', required: true })
                                 ),
                                 React.createElement(

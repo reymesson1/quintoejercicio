@@ -1074,7 +1074,7 @@ name="development" placeholder="Peluquera" required >
                                 Precio
                               </Col>
                               <Col md={4} sm={6}>
-                                <FormControl type="text"
+                                <FormControl type="number"
 name="project" placeholder="Precio" required />
                               </Col>
                               <Col md={2} sm={2} >
