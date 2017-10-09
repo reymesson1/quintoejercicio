@@ -913,27 +913,77 @@ class MasterModalButton extends React.Component{
 
     render(){
         
+        let MasterModalButtonEN = (
+            
+            
+                <Col md={12}>
+                    <Button style={{'margin-left':'70%'}} bsStyle={'default'} onClick={this.props.masterCallback.onsavemaster.bind(this)}>Save</Button>
+                </Col>
+            
+        );
+
+        let MasterModalButtonES = (
+            
+            
+                <Col md={12}>
+                    <Button style={{'margin-left':'70%'}} bsStyle={'default'} onClick={this.props.masterCallback.onsavemaster.bind(this)}>Guardar</Button>
+                </Col>
+            
+        );
+
+        let MasterModalButtonActive;
+
+        if(true){
+            
+            MasterModalButtonActive=MasterModalButtonEN
+        }else{
+            
+            MasterModalButtonActive=MasterModalButtonEN
+        }
+            
+        
         return(
             <Row>
-                <Col md={12}>
-                    <Button style={{'margin-left':'70%'}} bsStyle={'default'}
-                            onClick={this.props.masterCallback.onsavemaster.bind(this)}>Guardar</Button>
-                </Col>
+                {MasterModalButtonActive}
             </Row>
+            
         );
     }
 }
 
 class MasterModal extends React.Component{
+    
+    
 
     render(){
 
+        let MasterModalEN = (
+        
+            <Modal.Title>Modal Header</Modal.Title>
+        );
+        
+        let MasterModalES = (
+        
+            <Modal.Title>Agregar Factura</Modal.Title>
+        );
+        
+        let MasterModalActive;
+        
+        if(true){
+            
+            MasterModalActive=MasterModalEN           
+        }else{
+            
+            MasterModalActive=MasterModalEN           
+        }
+        
+        
         return(
 
             <div >
                 <Modal show={this.props.showModal} onHide={this.props.close}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Agregar Factura</Modal.Title>
+                    {MasterModalActive}
                   </Modal.Header>
                   <Modal.Body>
                         <MasterModalField masterCallback={this.props.masterCallback}
