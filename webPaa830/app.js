@@ -55,6 +55,33 @@ app.get('/reporte', function(req,res){
     });
 })
 
+var detail = [];
+
+app.get('/detail',function(req,res){
+
+    res.send(detail);
+});
+
+app.post('/detail', function(req,res){
+
+    detail.push(req.body);
+    res.send(req.body)
+});
+
+app.post('/deletedetail', function(req,res){
+
+    var obj = req.body;
+
+    detail.splice(obj.index,1);
+});
+
+app.post('/updatedetail',function(req,res){
+    var obj = req.body;
+    detail[obj.index].name=obj.name;
+    console.log(obj);
+
+})
+
 app.get('/logout',function(req,res){
 
     cookies = false;
