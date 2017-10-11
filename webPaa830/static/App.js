@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -47,6 +49,8 @@ var API_HEADERS = {
     'Content-Type': 'application/json',
     Authentication: 'any-string-you-like'
 };
+
+var languageActive = false;
 
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
@@ -109,7 +113,6 @@ var App = function (_React$Component) {
                 'div',
                 null,
                 React.createElement(Toolbar, null),
-                React.createElement(SidebarContainer, null),
                 React.createElement(
                     'div',
                     { className: 'container' },
@@ -143,137 +146,32 @@ var App = function (_React$Component) {
     return App;
 }(React.Component);
 
-var SidebarContainer = function (_React$Component2) {
-    _inherits(SidebarContainer, _React$Component2);
-
-    function SidebarContainer() {
-        _classCallCheck(this, SidebarContainer);
-
-        return _possibleConstructorReturn(this, (SidebarContainer.__proto__ || Object.getPrototypeOf(SidebarContainer)).apply(this, arguments));
-    }
-
-    _createClass(SidebarContainer, [{
-        key: 'render',
-        value: function render() {
-
-            return React.createElement(
-                'div',
-                { className: 'sidebar', style: { display: 'none' } },
-                React.createElement(
-                    'h1',
-                    null,
-                    '\xA0'
-                ),
-                React.createElement(
-                    'ul',
-                    null,
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/dashboard' },
-                            React.createElement('i', { className: 'fa\nfa-tachometer', 'aria-hidden': 'true' }),
-                            '\xA0Dashboard'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/orders' },
-                            React.createElement('i', { className: 'fa fa-plus',
-                                'aria-hidden': 'true' }),
-                            '\xA0Orders'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/accounts' },
-                            React.createElement('i', { className: 'fa\nfa-university', 'aria-hidden': 'true' }),
-                            '\xA0Accounts'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/tasks' },
-                            React.createElement('i', { className: 'fa fa-tasks',
-                                'aria-hidden': 'true' }),
-                            '\xA0Tasks'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/schedule' },
-                            React.createElement('i', { className: 'fa\nfa-calendar', 'aria-hidden': 'true' }),
-                            '\xA0Schedule'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/jobs' },
-                            React.createElement('i', { className: 'fa fa-tasks',
-                                'aria-hidden': 'true' }),
-                            '\xA0Jobs'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: '/timesheet' },
-                            React.createElement('i', { className: 'fa\nfa-user', 'aria-hidden': 'true' }),
-                            '\xA0TimeSheet'
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return SidebarContainer;
-}(React.Component);
-
-var Actions = function (_React$Component3) {
-    _inherits(Actions, _React$Component3);
+var Actions = function (_React$Component2) {
+    _inherits(Actions, _React$Component2);
 
     function Actions() {
         _classCallCheck(this, Actions);
 
-        var _this4 = _possibleConstructorReturn(this, (Actions.__proto__ || Object.getPrototypeOf(Actions)).call(this));
+        var _this3 = _possibleConstructorReturn(this, (Actions.__proto__ || Object.getPrototypeOf(Actions)).call(this));
 
-        _this4.state = {
+        _this3.state = {
 
             masterAPI: [],
             parameter: ''
         };
 
-        return _this4;
+        return _this3;
     }
 
     _createClass(Actions, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this5 = this;
+            var _this4 = this;
 
             fetch(API_URL + '/master', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this5.setState({
+                _this4.setState({
 
                     masterAPI: responseData
                 });
@@ -297,7 +195,7 @@ var Actions = function (_React$Component3) {
     }, {
         key: 'render',
         value: function render() {
-            var _this6 = this;
+            var _this5 = this;
 
             return React.createElement(
                 'div',
@@ -306,7 +204,7 @@ var Actions = function (_React$Component3) {
                     parameter: this.state.parameter,
 
                     masterAPI: this.state.masterAPI.filter(function (master) {
-                        return master.id == _this6.state.parameter;
+                        return master.id == _this5.state.parameter;
                     })
                 }),
                 React.createElement(
@@ -321,8 +219,8 @@ var Actions = function (_React$Component3) {
     return Actions;
 }(React.Component);
 
-var ActionsTable = function (_React$Component4) {
-    _inherits(ActionsTable, _React$Component4);
+var ActionsTable = function (_React$Component3) {
+    _inherits(ActionsTable, _React$Component3);
 
     function ActionsTable() {
         _classCallCheck(this, ActionsTable);
@@ -369,7 +267,7 @@ var ActionsTable = function (_React$Component4) {
                             React.createElement(
                                 'h5',
                                 { className: 'col-xs-offset-7' },
-                                'Fecha: ',
+                                'Fecha:',
                                 today
                             ),
                             React.createElement('br', null)
@@ -383,7 +281,8 @@ var ActionsTable = function (_React$Component4) {
                             { xs: 12 },
                             React.createElement(
                                 Table,
-                                { striped: true, bordered: true, condensed: true, hover: true, style: { 'position': 'relative', 'width': '55%', 'margin': '0' } },
+                                { striped: true, bordered: true, condensed: true, hover: true,
+                                    style: { 'position': 'relative', 'width': '55%', 'margin': '0' } },
                                 React.createElement(
                                     'thead',
                                     null,
@@ -392,22 +291,26 @@ var ActionsTable = function (_React$Component4) {
                                         null,
                                         React.createElement(
                                             'th',
-                                            { style: { 'width': '15px', 'font-size': '25px', 'border-spacing': '0 30px' } },
+                                            { style: { 'width': '15px',
+                                                    'font-size': '25px', 'border-spacing': '0 30px' } },
                                             '#'
                                         ),
                                         React.createElement(
                                             'th',
-                                            { style: { 'width': '15px', 'font-size': '25px' } },
+                                            { style: { 'width': '15px',
+                                                    'font-size': '25px' } },
                                             'Articulo'
                                         ),
                                         React.createElement(
                                             'th',
-                                            { style: { 'width': '15px', 'font-size': '25px' } },
+                                            { style: { 'width': '15px',
+                                                    'font-size': '25px' } },
                                             'Precio'
                                         ),
                                         React.createElement(
                                             'th',
-                                            { style: { 'width': '15px', 'font-size': '25px' } },
+                                            { style: { 'width': '15px',
+                                                    'font-size': '25px' } },
                                             'Peluquera'
                                         )
                                     )
@@ -417,6 +320,7 @@ var ActionsTable = function (_React$Component4) {
                                         key: index,
                                         index: index,
                                         id: master.id,
+
                                         item: master.item
                                     });
                                 }),
@@ -439,8 +343,8 @@ var ActionsTable = function (_React$Component4) {
     return ActionsTable;
 }(React.Component);
 
-var ActionsTableBodyFooter = function (_React$Component5) {
-    _inherits(ActionsTableBodyFooter, _React$Component5);
+var ActionsTableBodyFooter = function (_React$Component4) {
+    _inherits(ActionsTableBodyFooter, _React$Component4);
 
     function ActionsTableBodyFooter() {
         _classCallCheck(this, ActionsTableBodyFooter);
@@ -481,7 +385,8 @@ var ActionsTableBodyFooter = function (_React$Component5) {
                 ),
                 React.createElement(
                     'td',
-                    { style: { 'width': '15px', 'font-size': '20px' } },
+                    { style: { 'width': '15px',
+                            'font-size': '20px' } },
                     'RD$',
                     zoom,
                     '.00'
@@ -499,8 +404,8 @@ var ActionsTableBodyFooter = function (_React$Component5) {
     return ActionsTableBodyFooter;
 }(React.Component);
 
-var ActionsTableBody = function (_React$Component6) {
-    _inherits(ActionsTableBody, _React$Component6);
+var ActionsTableBody = function (_React$Component5) {
+    _inherits(ActionsTableBody, _React$Component5);
 
     function ActionsTableBody() {
         _classCallCheck(this, ActionsTableBody);
@@ -533,8 +438,8 @@ var ActionsTableBody = function (_React$Component6) {
     return ActionsTableBody;
 }(React.Component);
 
-var ActionsTableBodyDetail = function (_React$Component7) {
-    _inherits(ActionsTableBodyDetail, _React$Component7);
+var ActionsTableBodyDetail = function (_React$Component6) {
+    _inherits(ActionsTableBodyDetail, _React$Component6);
 
     function ActionsTableBodyDetail() {
         _classCallCheck(this, ActionsTableBodyDetail);
@@ -561,13 +466,15 @@ var ActionsTableBodyDetail = function (_React$Component7) {
                 ),
                 React.createElement(
                     'td',
-                    { style: { 'font-size': '20px' } },
+                    {
+                        style: { 'font-size': '20px' } },
                     this.props.project,
                     '.00'
                 ),
                 React.createElement(
                     'td',
-                    { style: { 'font-size': '20px' } },
+                    {
+                        style: { 'font-size': '20px' } },
                     this.props.development
                 )
             );
@@ -577,8 +484,8 @@ var ActionsTableBodyDetail = function (_React$Component7) {
     return ActionsTableBodyDetail;
 }(React.Component);
 
-var Login = function (_React$Component8) {
-    _inherits(Login, _React$Component8);
+var Login = function (_React$Component7) {
+    _inherits(Login, _React$Component7);
 
     function Login() {
         _classCallCheck(this, Login);
@@ -668,8 +575,8 @@ var Login = function (_React$Component8) {
     return Login;
 }(React.Component);
 
-var Toolbar = function (_React$Component9) {
-    _inherits(Toolbar, _React$Component9);
+var Toolbar = function (_React$Component8) {
+    _inherits(Toolbar, _React$Component8);
 
     function Toolbar() {
         _classCallCheck(this, Toolbar);
@@ -693,7 +600,7 @@ var Toolbar = function (_React$Component9) {
         key: 'render',
         value: function render() {
 
-            return React.createElement(
+            var toolbarES = React.createElement(
                 Navbar,
                 null,
                 React.createElement(
@@ -775,14 +682,112 @@ var Toolbar = function (_React$Component9) {
                     )
                 )
             );
+
+            var toolbarEN = React.createElement(
+                Navbar,
+                null,
+                React.createElement(
+                    'div',
+                    { className: 'navbar-header' },
+                    React.createElement(
+                        'div',
+                        { className: 'navbar-brand' },
+                        React.createElement(
+                            Link,
+                            { to: '/',
+                                onClick: this.onClicked.bind(this) },
+                            'React-Bootstrap'
+                        )
+                    )
+                ),
+                React.createElement(
+                    Nav,
+                    null,
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/master' },
+                            'Master'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        React.createElement(
+                            Link,
+                            { to: '/detail' },
+                            'Details'
+                        )
+                    ),
+                    React.createElement(
+                        NavDropdown,
+                        { eventKey: 3, title: 'DropDown',
+                            id: 'basic-nav-dropdown' },
+                        React.createElement(
+                            MenuItem,
+                            { eventKey: 3.1 },
+                            React.createElement(
+                                Link,
+                                {
+                                    to: '/partials' },
+                                'Draw'
+                            )
+                        ),
+                        React.createElement(
+                            MenuItem,
+                            { eventKey: 3.2 },
+                            'Another action'
+                        ),
+                        React.createElement(
+                            MenuItem,
+                            { eventKey: 3.3 },
+                            'Something else here'
+                        ),
+                        React.createElement(MenuItem, { divider: true }),
+                        React.createElement(
+                            MenuItem,
+                            { eventKey: 3.4 },
+                            'Separated link'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        {
+                            style: { 'float': 'right', 'position': 'absolute', 'left': '80%' } },
+                        React.createElement(
+                            Link,
+                            {
+                                onClick: this.onClicked, to: '/logout' },
+                            'Logout'
+                        )
+                    )
+                )
+            );
+
+            if (languageActive) {
+
+                return React.createElement(
+                    'div',
+                    null,
+                    toolbarEN
+                );
+            } else {
+                return React.createElement(
+                    'div',
+                    null,
+                    toolbarES
+                );
+            }
         }
     }]);
 
     return Toolbar;
 }(React.Component);
 
-var About = function (_React$Component10) {
-    _inherits(About, _React$Component10);
+var About = function (_React$Component9) {
+    _inherits(About, _React$Component9);
 
     function About() {
         _classCallCheck(this, About);
@@ -805,8 +810,8 @@ var About = function (_React$Component10) {
     return About;
 }(React.Component);
 
-var Repos = function (_React$Component11) {
-    _inherits(Repos, _React$Component11);
+var Repos = function (_React$Component10) {
+    _inherits(Repos, _React$Component10);
 
     function Repos() {
         _classCallCheck(this, Repos);
@@ -830,33 +835,33 @@ var Repos = function (_React$Component11) {
     return Repos;
 }(React.Component);
 
-var Master = function (_React$Component12) {
-    _inherits(Master, _React$Component12);
+var Master = function (_React$Component11) {
+    _inherits(Master, _React$Component11);
 
     function Master() {
         _classCallCheck(this, Master);
 
-        var _this15 = _possibleConstructorReturn(this, (Master.__proto__ || Object.getPrototypeOf(Master)).call(this));
+        var _this14 = _possibleConstructorReturn(this, (Master.__proto__ || Object.getPrototypeOf(Master)).call(this));
 
-        _this15.state = {
+        _this14.state = {
             showModal: false,
             filterText: '',
             activePage: 1,
             masterAPI: [],
             masterDetail: []
         };
-        return _this15;
+        return _this14;
     }
 
     _createClass(Master, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this16 = this;
+            var _this15 = this;
 
             fetch(API_URL + '/master', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this16.setState({
+                _this15.setState({
 
                     masterAPI: responseData
                 });
@@ -1003,6 +1008,36 @@ var Master = function (_React$Component12) {
         key: 'render',
         value: function render() {
 
+            var ModalButtonEN = React.createElement(
+                Button,
+                { onClick: this.open.bind(this) },
+                'Add Master'
+            );
+
+            var ModalButtonES = React.createElement(
+                Button,
+                { onClick: this.open.bind(this) },
+                'Agregar Factura'
+            );
+
+            var MasterTableEN = "Master List";
+
+            var MasterTableES = "Listado de Facturas";
+
+            var ModalButtonActive = void 0;
+
+            var MasterTableActive = void 0;
+
+            if (languageActive) {
+
+                ModalButtonActive = ModalButtonEN;
+                MasterTableActive = MasterTableEN;
+            } else {
+
+                ModalButtonActive = ModalButtonES;
+                MasterTableActive = MasterTableES;
+            }
+
             return React.createElement(
                 'div',
                 null,
@@ -1028,11 +1063,7 @@ var Master = function (_React$Component12) {
                     React.createElement(
                         'div',
                         { className: 'pull-right' },
-                        React.createElement(
-                            Button,
-                            { onClick: this.open.bind(this) },
-                            'Agregar Factura'
-                        ),
+                        ModalButtonActive,
                         React.createElement(MasterModal, {
 
                             masterDetail: this.state.masterDetail,
@@ -1054,7 +1085,7 @@ var Master = function (_React$Component12) {
                     null,
                     React.createElement(
                         Panel,
-                        { header: 'Listado de Facturas' },
+                        { header: MasterTableActive },
                         React.createElement(MasterTable, {
                             filterText: this.state.filterText,
                             masterData: this.state.masterAPI,
@@ -1087,8 +1118,8 @@ var Master = function (_React$Component12) {
     return Master;
 }(React.Component);
 
-var MasterPagination = function (_React$Component13) {
-    _inherits(MasterPagination, _React$Component13);
+var MasterPagination = function (_React$Component12) {
+    _inherits(MasterPagination, _React$Component12);
 
     function MasterPagination() {
         _classCallCheck(this, MasterPagination);
@@ -1123,8 +1154,8 @@ var MasterPagination = function (_React$Component13) {
     return MasterPagination;
 }(React.Component);
 
-var MasterSearch = function (_React$Component14) {
-    _inherits(MasterSearch, _React$Component14);
+var MasterSearch = function (_React$Component13) {
+    _inherits(MasterSearch, _React$Component13);
 
     function MasterSearch() {
         _classCallCheck(this, MasterSearch);
@@ -1136,7 +1167,42 @@ var MasterSearch = function (_React$Component14) {
         key: 'render',
         value: function render() {
 
-            return React.createElement(
+            var MasterSearchEN = React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Panel,
+                    { header: 'Search Master' },
+                    React.createElement(
+                        'form',
+                        null,
+                        React.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            React.createElement(
+                                'div',
+                                { className: 'col-md-2 col-sm-2' },
+                                React.createElement(
+                                    'label',
+                                    null,
+                                    'Search:'
+                                )
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'col-md-10 col-sm-10' },
+                                React.createElement('input', {
+                                    onChange: this.props.masterCallback.onhandleuserinput.bind(this),
+                                    type: 'text',
+                                    className: 'form-control',
+                                    id: 'first_name', name: 'first_name' })
+                            )
+                        )
+                    )
+                )
+            );
+
+            var MasterSearchES = React.createElement(
                 'div',
                 null,
                 React.createElement(
@@ -1161,7 +1227,6 @@ var MasterSearch = function (_React$Component14) {
                                 'div',
                                 { className: 'col-md-10 col-sm-10' },
                                 React.createElement('input', {
-
                                     onChange: this.props.masterCallback.onhandleuserinput.bind(this),
                                     type: 'text',
                                     className: 'form-control',
@@ -1171,14 +1236,28 @@ var MasterSearch = function (_React$Component14) {
                     )
                 )
             );
+
+            if (languageActive) {
+                return React.createElement(
+                    'div',
+                    null,
+                    MasterSearchEN
+                );
+            } else {
+                return React.createElement(
+                    'div',
+                    null,
+                    MasterSearchES
+                );
+            }
         }
     }]);
 
     return MasterSearch;
 }(React.Component);
 
-var MasterTable = function (_React$Component15) {
-    _inherits(MasterTable, _React$Component15);
+var MasterTable = function (_React$Component14) {
+    _inherits(MasterTable, _React$Component14);
 
     function MasterTable() {
         _classCallCheck(this, MasterTable);
@@ -1189,11 +1268,91 @@ var MasterTable = function (_React$Component15) {
     _createClass(MasterTable, [{
         key: 'render',
         value: function render() {
-            var _this20 = this;
+            var _this19 = this;
 
             var filteredMaster = this.props.masterData.filter(function (master) {
-                return master.name.indexOf(_this20.props.filterText) !== -1;
+                return master.name.indexOf(_this19.props.filterText) !== -1;
             });
+
+            var MasterTableEN = React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    null,
+                    '#'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Date'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Name'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Item'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Status'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Actions'
+                )
+            );
+
+            var MasterTableES = React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    null,
+                    '#'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Fecha'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Nombre'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Articulo'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Estatus'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Acciones'
+                )
+            );
+
+            var MasterTableActive = void 0;
+
+            if (languageActive) {
+
+                MasterTableActive = MasterTableEN;
+            } else {
+
+                MasterTableActive = MasterTableES;
+            }
 
             return React.createElement(
                 'div',
@@ -1204,40 +1363,7 @@ var MasterTable = function (_React$Component15) {
                     React.createElement(
                         'thead',
                         null,
-                        React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'th',
-                                null,
-                                '#'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Fecha'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Nombre'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Articulo'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Estatus'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Acciones'
-                            )
-                        )
+                        MasterTableActive
                     ),
                     React.createElement(
                         'tbody',
@@ -1255,7 +1381,7 @@ var MasterTable = function (_React$Component15) {
 
                                 status: master.status,
 
-                                masterCallback: _this20.props.masterCallback
+                                masterCallback: _this19.props.masterCallback
                             });
                         })
                     )
@@ -1267,8 +1393,8 @@ var MasterTable = function (_React$Component15) {
     return MasterTable;
 }(React.Component);
 
-var MasterTableBody = function (_React$Component16) {
-    _inherits(MasterTableBody, _React$Component16);
+var MasterTableBody = function (_React$Component15) {
+    _inherits(MasterTableBody, _React$Component15);
 
     function MasterTableBody() {
         _classCallCheck(this, MasterTableBody);
@@ -1333,8 +1459,8 @@ var MasterTableBody = function (_React$Component16) {
     return MasterTableBody;
 }(React.Component);
 
-var MasterModalButton = function (_React$Component17) {
-    _inherits(MasterModalButton, _React$Component17);
+var MasterModalButton = function (_React$Component16) {
+    _inherits(MasterModalButton, _React$Component16);
 
     function MasterModalButton() {
         _classCallCheck(this, MasterModalButton);
@@ -1346,22 +1472,44 @@ var MasterModalButton = function (_React$Component17) {
         key: 'render',
         value: function render() {
 
+            var MasterModalButtonEN = React.createElement(
+                Col,
+                { md: 12 },
+                React.createElement(
+                    Button,
+                    { style: { 'margin-left': '70%' },
+                        bsStyle: 'default',
+                        onClick: this.props.masterCallback.onsavemaster.bind(this) },
+                    'Save'
+                )
+            );
+
+            var MasterModalButtonES = React.createElement(
+                Col,
+                { md: 12 },
+                React.createElement(
+                    Button,
+                    { style: { 'margin-left': '70%' },
+                        bsStyle: 'default',
+                        onClick: this.props.masterCallback.onsavemaster.bind(this) },
+                    'Guardar'
+                )
+            );
+
+            var MasterModalButtonActive = void 0;
+
+            if (languageActive) {
+
+                MasterModalButtonActive = MasterModalButtonEN;
+            } else {
+
+                MasterModalButtonActive = MasterModalButtonEN;
+            }
+
             return React.createElement(
                 Row,
                 null,
-                React.createElement(
-                    Col,
-                    { md: 12 },
-                    React.createElement(
-                        Button,
-                        {
-                            style: { 'margin-left': '70%' },
-                            bsStyle: 'default',
-
-                            onClick: this.props.masterCallback.onsavemaster.bind(this) },
-                        'Guardar'
-                    )
-                )
+                MasterModalButtonActive
             );
         }
     }]);
@@ -1369,8 +1517,8 @@ var MasterModalButton = function (_React$Component17) {
     return MasterModalButton;
 }(React.Component);
 
-var MasterModal = function (_React$Component18) {
-    _inherits(MasterModal, _React$Component18);
+var MasterModal = function (_React$Component17) {
+    _inherits(MasterModal, _React$Component17);
 
     function MasterModal() {
         _classCallCheck(this, MasterModal);
@@ -1382,6 +1530,28 @@ var MasterModal = function (_React$Component18) {
         key: 'render',
         value: function render() {
 
+            var MasterModalEN = React.createElement(
+                Modal.Title,
+                null,
+                'Modal Header'
+            );
+
+            var MasterModalES = React.createElement(
+                Modal.Title,
+                null,
+                'Agregar Factura'
+            );
+
+            var MasterModalActive = void 0;
+
+            if (languageActive) {
+
+                MasterModalActive = MasterModalEN;
+            } else {
+
+                MasterModalActive = MasterModalES;
+            }
+
             return React.createElement(
                 'div',
                 null,
@@ -1391,28 +1561,21 @@ var MasterModal = function (_React$Component18) {
                     React.createElement(
                         Modal.Header,
                         { closeButton: true },
-                        React.createElement(
-                            Modal.Title,
-                            null,
-                            'Agregar Factura'
-                        )
+                        MasterModalActive
                     ),
                     React.createElement(
                         Modal.Body,
                         null,
                         React.createElement(MasterModalField, {
-
                             masterCallback: this.props.masterCallback
                         }),
                         React.createElement('br', null),
                         React.createElement(MasterModalTable, {
-
                             masterDetail: this.props.masterDetail,
 
                             masterCallback: this.props.masterCallback
                         }),
                         React.createElement(MasterModalButton, {
-
                             masterCallback: this.props.masterCallback
                         })
                     )
@@ -1499,20 +1662,20 @@ function getSuggestionValue(suggestion) {
     return suggestion.name;
 }
 
-var MasterModalField = function (_React$Component19) {
-    _inherits(MasterModalField, _React$Component19);
+var MasterModalField = function (_React$Component18) {
+    _inherits(MasterModalField, _React$Component18);
 
     function MasterModalField() {
         _classCallCheck(this, MasterModalField);
 
-        var _this24 = _possibleConstructorReturn(this, (MasterModalField.__proto__ || Object.getPrototypeOf(MasterModalField)).call(this));
+        var _this23 = _possibleConstructorReturn(this, (MasterModalField.__proto__ || Object.getPrototypeOf(MasterModalField)).call(this));
 
-        _this24.state = {
+        _this23.state = {
 
             value: '',
             suggestions: []
         };
-        return _this24;
+        return _this23;
     }
 
     _createClass(MasterModalField, [{
@@ -1557,198 +1720,345 @@ var MasterModalField = function (_React$Component19) {
                 onChange: this.onChange.bind(this)
             };
 
+            var MasterModalFieldEN = React.createElement(
+                Row,
+                null,
+                React.createElement(
+                    Form,
+                    {
+                        onSubmit: this.props.masterCallback.onsavedetail.bind(this) },
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalName' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, md: 1, sm: 2 },
+                                'Name'
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(FormControl, { type: 'text',
+                                    name: 'firstname', placeholder: 'Name', required: true })
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalItem' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel,
+                                    md: 1, sm: 2 },
+                                'Item'
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(Autosuggest, {
+                                    suggestions: suggestions,
+
+                                    onSuggestionsFetchRequested: this.onSuggestionsFetchRequested.bind(this),
+
+                                    onSuggestionsClearRequested: this.onSuggestionsClearRequested.bind(this),
+
+                                    renderSuggestion: renderSuggestion,
+
+                                    getSuggestionValue: getSuggestionValue,
+                                    inputProps: inputProps
+                                })
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formControlsSelect' },
+                            React.createElement(
+                                Col,
+                                { md: 1, sm: 2 },
+                                React.createElement(
+                                    ControlLabel,
+                                    null,
+                                    'List'
+                                )
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(
+                                    FormControl,
+                                    { componentClass: 'select',
+                                        name: 'development', placeholder: 'List', required: true },
+                                    React.createElement(
+                                        'option',
+                                        { value: 'select' },
+                                        'Select'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: '...' },
+                                        '...'
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalName' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, md: 1, sm: 2 },
+                                'Project'
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(FormControl, { type: 'text',
+                                    name: 'project', placeholder: 'Project', required: true })
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 2, sm: 2 },
+                                React.createElement(
+                                    Button,
+                                    { type: 'submit' },
+                                    React.createElement('i', {
+                                        className: 'fa fa-plus', 'aria-hidden': 'true' })
+                                )
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement('input', {
+                            style: { 'width': '70px', 'display': 'none' }, type: 'text', name: 'suggest',
+                            placeholder: 'Name', value: this.state.value })
+                    )
+                )
+            );
+
+            var MasterModalFieldES = React.createElement(
+                Row,
+                null,
+                React.createElement(
+                    Form,
+                    {
+                        onSubmit: this.props.masterCallback.onsavedetail.bind(this) },
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalName' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, md: 1, sm: 2 },
+                                'Cliente'
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(FormControl, { type: 'text',
+                                    name: 'firstname', placeholder: 'Cliente', required: true })
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalItem' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel,
+                                    md: 1, sm: 2 },
+                                'Articulo'
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(Autosuggest, {
+                                    suggestions: suggestions,
+
+                                    onSuggestionsFetchRequested: this.onSuggestionsFetchRequested.bind(this),
+
+                                    onSuggestionsClearRequested: this.onSuggestionsClearRequested.bind(this),
+
+                                    renderSuggestion: renderSuggestion,
+
+                                    getSuggestionValue: getSuggestionValue,
+                                    inputProps: inputProps
+                                })
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formControlsSelect' },
+                            React.createElement(
+                                Col,
+                                { md: 1, sm: 2 },
+                                React.createElement(
+                                    ControlLabel,
+                                    null,
+                                    'Peluquera'
+                                )
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(
+                                    FormControl,
+                                    { componentClass: 'select',
+                                        name: 'development', placeholder: 'Peluquera', required: true },
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Alexandra' },
+                                        'Alexandra'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Dania' },
+                                        'Dania'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Daneuri' },
+                                        'Daneuri'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Damirky' },
+                                        'Damirky'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Dayiana' },
+                                        'Dayiana'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Juribel' },
+                                        'Juribel'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Kandy' },
+                                        'Kandy'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Massiel' },
+                                        'Massiel'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        {
+                                            value: 'Marionaisi' },
+                                        'Marionaisi'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Naty' },
+                                        'Naty'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Tati' },
+                                        'Tati'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Mayi' },
+                                        'Mayi'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'otras' },
+                                        'otras'
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalName' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, md: 1, sm: 2 },
+                                'Precio'
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 4, sm: 6 },
+                                React.createElement(FormControl, { type: 'text',
+                                    name: 'project', placeholder: 'Precio', required: true })
+                            ),
+                            React.createElement(
+                                Col,
+                                { md: 2, sm: 2 },
+                                React.createElement(
+                                    Button,
+                                    { type: 'submit' },
+                                    React.createElement('i', {
+                                        className: 'fa fa-plus', 'aria-hidden': 'true' })
+                                )
+                            )
+                        )
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        Row,
+                        null,
+                        React.createElement('input', {
+                            style: { 'width': '70px', 'display': 'none' }, type: 'text', name: 'suggest',
+                            placeholder: 'Name', value: this.state.value })
+                    )
+                )
+            );
+
+            var MasterModalFieldActive = void 0;
+
+            if (languageActive) {
+
+                MasterModalFieldActive = MasterModalFieldEN;
+            } else {
+                MasterModalFieldActive = MasterModalFieldES;
+            }
+
             return React.createElement(
                 Grid,
                 null,
-                React.createElement(
-                    Row,
-                    null,
-                    React.createElement(
-                        Form,
-                        {
-                            onSubmit: this.props.masterCallback.onsavedetail.bind(this) },
-                        React.createElement(
-                            Row,
-                            null,
-                            React.createElement(
-                                FormGroup,
-                                { controlId: 'formHorizontalName' },
-                                React.createElement(
-                                    Col,
-                                    { componentClass: ControlLabel, md: 1, sm: 2 },
-                                    'Cliente'
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { md: 4, sm: 6 },
-                                    React.createElement(FormControl, { type: 'text',
-                                        name: 'firstname', placeholder: 'Cliente', required: true })
-                                )
-                            )
-                        ),
-                        React.createElement('br', null),
-                        React.createElement(
-                            Row,
-                            null,
-                            React.createElement(
-                                FormGroup,
-                                { controlId: 'formHorizontalItem' },
-                                React.createElement(
-                                    Col,
-                                    { componentClass: ControlLabel,
-                                        md: 1, sm: 2 },
-                                    'Articulo'
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { md: 4, sm: 6 },
-                                    React.createElement(Autosuggest, {
-                                        suggestions: suggestions,
-
-                                        onSuggestionsFetchRequested: this.onSuggestionsFetchRequested.bind(this),
-
-                                        onSuggestionsClearRequested: this.onSuggestionsClearRequested.bind(this),
-
-                                        renderSuggestion: renderSuggestion,
-
-                                        getSuggestionValue: getSuggestionValue,
-                                        inputProps: inputProps
-                                    })
-                                )
-                            )
-                        ),
-                        React.createElement('br', null),
-                        React.createElement(
-                            Row,
-                            null,
-                            React.createElement(
-                                FormGroup,
-                                { controlId: 'formControlsSelect' },
-                                React.createElement(
-                                    Col,
-                                    { md: 1, sm: 2 },
-                                    React.createElement(
-                                        ControlLabel,
-                                        null,
-                                        'Peluquera'
-                                    )
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { md: 4, sm: 6 },
-                                    React.createElement(
-                                        FormControl,
-                                        { componentClass: 'select',
-                                            name: 'development', placeholder: 'Peluquera', required: true },
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Alexandra' },
-                                            'Alexandra'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Dania' },
-                                            'Dania'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Daneuri' },
-                                            'Daneuri'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Damirky' },
-                                            'Damirky'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Dayiana' },
-                                            'Dayiana'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Juribel' },
-                                            'Juribel'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Kandy' },
-                                            'Kandy'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Massiel' },
-                                            'Massiel'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Marionaisi' },
-                                            'Marionaisi'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Naty' },
-                                            'Naty'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Tati' },
-                                            'Tati'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'Mayi' },
-                                            'Mayi'
-                                        ),
-                                        React.createElement(
-                                            'option',
-                                            { value: 'otras' },
-                                            'otras'
-                                        )
-                                    )
-                                )
-                            )
-                        ),
-                        React.createElement('br', null),
-                        React.createElement(
-                            Row,
-                            null,
-                            React.createElement(
-                                FormGroup,
-                                { controlId: 'formHorizontalName' },
-                                React.createElement(
-                                    Col,
-                                    { componentClass: ControlLabel, md: 1, sm: 2 },
-                                    'Precio'
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { md: 4, sm: 6 },
-                                    React.createElement(FormControl, { type: 'number',
-                                        name: 'project', placeholder: 'Precio', required: true })
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { md: 2, sm: 2 },
-                                    React.createElement(
-                                        Button,
-                                        { type: 'submit' },
-                                        React.createElement('i', {
-                                            className: 'fa fa-plus', 'aria-hidden': 'true' })
-                                    )
-                                )
-                            )
-                        ),
-                        React.createElement('br', null),
-                        React.createElement(
-                            Row,
-                            null,
-                            React.createElement('input', {
-                                style: { 'width': '70px', 'display': 'none' }, type: 'text', name: 'suggest',
-                                placeholder: 'Name', value: this.state.value })
-                        )
-                    )
-                )
+                MasterModalFieldActive
             );
         }
     }]);
@@ -1756,8 +2066,8 @@ var MasterModalField = function (_React$Component19) {
     return MasterModalField;
 }(React.Component);
 
-var MasterModalTable = function (_React$Component20) {
-    _inherits(MasterModalTable, _React$Component20);
+var MasterModalTable = function (_React$Component19) {
+    _inherits(MasterModalTable, _React$Component19);
 
     function MasterModalTable() {
         _classCallCheck(this, MasterModalTable);
@@ -1769,6 +2079,76 @@ var MasterModalTable = function (_React$Component20) {
         key: 'render',
         value: function render() {
 
+            var MasterModalTableEN = React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    null,
+                    '#'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Name'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Item'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Development'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Project'
+                )
+            );
+
+            var MasterModalTableES = React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    null,
+                    '#'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Nombre'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Articulo'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Peluquera'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Precio'
+                )
+            );
+
+            var MasterModalActive = void 0;
+
+            if (languageActive) {
+
+                MasterModalActive = MasterModalTableEN;
+            } else {
+
+                MasterModalActive = MasterModalTableES;
+            }
+
             return React.createElement(
                 'div',
                 null,
@@ -1778,46 +2158,15 @@ var MasterModalTable = function (_React$Component20) {
                     React.createElement(
                         'thead',
                         null,
-                        React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'th',
-                                null,
-                                '#'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Nombre'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Articulo'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Peluquera'
-                            ),
-                            React.createElement(
-                                'th',
-                                null,
-                                'Precio'
-                            )
-                        )
+                        MasterModalActive
                     ),
                     React.createElement(
                         'tbody',
                         null,
                         this.props.masterDetail.map(function (masterdetail, index) {
                             return React.createElement(MasterModalTableBody, {
-
                                 index: index + 1,
-
                                 key: index,
-
                                 id: masterdetail.id,
 
                                 firstname: masterdetail.firstname,
@@ -1838,8 +2187,8 @@ var MasterModalTable = function (_React$Component20) {
     return MasterModalTable;
 }(React.Component);
 
-var MasterModalTableBody = function (_React$Component21) {
-    _inherits(MasterModalTableBody, _React$Component21);
+var MasterModalTableBody = function (_React$Component20) {
+    _inherits(MasterModalTableBody, _React$Component20);
 
     function MasterModalTableBody() {
         _classCallCheck(this, MasterModalTableBody);
@@ -1886,29 +2235,39 @@ var MasterModalTableBody = function (_React$Component21) {
     return MasterModalTableBody;
 }(React.Component);
 
-var Detail = function (_React$Component22) {
-    _inherits(Detail, _React$Component22);
+var Detail = function (_React$Component21) {
+    _inherits(Detail, _React$Component21);
 
     function Detail() {
         _classCallCheck(this, Detail);
 
-        var _this27 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
+        var _this26 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
 
-        _this27.state = {
+        _this26.state = {
             showModal: false,
             filterText: '',
-            detailData: [{
-
-                "id": "1",
-                "date": "2017-10-02",
-                "name": "detail",
-                "item": "detailcomponent"
-            }]
+            detailData: []
         };
-        return _this27;
+        return _this26;
     }
 
     _createClass(Detail, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this27 = this;
+
+            fetch(API_URL + '/detail', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this27.setState({
+
+                    detailData: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+        }
+    }, {
         key: 'close',
         value: function close() {
             this.setState({
@@ -1925,20 +2284,28 @@ var Detail = function (_React$Component22) {
     }, {
         key: 'onSaveDetail',
         value: function onSaveDetail(event) {
+            var _newDetail;
 
             event.preventDefault();
 
-            var newDetail = {
+            var today = moment(new Date()).format('YYYY-MM-DD');
+
+            var newDetail = (_newDetail = {
 
                 "id": Date.now(),
-                "date": "2017-10-02",
-                "name": event.target.name.value,
-                "item": event.target.name.value
-            };
+                "date": today
+            }, _defineProperty(_newDetail, 'id', event.target.id.value), _defineProperty(_newDetail, "name", event.target.name.value), _defineProperty(_newDetail, "item", event.target.item.value), _defineProperty(_newDetail, "environment", event.target.environment.value), _newDetail);
 
             var nextState = this.state.detailData;
 
             nextState.push(newDetail);
+
+            fetch(API_URL + '/detail', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify(newDetail)
+            });
 
             this.setState({
 
@@ -1956,8 +2323,58 @@ var Detail = function (_React$Component22) {
             });
         }
     }, {
+        key: 'onUpdated',
+        value: function onUpdated(value) {
+
+            console.log(value);
+        }
+    }, {
+        key: 'onDeleted',
+        value: function onDeleted(value) {
+
+            var nextState = this.state.detailData;
+
+            var index = nextState.findIndex(function (x) {
+                return x.id == value;
+            });
+
+            nextState.splice(index, 1);
+
+            this.setState({
+
+                detailData: nextState
+            });
+
+            fetch(API_URL + '/deletedetail', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify({ "index": index, "id": value })
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+
+            var DetailEN = React.createElement(
+                Button,
+                { onClick: this.open.bind(this) },
+                'Add Detail'
+            );
+
+            var DetailES = React.createElement(
+                Button,
+                { onClick: this.open.bind(this) },
+                'Agregar Articulo'
+            );
+
+            var DetailActive = void 0;
+
+            if (languageActive) {
+                DetailActive = DetailEN;
+            } else {
+                DetailActive = DetailES;
+            }
 
             return React.createElement(
                 Grid,
@@ -1978,14 +2395,8 @@ var Detail = function (_React$Component22) {
                     React.createElement(
                         'div',
                         { className: 'pull-right' },
-                        React.createElement(
-                            Button,
-                            { onClick: this.open.bind(this) },
-                            'Add Detail'
-                        ),
-                        React.createElement(DetailModal, {
-
-                            showModal: this.state.showModal,
+                        DetailActive,
+                        React.createElement(DetailModal, { showModal: this.state.showModal,
                             detailCallback: {
                                 open: this.open,
                                 close: this.close.bind(this),
@@ -2001,7 +2412,11 @@ var Detail = function (_React$Component22) {
                     null,
                     React.createElement(DetailTable, {
                         filterText: this.state.filterText,
-                        detailData: this.state.detailData
+                        detailData: this.state.detailData,
+                        detailCallback: {
+                            onUpdated: this.onUpdated.bind(this),
+                            onDeleted: this.onDeleted.bind(this)
+                        }
                     })
                 )
             );
@@ -2011,8 +2426,8 @@ var Detail = function (_React$Component22) {
     return Detail;
 }(React.Component);
 
-var DetailPagination = function (_React$Component23) {
-    _inherits(DetailPagination, _React$Component23);
+var DetailPagination = function (_React$Component22) {
+    _inherits(DetailPagination, _React$Component22);
 
     function DetailPagination() {
         _classCallCheck(this, DetailPagination);
@@ -2054,8 +2469,8 @@ var DetailPagination = function (_React$Component23) {
     return DetailPagination;
 }(React.Component);
 
-var DetailSearch = function (_React$Component24) {
-    _inherits(DetailSearch, _React$Component24);
+var DetailSearch = function (_React$Component23) {
+    _inherits(DetailSearch, _React$Component23);
 
     function DetailSearch() {
         _classCallCheck(this, DetailSearch);
@@ -2067,38 +2482,79 @@ var DetailSearch = function (_React$Component24) {
         key: 'render',
         value: function render() {
 
-            return React.createElement(
-                'div',
-                null,
+            var DetailSearchEN = React.createElement(
+                Panel,
+                { header: 'Search Detail' },
                 React.createElement(
-                    Panel,
-                    { header: 'Search Detail' },
+                    'form',
+                    null,
                     React.createElement(
-                        'form',
-                        null,
+                        'div',
+                        { className: 'form-group' },
                         React.createElement(
                             'div',
-                            { className: 'form-group' },
+                            { className: 'col-md-2 col-sm-2' },
                             React.createElement(
-                                'div',
-                                { className: 'col-md-2 col-sm-2' },
-                                React.createElement(
-                                    'label',
-                                    null,
-                                    'Search:'
-                                )
-                            ),
-                            React.createElement(
-                                'div',
-                                { className: 'col-md-10 col-sm-10' },
-                                React.createElement('input', {
-                                    onChange: this.props.detailCallback.onHandleChange.bind(this),
-                                    type: 'text', className: 'form-control', id: 'first_name',
-                                    name: 'first_name' })
+                                'label',
+                                null,
+                                'Search:'
                             )
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-10 col-sm-10' },
+                            React.createElement('input', {
+                                onChange: this.props.detailCallback.onHandleChange.bind(this),
+                                type: 'text', className: 'form-control', id: 'first_name',
+                                name: 'first_name' })
                         )
                     )
                 )
+            );
+
+            var DetailSearchES = React.createElement(
+                Panel,
+                { header: 'Busqueda ' },
+                React.createElement(
+                    'form',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-2 col-sm-2' },
+                            React.createElement(
+                                'label',
+                                null,
+                                'Buscar:'
+                            )
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-10 col-sm-10' },
+                            React.createElement('input', {
+                                onChange: this.props.detailCallback.onHandleChange.bind(this),
+                                type: 'text', className: 'form-control', id: 'first_name',
+                                name: 'first_name' })
+                        )
+                    )
+                )
+            );
+
+            var DetailSearchActive = void 0;
+
+            if (languageActive) {
+
+                DetailSearchActive = DetailSearchEN;
+            } else {
+                DetailSearchActive = DetailSearchES;
+            }
+
+            return React.createElement(
+                'div',
+                null,
+                DetailSearchActive
             );
         }
     }]);
@@ -2106,8 +2562,8 @@ var DetailSearch = function (_React$Component24) {
     return DetailSearch;
 }(React.Component);
 
-var DetailTable = function (_React$Component25) {
-    _inherits(DetailTable, _React$Component25);
+var DetailTable = function (_React$Component24) {
+    _inherits(DetailTable, _React$Component24);
 
     function DetailTable() {
         _classCallCheck(this, DetailTable);
@@ -2124,7 +2580,7 @@ var DetailTable = function (_React$Component25) {
                 return detail.name.indexOf(_this31.props.filterText) !== -1;
             });
 
-            return React.createElement(
+            var DetailTableEN = React.createElement(
                 Panel,
                 { header: 'Search List' },
                 React.createElement(
@@ -2139,22 +2595,27 @@ var DetailTable = function (_React$Component25) {
                             React.createElement(
                                 'th',
                                 null,
-                                '#'
+                                'ID'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'First Name'
+                                'Name'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Last Name'
+                                'Item'
                             ),
                             React.createElement(
                                 'th',
                                 null,
-                                'Username'
+                                'Environment'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Acciones'
                             )
                         )
                     ),
@@ -2166,7 +2627,11 @@ var DetailTable = function (_React$Component25) {
                                 key: index,
                                 id: detail.id,
                                 name: detail.name,
-                                item: detail.item
+                                item: detail.item,
+
+                                environment: detail.environment,
+
+                                detailCallback: _this31.props.detailCallback
                             });
                         })
                     )
@@ -2177,10 +2642,365 @@ var DetailTable = function (_React$Component25) {
                     React.createElement(DetailPagination, null)
                 )
             );
+
+            var DetailTableES = React.createElement(
+                Panel,
+                { header: 'Listado ' },
+                React.createElement(
+                    Table,
+                    { striped: true, bordered: true, condensed: true, hover: true },
+                    React.createElement(
+                        'thead',
+                        null,
+                        React.createElement(
+                            'tr',
+                            null,
+                            React.createElement(
+                                'th',
+                                null,
+                                'ID'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Descripcion'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Cantidad'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Precio'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Actions'
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        'tbody',
+                        null,
+                        filteredTable.map(function (detail, index) {
+                            return React.createElement(DetailTableBody, {
+                                key: index,
+                                id: detail.id,
+                                name: detail.name,
+                                item: detail.item,
+
+                                environment: detail.environment,
+
+                                detailCallback: _this31.props.detailCallback
+                            });
+                        })
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'pull-right' },
+                    React.createElement(DetailPagination, null)
+                )
+            );
+
+            var DetailTableActive = void 0;
+
+            if (languageActive) {
+                DetailTableActive = DetailTableEN;
+            } else {
+                DetailTableActive = DetailTableES;
+            }
+
+            return React.createElement(
+                'div',
+                null,
+                DetailTableActive
+            );
         }
     }]);
 
     return DetailTable;
+}(React.Component);
+
+var DetailModalUpdate = function (_React$Component25) {
+    _inherits(DetailModalUpdate, _React$Component25);
+
+    function DetailModalUpdate() {
+        _classCallCheck(this, DetailModalUpdate);
+
+        var _this32 = _possibleConstructorReturn(this, (DetailModalUpdate.__proto__ || Object.getPrototypeOf(DetailModalUpdate)).call(this));
+
+        _this32.state = {
+
+            parameter: '',
+            showModal: true,
+            detailData: [],
+            name: ''
+        };
+
+        return _this32;
+    }
+
+    _createClass(DetailModalUpdate, [{
+        key: 'close',
+        value: function close() {
+
+            this.setState({
+
+                showModal: false
+            });
+
+            //window.location.href = '/'
+        }
+    }, {
+        key: 'open',
+        value: function open() {
+
+            this.setState({
+
+                showModal: true
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this33 = this;
+
+            fetch(API_URL + '/detail', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this33.setState({
+
+                    detailData: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+
+            this.setState({
+
+                parameter: this.props.params.detailid
+            });
+        }
+    }, {
+        key: 'onSubmitted',
+        value: function onSubmitted(event) {
+            var _this34 = this;
+
+            event.preventDefault();
+
+            var nextState = this.state.detailData;
+
+            var index = nextState.findIndex(function (x) {
+                return x.id == _this34.state.parameter;
+            });
+
+            var name = nextState[index].name;
+            nextState[index].name = event.target.name.value;
+            if (event.target.name.value == '') {
+                event.target.name.value = name;
+            }
+
+            var environment = nextState[index].environment;
+            if (event.target.environment.value == '') {
+                event.target.environment.value = environment;
+            }
+
+            fetch(API_URL + '/updatedetail', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify({ "index": index, "name": event.target.name.value, "environment": event.target.environment.value })
+            });
+
+            this.setState({
+
+                showModal: false
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            var DetailModalUpdateEN = React.createElement(
+                Modal,
+                { show: this.state.showModal, onHide: this.close.bind(this) },
+                React.createElement(
+                    Modal.Header,
+                    null,
+                    React.createElement(
+                        Modal.Title,
+                        null,
+                        React.createElement(
+                            'h1',
+                            null,
+                            'Editing to ',
+                            this.state.parameter
+                        )
+                    )
+                ),
+                React.createElement(
+                    Form,
+                    { onSubmit: this.onSubmitted.bind(this), horizontal: true },
+                    React.createElement(
+                        Modal.Body,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalId' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'ID'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { value: this.state.parameter,
+                                    type: 'id', placeholder: 'id', disabled: true })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalName' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'Name'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { name: 'name', type: 'text',
+                                    placeholder: 'Name' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalEnvironment' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'Environment'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { name: 'environment',
+                                    type: 'text', placeholder: 'Environment' })
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        Modal.Footer,
+                        null,
+                        React.createElement(
+                            Button,
+                            null,
+                            'Save'
+                        )
+                    )
+                )
+            );
+
+            var DetailModalUpdateES = React.createElement(
+                Modal,
+                { show: this.state.showModal, onHide: this.close.bind(this) },
+                React.createElement(
+                    Modal.Header,
+                    null,
+                    React.createElement(
+                        Modal.Title,
+                        null,
+                        React.createElement(
+                            'h1',
+                            null,
+                            'Editing to ',
+                            this.state.parameter
+                        )
+                    )
+                ),
+                React.createElement(
+                    Form,
+                    { onSubmit: this.onSubmitted.bind(this), horizontal: true },
+                    React.createElement(
+                        Modal.Body,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalId' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'ID'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { value: this.state.parameter,
+                                    type: 'id', placeholder: 'id', disabled: true })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalName' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'Nombre'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { name: 'name', type: 'text',
+                                    placeholder: 'Name' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalEnvironment' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'Cantidad'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { name: 'environment',
+                                    type: 'text', placeholder: 'Environment' })
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        Modal.Footer,
+                        null,
+                        React.createElement(
+                            Button,
+                            null,
+                            'Save'
+                        )
+                    )
+                )
+            );
+
+            var DetailModalUpdateActive = void 0;
+
+            if (languageActive) {
+
+                DetailModalUpdateActive = DetailModalUpdateEN;
+            } else {
+                DetailModalUpdateActive = DetailModalUpdateES;
+            }
+
+            return { DetailModalUpdate: DetailModalUpdate };
+        }
+    }]);
+
+    return DetailModalUpdate;
 }(React.Component);
 
 var DetailTableBody = function (_React$Component26) {
@@ -2202,11 +3022,6 @@ var DetailTableBody = function (_React$Component26) {
                 React.createElement(
                     'td',
                     null,
-                    this.props.key
-                ),
-                React.createElement(
-                    'td',
-                    null,
                     this.props.id
                 ),
                 React.createElement(
@@ -2218,6 +3033,29 @@ var DetailTableBody = function (_React$Component26) {
                     'td',
                     null,
                     this.props.item
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.environment
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    React.createElement(
+                        Link,
+                        { className: 'btn btn-default',
+                            to: '/updatedetail/' + this.props.id },
+                        React.createElement('i', { className: 'fa fa-edit',
+                            'aria-hidden': 'true' })
+                    ),
+                    React.createElement(
+                        Button,
+                        {
+                            onClick: this.props.detailCallback.onDeleted.bind(this, this.props.id) },
+                        React.createElement('i', {
+                            className: 'fa fa-trash', 'aria-hidden': 'true' })
+                    )
                 )
             );
         }
@@ -2239,71 +3077,221 @@ var DetailModal = function (_React$Component27) {
         key: 'render',
         value: function render() {
 
-            return React.createElement(
-                'div',
-                null,
+            var DetailModalEN = React.createElement(
+                Modal,
+                { show: this.props.showModal,
+                    onHide: this.props.detailCallback.close },
                 React.createElement(
-                    Modal,
-                    { show: this.props.showModal,
-                        onHide: this.props.detailCallback.close },
+                    Modal.Header,
+                    { closeButton: true },
                     React.createElement(
-                        Modal.Header,
-                        { closeButton: true },
-                        React.createElement(
-                            Modal.Title,
-                            null,
-                            'Modal heading'
-                        )
-                    ),
+                        Modal.Title,
+                        null,
+                        'Modal heading'
+                    )
+                ),
+                React.createElement(
+                    Form,
+                    { horizontal: true,
+                        onSubmit: this.props.detailCallback.onsavedetail.bind(this) },
                     React.createElement(
-                        Form,
-                        { horizontal: true,
-                            onSubmit: this.props.detailCallback.onsavedetail.bind(this) },
+                        Modal.Body,
+                        null,
                         React.createElement(
-                            Modal.Body,
-                            null,
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalid' },
                             React.createElement(
-                                FormGroup,
-                                { controlId: 'formHorizontalname' },
-                                React.createElement(
-                                    Col,
-                                    { componentClass: ControlLabel, sm: 2 },
-                                    'Name'
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { sm: 10 },
-                                    React.createElement(FormControl, { type: 'text',
-                                        name: 'name', placeholder: 'Name' })
-                                )
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'ID'
                             ),
                             React.createElement(
-                                FormGroup,
-                                { controlId: 'formHorizontalItem' },
-                                React.createElement(
-                                    Col,
-                                    { componentClass: ControlLabel, sm: 2 },
-                                    'Item'
-                                ),
-                                React.createElement(
-                                    Col,
-                                    { sm: 10 },
-                                    React.createElement(FormControl, { type: 'text',
-                                        name: 'item', placeholder: 'Item' })
-                                )
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'id', placeholder: 'ID' })
                             )
                         ),
                         React.createElement(
-                            Modal.Footer,
-                            null,
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalname' },
                             React.createElement(
-                                Button,
-                                { type: 'submit', pullRight: true },
-                                'Save'
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Name'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'name', placeholder: 'Name' })
                             )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalEnvironment' },
+                            React.createElement(
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Environment'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'environment', placeholder: 'Item' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalItem' },
+                            React.createElement(
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Item'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'item', placeholder: 'Item' })
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        Modal.Footer,
+                        null,
+                        React.createElement(
+                            Button,
+                            { type: 'submit',
+                                pullRight: true },
+                            'Save'
                         )
                     )
                 )
+            );
+            var DetailModalES = React.createElement(
+                Modal,
+                { show: this.props.showModal,
+                    onHide: this.props.detailCallback.close },
+                React.createElement(
+                    Modal.Header,
+                    { closeButton: true },
+                    React.createElement(
+                        Modal.Title,
+                        null,
+                        'Agregar Articulo'
+                    )
+                ),
+                React.createElement(
+                    Form,
+                    { horizontal: true,
+                        onSubmit: this.props.detailCallback.onsavedetail.bind(this) },
+                    React.createElement(
+                        Modal.Body,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalid' },
+                            React.createElement(
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Codigo'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'id', placeholder: 'Codigo' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalname' },
+                            React.createElement(
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Descripcion'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'name', placeholder: 'Descripcion' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalEnvironment' },
+                            React.createElement(
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Precio'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'environment', placeholder: 'Precio' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            {
+                                controlId: 'formHorizontalItem' },
+                            React.createElement(
+                                Col,
+                                {
+                                    componentClass: ControlLabel, sm: 2 },
+                                'Cantidad'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, {
+                                    type: 'text', name: 'item', placeholder: 'Cantidad' })
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        Modal.Footer,
+                        null,
+                        React.createElement(
+                            Button,
+                            { type: 'submit',
+                                pullRight: true },
+                            'Save'
+                        )
+                    )
+                )
+            );
+
+            var DetailModalActive = void 0;
+
+            if (languageActive) {
+                DetailModalActive = DetailModalEN;
+            } else {
+                DetailModalActive = DetailModalES;
+            }
+
+            return React.createElement(
+                'div',
+                null,
+                DetailModalActive
             );
         }
     }]);
@@ -2317,27 +3305,27 @@ var Partials = function (_React$Component28) {
     function Partials() {
         _classCallCheck(this, Partials);
 
-        var _this34 = _possibleConstructorReturn(this, (Partials.__proto__ || Object.getPrototypeOf(Partials)).call(this));
+        var _this37 = _possibleConstructorReturn(this, (Partials.__proto__ || Object.getPrototypeOf(Partials)).call(this));
 
-        _this34.state = {
+        _this37.state = {
 
             masterAPI: [],
             searchData: '2017-10-06',
             total: 0
         };
 
-        return _this34;
+        return _this37;
     }
 
     _createClass(Partials, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this35 = this;
+            var _this38 = this;
 
             fetch(API_URL + '/reporte', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this35.setState({
+                _this38.setState({
 
                     masterAPI: responseData
                 });
@@ -2364,10 +3352,10 @@ var Partials = function (_React$Component28) {
     }, {
         key: 'onRun',
         value: function onRun() {
-            var _this36 = this;
+            var _this39 = this;
 
             var nextState = this.state.masterAPI.filter(function (master) {
-                return master.date == _this36.state.searchData;
+                return master.date == _this39.state.searchData;
             });
 
             var grand = 0;
@@ -2386,7 +3374,29 @@ var Partials = function (_React$Component28) {
     }, {
         key: 'render',
         value: function render() {
-            var _this37 = this;
+            var _this40 = this;
+
+            var PartialsEN = React.createElement(
+                'h1',
+                null,
+                'Draw List'
+            );
+
+            var PartialsES = React.createElement(
+                'h1',
+                null,
+                'Reporte Cuadre'
+            );
+
+            var PartialsActive = void 0;
+
+            if (languageActive) {
+
+                PartialsActive = PartialsEN;
+            } else {
+
+                PartialsActive = PartialsES;
+            }
 
             return React.createElement(
                 Grid,
@@ -2397,11 +3407,7 @@ var Partials = function (_React$Component28) {
                     React.createElement(
                         Col,
                         { xs: 6 },
-                        React.createElement(
-                            'h1',
-                            null,
-                            'Reporte Cuadre'
-                        )
+                        PartialsActive
                     )
                 ),
                 React.createElement(
@@ -2413,7 +3419,7 @@ var Partials = function (_React$Component28) {
                     React.createElement(PartialsTable, {
 
                         masterAPI: this.state.masterAPI.filter(function (master) {
-                            return master.date == _this37.state.searchData;
+                            return master.date == _this40.state.searchData;
                         }),
                         total: this.state.total
                     })
@@ -2484,7 +3490,71 @@ var PartialsTable = function (_React$Component30) {
     _createClass(PartialsTable, [{
         key: 'render',
         value: function render() {
-            var _this40 = this;
+            var _this43 = this;
+
+            var partialsTableEN = React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px', 'font-size': '25px',
+                            'border-spacing': '0 30px' } },
+                    '#'
+                ),
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px', 'font-size': '25px' } },
+                    'Date'
+                ),
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px', 'font-size': '25px' } },
+                    'Name'
+                ),
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px',
+                            'font-size': '25px' } },
+                    'Project'
+                )
+            );
+
+            var partialsTableES = React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px', 'font-size': '25px',
+                            'border-spacing': '0 30px' } },
+                    '#'
+                ),
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px', 'font-size': '25px' } },
+                    'Fecha'
+                ),
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px', 'font-size': '25px' } },
+                    'Cliente'
+                ),
+                React.createElement(
+                    'th',
+                    { style: { 'width': '15px',
+                            'font-size': '25px' } },
+                    'Precio'
+                )
+            );
+
+            var partialsTableActive = void 0;
+
+            if (languageActive) {
+
+                partialsTableActive = partialsTableEN;
+            } else {
+
+                partialsTableActive = partialsTableES;
+            }
 
             return React.createElement(
                 Row,
@@ -2499,30 +3569,7 @@ var PartialsTable = function (_React$Component30) {
                         React.createElement(
                             'thead',
                             null,
-                            React.createElement(
-                                'tr',
-                                null,
-                                React.createElement(
-                                    'th',
-                                    { style: { 'width': '15px', 'font-size': '25px', 'border-spacing': '0 30px' } },
-                                    '#'
-                                ),
-                                React.createElement(
-                                    'th',
-                                    { style: { 'width': '15px', 'font-size': '25px' } },
-                                    'Fecha'
-                                ),
-                                React.createElement(
-                                    'th',
-                                    { style: { 'width': '15px', 'font-size': '25px' } },
-                                    'Cliente'
-                                ),
-                                React.createElement(
-                                    'th',
-                                    { style: { 'width': '15px', 'font-size': '25px' } },
-                                    'Precio'
-                                )
-                            )
+                            partialsTableActive
                         ),
                         React.createElement(
                             'tbody',
@@ -2535,7 +3582,7 @@ var PartialsTable = function (_React$Component30) {
                                     date: master.date,
                                     name: master.name,
                                     project: master.project,
-                                    total: _this40.props.total
+                                    total: _this43.props.total
                                 });
                             })
                         ),
@@ -2557,12 +3604,14 @@ var PartialsTable = function (_React$Component30) {
                                 ),
                                 React.createElement(
                                     'td',
-                                    { style: { 'width': '10px', 'font-size': '20px' } },
+                                    { style: { 'width': '10px',
+                                            'font-size': '20px' } },
                                     'Total'
                                 ),
                                 React.createElement(
                                     'td',
-                                    { style: { 'width': '10px', 'font-size': '20px' } },
+                                    { style: { 'width': '10px',
+                                            'font-size': '20px' } },
                                     'RD$',
                                     this.props.total,
                                     '.00'
@@ -2606,7 +3655,8 @@ var PartialsTableBody = function (_React$Component31) {
                 ),
                 React.createElement(
                     'td',
-                    { style: { 'font-size': '20px' } },
+                    {
+                        style: { 'font-size': '20px' } },
                     this.props.name
                 ),
                 React.createElement(
@@ -2631,6 +3681,7 @@ ReactDOM.render(React.createElement(
         React.createElement(Route, { path: 'partials', component: Partials }),
         React.createElement(Route, { path: 'about', component: About }),
         React.createElement(Route, { path: 'repos/:repo_name', component: Repos }),
+        React.createElement(Route, { path: 'updatedetail/:detailid', component: DetailModalUpdate }),
         React.createElement(Route, { path: 'actions/:actionid', component: Actions }),
         React.createElement(Route, { path: 'detail', component: Detail }),
         React.createElement(Route, { path: 'master', component: Master })

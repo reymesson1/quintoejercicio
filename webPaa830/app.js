@@ -1,4 +1,5 @@
 var express = require('express');
+
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -58,27 +59,29 @@ app.get('/reporte', function(req,res){
 var detail = [];
 
 app.get('/detail',function(req,res){
-
-    res.send(detail);
+ 
+    dba.getDetail({}, function(data){
+	    res.send(data);
+    });
 });
 
 app.post('/detail', function(req,res){
 
     detail.push(req.body);
+    dba.addDetail(req.body)  
     res.send(req.body)
 });
 
 app.post('/deletedetail', function(req,res){
 
-    var obj = req.body;
-
+    var obj = req.body;  
+    dba.removeDetail({"id":obj.id})
     detail.splice(obj.index,1);
 });
 
 app.post('/updatedetail',function(req,res){
     var obj = req.body;
     detail[obj.index].name=obj.name;
-    console.log(obj);
 
 })
 

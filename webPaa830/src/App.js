@@ -38,7 +38,7 @@ const API_HEADERS = {
     Authentication: 'any-string-you-like'
 }
 
-const languageActive = true;
+const languageActive = false;
 
 class App extends React.Component{
 
@@ -1054,7 +1054,7 @@ masterCallback={this.props.masterCallback}
     }
 }
 
-/*const languages = [
+const languages = [
   {
     name: 'LAVADO',
     year: 1972
@@ -1111,18 +1111,7 @@ masterCallback={this.props.masterCallback}
     name: 'ALIZADO',
     year: 2003
   }
-];*/
-
-const languages = [
-  {
-    name: 'C',
-    year: 1972
-  },
-  {
-    name: 'C#',
-    year: 2000
-  }
-]
+];
 
 function escapeRegexCharacters(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1582,7 +1571,7 @@ class Detail extends React.Component{
 
               method: 'post',
               headers: API_HEADERS,
-              body: JSON.stringify({"index":index})
+              body: JSON.stringify({"index":index,"id":value})
         })
     }
 
@@ -1795,8 +1784,8 @@ detailCallback={this.props.detailCallback}
                   <tr>
                     <th>ID</th>
                     <th>Descripcion</th>
-                    <th>Precio</th>
                     <th>Cantidad</th>
+                    <th>Precio</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
