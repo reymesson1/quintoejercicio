@@ -10,7 +10,7 @@ var dba = require('./lib/dba-helper.js')();
 
 app.use(bodyParser.json());
 
-var cookies = false;
+var cookies = true;
 
 app.get('/cookies', function(req,res){
 

@@ -32,7 +32,6 @@ module.exports = function(){
 	        })        
 	        db.close();
           	});
-
 	}
 
 	function getDetail(detail,callback){
