@@ -108,6 +108,21 @@ module.exports = function(){
 
         }
 
+	function getWeeklyReport(detail,callback){
+
+                var MongoClient = require('mongodb').MongoClient;
+                var url = "mongodb://localhost:27017/mechy";
+                MongoClient.connect(url, function(err, db) {
+                    if (err) throw err;
+                      db.collection("master").aggregate([{"$project":{"_id":true,"date":true,"item.development":true,"project":true,"pago":{"$multiply":[{"$divide":[25,100]},250]}}},{"$group":{"_id":{"fecha":"$date","item":"$item.development"},"total":{"$sum":"$pago"}}},{"$group":{"_id":"$_id.fecha","count":{"$push":{"item":"$_id.item","totales":"$total"}}}}]).toArray(function(err,result){
+                          callback(result);
+                })
+                db.close();
+                });
+
+        }
+
+
 
 	return{
 		
@@ -116,7 +131,8 @@ module.exports = function(){
 		getMaster: getMaster,
 		addDetail: addDetail,
 		getDetail: getDetail,
-		removeDetail: removeDetail
+		removeDetail: removeDetail,
+		getWeeklyReport: getWeeklyReport
 	}
 
 }

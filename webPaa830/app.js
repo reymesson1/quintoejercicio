@@ -91,4 +91,12 @@ app.get('/logout',function(req,res){
     res.redirect('/');
 });
 
+app.get('/weeklyreport',function(req,res){
+
+    dba.getWeeklyReport({}, function(data){
+            res.send(data);
+    });
+
+})
+
 app.listen(80);
