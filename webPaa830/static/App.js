@@ -558,7 +558,7 @@ var Login = function (_React$Component7) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
