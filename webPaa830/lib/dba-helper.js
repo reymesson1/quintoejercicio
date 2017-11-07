@@ -114,7 +114,7 @@ module.exports = function(){
                 var url = "mongodb://localhost:27017/mechy";
                 MongoClient.connect(url, function(err, db) {
                     if (err) throw err;
-                      db.collection("master").aggregate([{"$project":{"_id":true,"date":true,"item.development":true,"project":true,"pago":{"$multiply":[{"$divide":[25,100]},250]}}},{"$group":{"_id":{"fecha":"$date","item":"$item.development"},"total":{"$sum":"$pago"}}},{"$group":{"_id":"$_id.fecha","count":{"$push":{"item":"$_id.item","totales":"$total"}}}}]).toArray(function(err,result){
+                      db.collection("master").aggregate([{"$project":{"_id":true,"date":true,"item.development":true,"project":true,"pago":{"$multiply":[{"$divide":[25,100]},"$project"]}}},{"$group":{"_id":{"fecha":"$date","item":"$item.development"},"total":{"$sum":"$pago"}}},{"$group":{"_id":"$_id.fecha","count":{"$push":{"item":"$_id.item","totales":"$total"}}}},{"$sort":{"_id":-1}}]).toArray(function(err,result){
                           callback(result);
                 })
                 db.close();
