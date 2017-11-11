@@ -60,10 +60,9 @@ var detail = [];
 
 app.get('/detail',function(req,res){
  
-    /*dba.getDetail({}, function(data){
+    dba.getDetail({}, function(data){
 	    res.send(data);
-    });*/
-    res.send(detail)
+    });
 });
 
 app.post('/detail', function(req,res){
