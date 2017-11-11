@@ -1917,69 +1917,23 @@ JSON.stringify({"index":index,"name":event.target.name.value,"environment":event
     }
 
     render(){
-
-        let DetailModalUpdateEN = (
-
+        
+        return(
+        
             <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                 <Modal.Header>
                     <Modal.Title>
                         <h1>Editing to {this.state.parameter}</h1>
                     </Modal.Title>
                 </Modal.Header>
-                    <Form onSubmit={this.onSubmitted.bind(this)} horizontal>
+                <Form onSubmit={this.onSubmitted.bind(this)} horizontal>
                 <Modal.Body>
                         <FormGroup controlId="formHorizontalId">
                           <Col componentClass={ControlLabel} sm={2}>
                             ID
                           </Col>
                           <Col sm={10}>
-                            <FormControl value={this.state.parameter}
-type="id" placeholder="id" disabled />
-                          </Col>
-                        </FormGroup>
-                        <FormGroup controlId="formHorizontalName">
-                          <Col componentClass={ControlLabel} sm={2}>
-                            Name
-                          </Col>
-                          <Col sm={10}>
-                            <FormControl name="name" type="text"
-placeholder="Name" />
-                          </Col>
-                        </FormGroup>
-                        <FormGroup controlId="formHorizontalEnvironment">
-                          <Col componentClass={ControlLabel} sm={2}>
-                            Environment
-                          </Col>
-                          <Col sm={10}>
-                            <FormControl name="environment"
-type="text" placeholder="Environment" />
-                          </Col>
-                        </FormGroup>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button >Save</Button>
-                </Modal.Footer>
-                    </Form>
-            </Modal>
-        );
-
-        let DetailModalUpdateES = (
-
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-                <Modal.Header>
-                    <Modal.Title>
-                        <h1>Editing to {this.state.parameter}</h1>
-                    </Modal.Title>
-                </Modal.Header>
-                    <Form onSubmit={this.onSubmitted.bind(this)} horizontal>
-                <Modal.Body>
-                        <FormGroup controlId="formHorizontalId">
-                          <Col componentClass={ControlLabel} sm={2}>
-                            ID
-                          </Col>
-                          <Col sm={10}>
-                            <FormControl value={this.state.parameter}
-type="id" placeholder="id" disabled />
+                            <FormControl value={this.state.parameter} type="id" placeholder="id" disabled />
                           </Col>
                         </FormGroup>
                         <FormGroup controlId="formHorizontalName">
@@ -1987,8 +1941,7 @@ type="id" placeholder="id" disabled />
                             Nombre
                           </Col>
                           <Col sm={10}>
-                            <FormControl name="name" type="text"
-placeholder="Name" />
+                            <FormControl name="name" type="text" placeholder="Nombre" />
                           </Col>
                         </FormGroup>
                         <FormGroup controlId="formHorizontalEnvironment">
@@ -1996,8 +1949,15 @@ placeholder="Name" />
                             Cantidad
                           </Col>
                           <Col sm={10}>
-                            <FormControl name="environment"
-type="text" placeholder="Environment" />
+                            <FormControl name="environment" type="text" placeholder="Cantidad" />
+                          </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formHorizontalEnvironment">
+                          <Col componentClass={ControlLabel} sm={2}>
+                            Precio
+                          </Col>
+                          <Col sm={10}>
+                            <FormControl name="project" type="text" placeholder="Precio" />
                           </Col>
                         </FormGroup>
                 </Modal.Body>
@@ -2006,19 +1966,6 @@ type="text" placeholder="Environment" />
                 </Modal.Footer>
                     </Form>
             </Modal>
-        );
-
-        let DetailModalUpdateActive;
-
-        if(languageActive){
-
-            DetailModalUpdateActive=DetailModalUpdateEN
-        }else{
-            DetailModalUpdateActive=DetailModalUpdateES
-        }
-
-        return(
-                {DetailModalUpdate}
         );
     }
 }

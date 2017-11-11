@@ -558,7 +558,7 @@ var Login = function (_React$Component7) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -2845,7 +2845,7 @@ var DetailModalUpdate = function (_React$Component25) {
         key: 'render',
         value: function render() {
 
-            var DetailModalUpdateEN = React.createElement(
+            return React.createElement(
                 Modal,
                 { show: this.state.showModal, onHide: this.close.bind(this) },
                 React.createElement(
@@ -2879,89 +2879,7 @@ var DetailModalUpdate = function (_React$Component25) {
                             React.createElement(
                                 Col,
                                 { sm: 10 },
-                                React.createElement(FormControl, { value: this.state.parameter,
-                                    type: 'id', placeholder: 'id', disabled: true })
-                            )
-                        ),
-                        React.createElement(
-                            FormGroup,
-                            { controlId: 'formHorizontalName' },
-                            React.createElement(
-                                Col,
-                                { componentClass: ControlLabel, sm: 2 },
-                                'Name'
-                            ),
-                            React.createElement(
-                                Col,
-                                { sm: 10 },
-                                React.createElement(FormControl, { name: 'name', type: 'text',
-                                    placeholder: 'Name' })
-                            )
-                        ),
-                        React.createElement(
-                            FormGroup,
-                            { controlId: 'formHorizontalEnvironment' },
-                            React.createElement(
-                                Col,
-                                { componentClass: ControlLabel, sm: 2 },
-                                'Environment'
-                            ),
-                            React.createElement(
-                                Col,
-                                { sm: 10 },
-                                React.createElement(FormControl, { name: 'environment',
-                                    type: 'text', placeholder: 'Environment' })
-                            )
-                        )
-                    ),
-                    React.createElement(
-                        Modal.Footer,
-                        null,
-                        React.createElement(
-                            Button,
-                            null,
-                            'Save'
-                        )
-                    )
-                )
-            );
-
-            var DetailModalUpdateES = React.createElement(
-                Modal,
-                { show: this.state.showModal, onHide: this.close.bind(this) },
-                React.createElement(
-                    Modal.Header,
-                    null,
-                    React.createElement(
-                        Modal.Title,
-                        null,
-                        React.createElement(
-                            'h1',
-                            null,
-                            'Editing to ',
-                            this.state.parameter
-                        )
-                    )
-                ),
-                React.createElement(
-                    Form,
-                    { onSubmit: this.onSubmitted.bind(this), horizontal: true },
-                    React.createElement(
-                        Modal.Body,
-                        null,
-                        React.createElement(
-                            FormGroup,
-                            { controlId: 'formHorizontalId' },
-                            React.createElement(
-                                Col,
-                                { componentClass: ControlLabel, sm: 2 },
-                                'ID'
-                            ),
-                            React.createElement(
-                                Col,
-                                { sm: 10 },
-                                React.createElement(FormControl, { value: this.state.parameter,
-                                    type: 'id', placeholder: 'id', disabled: true })
+                                React.createElement(FormControl, { value: this.state.parameter, type: 'id', placeholder: 'id', disabled: true })
                             )
                         ),
                         React.createElement(
@@ -2975,8 +2893,7 @@ var DetailModalUpdate = function (_React$Component25) {
                             React.createElement(
                                 Col,
                                 { sm: 10 },
-                                React.createElement(FormControl, { name: 'name', type: 'text',
-                                    placeholder: 'Name' })
+                                React.createElement(FormControl, { name: 'name', type: 'text', placeholder: 'Nombre' })
                             )
                         ),
                         React.createElement(
@@ -2990,8 +2907,21 @@ var DetailModalUpdate = function (_React$Component25) {
                             React.createElement(
                                 Col,
                                 { sm: 10 },
-                                React.createElement(FormControl, { name: 'environment',
-                                    type: 'text', placeholder: 'Environment' })
+                                React.createElement(FormControl, { name: 'environment', type: 'text', placeholder: 'Cantidad' })
+                            )
+                        ),
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalEnvironment' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'Precio'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { name: 'project', type: 'text', placeholder: 'Precio' })
                             )
                         )
                     ),
@@ -3006,17 +2936,6 @@ var DetailModalUpdate = function (_React$Component25) {
                     )
                 )
             );
-
-            var DetailModalUpdateActive = void 0;
-
-            if (languageActive) {
-
-                DetailModalUpdateActive = DetailModalUpdateEN;
-            } else {
-                DetailModalUpdateActive = DetailModalUpdateES;
-            }
-
-            return { DetailModalUpdate: DetailModalUpdate };
         }
     }]);
 
