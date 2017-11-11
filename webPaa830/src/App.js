@@ -408,11 +408,9 @@ onClick={this.onClicked.bind(this)}>Info-Solutions SYS</Link>
                     <Nav>
                       <li><Link to={'/master'}>Facturacion</Link></li>
                       <li><Link to={'/detail'}>Inventario</Link></li>
-                      <NavDropdown eventKey={3} title="Reportes"
-id="basic-nav-dropdown">
-                            <MenuItem eventKey={3.1}><Link
-to="/partials">Cuadre</Link></MenuItem>
-                            <MenuItem eventKey={3.2}>Another action</MenuItem>
+                      <NavDropdown eventKey={3} title="Reportes" id="basic-nav-dropdown">
+                            <MenuItem eventKey={3.1}><Link to="/partials">Cuadre</Link></MenuItem>
+                            <MenuItem eventKey={3.2}><Link to="/tripartials">Resumen Cuadre</Link></MenuItem>
                             <MenuItem eventKey={3.3}>Something else
 here</MenuItem>
                             <MenuItem divider />
@@ -1314,21 +1312,23 @@ getSuggestionValue={getSuggestionValue}
                                   <ControlLabel>Peluquera</ControlLabel>
                                 </Col>
                                 <Col md={4} sm={6}>
-                                  <FormControl componentClass="select"
-name="development" placeholder="Peluquera" required >
+                                  <FormControl componentClass="select" name="development" placeholder="Peluquera" required >
                                     <option value="Alexandra">Alexandra</option>
+                                    <option value="Angie">Angie</option>
+                                    <option value="Alfonsina">Alfonsina</option>
                                     <option value="Dania">Dania</option>
                                     <option value="Daneuri">Daneuri</option>
                                     <option value="Damirky">Damirky</option>
                                     <option value="Dayiana">Dayiana</option>
+                                    <option value="Eva">Eva</option>
                                     <option value="Juribel">Juribel</option>
                                     <option value="Kandy">Kandy</option>
                                     <option value="Massiel">Massiel</option>
-                                    <option
-value="Marionaisi">Marionaisi</option>
-                                    <option value="Naty">Naty</option>
-                                    <option value="Tati">Tati</option>
+                                    <option value="Marionaisi">Marionaisi</option>
                                     <option value="Mayi">Mayi</option>
+                                    <option value="Naty">Naty</option>
+                                    <option value="Nay">Nay</option>
+                                    <option value="Tati">Tati</option>
                                     <option value="otras">otras</option>
                                   </FormControl>
                                 </Col>
@@ -2449,9 +2449,72 @@ style={{'font-size':'20px'}}>{this.props.name}</td>
     }
 }
 
+class TriPartials extends React.Component{
+
+    constructor(){
+        
+        super();
+        this.state = {
+            
+            masterAPI: []
+        }
+    }
+    
+    componentDidMount(){
+        
+        fetch(API_URL+'/weeklyreportrecap',{headers: API_HEADERS})
+          .then((response)=>response.json())
+          .then((responseData)=>{
+              this.setState({
+
+                  masterAPI: responseData
+              })
+          })
+          .catch((error)=>{
+              console.log('Error fetching and parsing data', error);
+        })
+    }
+    
+    render(){
+        
+        return(
+        
+            <TriPartialsTable
+                                masterAPI={this.state.masterAPI}
+            />
+        );
+    }
+}
+
+class TriPartialsTable extends React.Component{
+    
+    render(){
+        
+        return(
+        
+            <Table striped bordered condensed hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {this.props.masterAPI.map(
+                        (master,index) => <tr><td>&nbsp;</td><td>{master._id}</td><td>{master.total}</td></tr>
+                    )}                  
+                </tbody>
+              </Table>
+        );
+    }
+}
+
+
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
+        <Route path="tripartials" component={TriPartials}/>
         <Route path="partials" component={Partials}/>
         <Route path="about" component={About}/>
         <Route path="repos/:repo_name" component={Repos}/>

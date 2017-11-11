@@ -558,7 +558,7 @@ var Login = function (_React$Component7) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -640,22 +640,24 @@ var Toolbar = function (_React$Component8) {
                     ),
                     React.createElement(
                         NavDropdown,
-                        { eventKey: 3, title: 'Reportes',
-                            id: 'basic-nav-dropdown' },
+                        { eventKey: 3, title: 'Reportes', id: 'basic-nav-dropdown' },
                         React.createElement(
                             MenuItem,
                             { eventKey: 3.1 },
                             React.createElement(
                                 Link,
-                                {
-                                    to: '/partials' },
+                                { to: '/partials' },
                                 'Cuadre'
                             )
                         ),
                         React.createElement(
                             MenuItem,
                             { eventKey: 3.2 },
-                            'Another action'
+                            React.createElement(
+                                Link,
+                                { to: '/tripartials' },
+                                'Resumen Cuadre'
+                            )
                         ),
                         React.createElement(
                             MenuItem,
@@ -1933,12 +1935,21 @@ var MasterModalField = function (_React$Component18) {
                                 { md: 4, sm: 6 },
                                 React.createElement(
                                     FormControl,
-                                    { componentClass: 'select',
-                                        name: 'development', placeholder: 'Peluquera', required: true },
+                                    { componentClass: 'select', name: 'development', placeholder: 'Peluquera', required: true },
                                     React.createElement(
                                         'option',
                                         { value: 'Alexandra' },
                                         'Alexandra'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Angie' },
+                                        'Angie'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Alfonsina' },
+                                        'Alfonsina'
                                     ),
                                     React.createElement(
                                         'option',
@@ -1962,6 +1973,11 @@ var MasterModalField = function (_React$Component18) {
                                     ),
                                     React.createElement(
                                         'option',
+                                        { value: 'Eva' },
+                                        'Eva'
+                                    ),
+                                    React.createElement(
+                                        'option',
                                         { value: 'Juribel' },
                                         'Juribel'
                                     ),
@@ -1977,9 +1993,13 @@ var MasterModalField = function (_React$Component18) {
                                     ),
                                     React.createElement(
                                         'option',
-                                        {
-                                            value: 'Marionaisi' },
+                                        { value: 'Marionaisi' },
                                         'Marionaisi'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Mayi' },
+                                        'Mayi'
                                     ),
                                     React.createElement(
                                         'option',
@@ -1988,13 +2008,13 @@ var MasterModalField = function (_React$Component18) {
                                     ),
                                     React.createElement(
                                         'option',
-                                        { value: 'Tati' },
-                                        'Tati'
+                                        { value: 'Nay' },
+                                        'Nay'
                                     ),
                                     React.createElement(
                                         'option',
-                                        { value: 'Mayi' },
-                                        'Mayi'
+                                        { value: 'Tati' },
+                                        'Tati'
                                     ),
                                     React.createElement(
                                         'option',
@@ -3672,12 +3692,128 @@ var PartialsTableBody = function (_React$Component31) {
     return PartialsTableBody;
 }(React.Component);
 
+var TriPartials = function (_React$Component32) {
+    _inherits(TriPartials, _React$Component32);
+
+    function TriPartials() {
+        _classCallCheck(this, TriPartials);
+
+        var _this45 = _possibleConstructorReturn(this, (TriPartials.__proto__ || Object.getPrototypeOf(TriPartials)).call(this));
+
+        _this45.state = {
+
+            masterAPI: []
+        };
+        return _this45;
+    }
+
+    _createClass(TriPartials, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this46 = this;
+
+            fetch(API_URL + '/weeklyreportrecap', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this46.setState({
+
+                    masterAPI: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(TriPartialsTable, {
+                masterAPI: this.state.masterAPI
+            });
+        }
+    }]);
+
+    return TriPartials;
+}(React.Component);
+
+var TriPartialsTable = function (_React$Component33) {
+    _inherits(TriPartialsTable, _React$Component33);
+
+    function TriPartialsTable() {
+        _classCallCheck(this, TriPartialsTable);
+
+        return _possibleConstructorReturn(this, (TriPartialsTable.__proto__ || Object.getPrototypeOf(TriPartialsTable)).apply(this, arguments));
+    }
+
+    _createClass(TriPartialsTable, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                Table,
+                { striped: true, bordered: true, condensed: true, hover: true },
+                React.createElement(
+                    'thead',
+                    null,
+                    React.createElement(
+                        'tr',
+                        null,
+                        React.createElement(
+                            'th',
+                            null,
+                            '#'
+                        ),
+                        React.createElement(
+                            'th',
+                            null,
+                            'Nombre'
+                        ),
+                        React.createElement(
+                            'th',
+                            null,
+                            'Total'
+                        )
+                    )
+                ),
+                React.createElement(
+                    'tbody',
+                    null,
+                    this.props.masterAPI.map(function (master, index) {
+                        return React.createElement(
+                            'tr',
+                            null,
+                            React.createElement(
+                                'td',
+                                null,
+                                '\xA0'
+                            ),
+                            React.createElement(
+                                'td',
+                                null,
+                                master._id
+                            ),
+                            React.createElement(
+                                'td',
+                                null,
+                                master.total
+                            )
+                        );
+                    })
+                )
+            );
+        }
+    }]);
+
+    return TriPartialsTable;
+}(React.Component);
+
 ReactDOM.render(React.createElement(
     Router,
     { history: browserHistory },
     React.createElement(
         Route,
         { path: '/', component: App },
+        React.createElement(Route, { path: 'tripartials', component: TriPartials }),
         React.createElement(Route, { path: 'partials', component: Partials }),
         React.createElement(Route, { path: 'about', component: About }),
         React.createElement(Route, { path: 'repos/:repo_name', component: Repos }),
