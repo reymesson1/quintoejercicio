@@ -410,9 +410,8 @@ onClick={this.onClicked.bind(this)}>Info-Solutions SYS</Link>
                       <li><Link to={'/detail'}>Inventario</Link></li>
                       <NavDropdown eventKey={3} title="Reportes" id="basic-nav-dropdown">
                             <MenuItem eventKey={3.1}><Link to="/partials">Cuadre</Link></MenuItem>
-                            <MenuItem eventKey={3.2}><Link to="/tripartials">Resumen Cuadre</Link></MenuItem>
-                            <MenuItem eventKey={3.3}>Something else
-here</MenuItem>
+                            <MenuItem eventKey={3.2}><Link to="/bipartials">Resume Cuadre por Peluquera</Link></MenuItem>
+                            <MenuItem eventKey={3.3}><Link to="/tripartials">Resumen Cuadre General</Link></MenuItem>
                             <MenuItem divider />
                             <MenuItem eventKey={3.4}>Separated link</MenuItem>
                       </NavDropdown>
@@ -2457,11 +2456,104 @@ class TriPartialsTable extends React.Component{
     }
 }
 
+class BiPartials extends React.Component{
+
+     constructor(){
+
+          super();
+          this.state = {
+
+              masterAPI: [],
+          }
+
+    }
+
+    componentDidMount(){
+
+          fetch(API_URL+'/weeklyreport',{headers: API_HEADERS})
+          .then((response)=>response.json())
+          .then((responseData)=>{
+              this.setState({
+
+                  masterAPI: responseData
+              })
+          })
+          .catch((error)=>{
+              console.log('Error fetching and parsing data', error);
+          })
+
+    }
+
+    render(){
+        
+        console.log(this.state.masterAPI);
+        
+        return(
+            <Table striped bordered condensed hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Peluquera</th>
+                  </tr>
+                </thead>
+                <tbody>
+            {this.state.masterAPI.map(
+                (master, index) => <BiPartialsTable
+                                                index={index}
+                                                fecha={master._id}
+                                                count={master.count}
+                            />
+            )}
+                </tbody>
+              </Table>
+        );
+    }
+}
+
+class BiPartialsTable extends React.Component{
+    
+    render(){
+        
+        return(
+                <tr>
+                    <td>{this.props.index}</td>
+                    <td>{this.props.fecha}</td>
+                    <td>
+                        <Table>     
+                            
+                                {this.props.count.map(
+                                    (item) => <BiPartialsTableBody
+                                                                        totales={item.totales}
+                                                                        item={item.item}
+                                              />
+                                )}
+                            
+                        </Table>
+                    </td>
+                  </tr>
+        );
+    }
+}
+
+class BiPartialsTableBody extends React.Component{
+    
+    render(){
+        
+        return(
+            <tr>
+            <td>{this.props.item[0]}</td>
+            <td>{this.props.totales}</td>
+            </tr>
+        );
+    }
+}
 
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
         <Route path="tripartials" component={TriPartials}/>
+	<Route path="bipartials" component={BiPartials}/>
         <Route path="partials" component={Partials}/>
         <Route path="about" component={About}/>
         <Route path="repos/:repo_name" component={Repos}/>

@@ -107,5 +107,12 @@ app.get('/weeklyreportrecap',function(req,res){
 
 })
 
+app.get('/weeklyreportbydev',function(req,res){
+
+	dba.getWeeklyReportbyDevelopment({},function(data){
+
+		res.send(data)
+	})
+})
 
 app.listen(80);

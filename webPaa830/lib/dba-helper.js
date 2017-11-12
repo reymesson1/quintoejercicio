@@ -114,7 +114,7 @@ module.exports = function(){
                 var url = "mongodb://localhost:27017/mechy";
                 MongoClient.connect(url, function(err, db) {
                     if (err) throw err;
-                      db.collection("master").aggregate([{"$project":{"_id":true,"date":true,"item.development":true,"project":true,"pago":{"$multiply":[{"$divide":[10,100]},"$project"]}}},{"$group":{"_id":{"fecha":"$date","item":"$item.development"},"total":{"$sum":"$pago"}}},{"$group":{"_id":"$_id.fecha","count":{"$push":{"item":"$_id.item","totales":"$total"}}}},{"$sort":{"_id":-1}}]).toArray(function(err,result){
+                      db.collection("master").aggregate([{"$project":{"_id":true,"date":true,"item.development":true,"project":true,"pago":"$project"}},{"$group":{"_id":{"fecha":"$date","item":"$item.development"},"total":{"$sum":"$pago"}}},{"$group":{"_id":"$_id.fecha","count":{"$push":{"item":"$_id.item","totales":"$total"}}}},{"$sort":{"_id":-1}}]).toArray(function(err,result){
                           callback(result);
                 })
                 db.close();
@@ -136,6 +136,20 @@ module.exports = function(){
 
         }
 
+	function getWeeklyReportbyDevelopment(master,callback){
+
+		 var MongoClient = require('mongodb').MongoClient;
+                var url = "mongodb://localhost:27017/mechy";
+                MongoClient.connect(url, function(err, db) {
+                    if (err) throw err;
+                      db.collection("master").aggregate([{"$group":{"_id":{"peluquera":"$item.development","fecha":"$date"},"total":{"$sum":"$project"}}}]).toArray(function(err,result){
+                          callback(result);
+                })
+                db.close();
+                });
+
+	}
+
 	return{
 		
 		getUsers: getUsers,
@@ -145,8 +159,8 @@ module.exports = function(){
 		getDetail: getDetail,
 		removeDetail: removeDetail,
 		getWeeklyReport: getWeeklyReport,
-		getWeeklyReportRecap: getWeeklyReportRecap
-
+		getWeeklyReportRecap: getWeeklyReportRecap,
+		getWeeklyReportbyDevelopment:getWeeklyReportbyDevelopment
 	}
 
 }

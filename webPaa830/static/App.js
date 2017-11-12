@@ -558,7 +558,7 @@ var Login = function (_React$Component7) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -655,14 +655,18 @@ var Toolbar = function (_React$Component8) {
                             { eventKey: 3.2 },
                             React.createElement(
                                 Link,
-                                { to: '/tripartials' },
-                                'Resumen Cuadre'
+                                { to: '/bipartials' },
+                                'Resume Cuadre por Peluquera'
                             )
                         ),
                         React.createElement(
                             MenuItem,
                             { eventKey: 3.3 },
-                            'Something else here'
+                            React.createElement(
+                                Link,
+                                { to: '/tripartials' },
+                                'Resumen Cuadre General'
+                            )
                         ),
                         React.createElement(MenuItem, { divider: true }),
                         React.createElement(
@@ -3726,6 +3730,168 @@ var TriPartialsTable = function (_React$Component33) {
     return TriPartialsTable;
 }(React.Component);
 
+var BiPartials = function (_React$Component34) {
+    _inherits(BiPartials, _React$Component34);
+
+    function BiPartials() {
+        _classCallCheck(this, BiPartials);
+
+        var _this48 = _possibleConstructorReturn(this, (BiPartials.__proto__ || Object.getPrototypeOf(BiPartials)).call(this));
+
+        _this48.state = {
+
+            masterAPI: []
+        };
+
+        return _this48;
+    }
+
+    _createClass(BiPartials, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this49 = this;
+
+            fetch(API_URL + '/weeklyreport', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this49.setState({
+
+                    masterAPI: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            console.log(this.state.masterAPI);
+
+            return React.createElement(
+                Table,
+                { striped: true, bordered: true, condensed: true, hover: true },
+                React.createElement(
+                    'thead',
+                    null,
+                    React.createElement(
+                        'tr',
+                        null,
+                        React.createElement(
+                            'th',
+                            null,
+                            '#'
+                        ),
+                        React.createElement(
+                            'th',
+                            null,
+                            'Fecha'
+                        ),
+                        React.createElement(
+                            'th',
+                            null,
+                            'Peluquera'
+                        )
+                    )
+                ),
+                React.createElement(
+                    'tbody',
+                    null,
+                    this.state.masterAPI.map(function (master, index) {
+                        return React.createElement(BiPartialsTable, {
+                            index: index,
+                            fecha: master._id,
+                            count: master.count
+                        });
+                    })
+                )
+            );
+        }
+    }]);
+
+    return BiPartials;
+}(React.Component);
+
+var BiPartialsTable = function (_React$Component35) {
+    _inherits(BiPartialsTable, _React$Component35);
+
+    function BiPartialsTable() {
+        _classCallCheck(this, BiPartialsTable);
+
+        return _possibleConstructorReturn(this, (BiPartialsTable.__proto__ || Object.getPrototypeOf(BiPartialsTable)).apply(this, arguments));
+    }
+
+    _createClass(BiPartialsTable, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.index
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.fecha
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    React.createElement(
+                        Table,
+                        null,
+                        this.props.count.map(function (item) {
+                            return React.createElement(BiPartialsTableBody, {
+                                totales: item.totales,
+                                item: item.item
+                            });
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return BiPartialsTable;
+}(React.Component);
+
+var BiPartialsTableBody = function (_React$Component36) {
+    _inherits(BiPartialsTableBody, _React$Component36);
+
+    function BiPartialsTableBody() {
+        _classCallCheck(this, BiPartialsTableBody);
+
+        return _possibleConstructorReturn(this, (BiPartialsTableBody.__proto__ || Object.getPrototypeOf(BiPartialsTableBody)).apply(this, arguments));
+    }
+
+    _createClass(BiPartialsTableBody, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.item[0]
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.totales
+                )
+            );
+        }
+    }]);
+
+    return BiPartialsTableBody;
+}(React.Component);
+
 ReactDOM.render(React.createElement(
     Router,
     { history: browserHistory },
@@ -3733,6 +3899,7 @@ ReactDOM.render(React.createElement(
         Route,
         { path: '/', component: App },
         React.createElement(Route, { path: 'tripartials', component: TriPartials }),
+        React.createElement(Route, { path: 'bipartials', component: BiPartials }),
         React.createElement(Route, { path: 'partials', component: Partials }),
         React.createElement(Route, { path: 'about', component: About }),
         React.createElement(Route, { path: 'repos/:repo_name', component: Repos }),
