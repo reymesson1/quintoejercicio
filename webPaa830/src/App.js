@@ -1320,6 +1320,7 @@ getSuggestionValue={getSuggestionValue}
                                     <option value="Damirky">Damirky</option>
                                     <option value="Dayiana">Dayiana</option>
                                     <option value="Eva">Eva</option>
+                                    <option value="Fatima">Fatima</option>
                                     <option value="Juribel">Juribel</option>
                                     <option value="Kandy">Kandy</option>
                                     <option value="Massiel">Massiel</option>
