@@ -42,8 +42,8 @@ var Autosuggest = Autosuggest;
 
 var moment = moment;
 
-var API_URL = 'http://localhost';
-//const API_URL = 'http://159.203.156.208';
+//const API_URL = 'http://localhost';
+var API_URL = 'http://159.203.156.208';
 
 var API_HEADERS = {
 
@@ -552,14 +552,13 @@ var Login = function (_React$Component7) {
                                                 React.createElement(
                                                     'label',
                                                     null,
-                                                    React.createElement('input', { name: 'remember',
-                                                        type: 'checkbox', value: 'Remember Me' }),
+                                                    React.createElement('input', { name: 'remember', type: 'checkbox', value: 'Remember Me' }),
                                                     ' Remember Me'
                                                 )
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn btn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
