@@ -30,7 +30,8 @@ const Autosuggest = Autosuggest;
 
 const moment = moment;
 
-const API_URL = 'http://159.203.156.208';
+const API_URL = 'http://localhost';
+//const API_URL = 'http://159.203.156.208';
 
 const API_HEADERS = {
 
@@ -2445,14 +2446,56 @@ class TriPartialsTable extends React.Component{
                     <th>#</th>
                     <th>Nombre</th>
                     <th>Total</th>
+                    <th>Porcentaje</th>
+                    <th>Total + Porcentaje</th>
                   </tr>
                 </thead>
                 <tbody>
                     {this.props.masterAPI.map(
-                        (master,index) => <tr><td>&nbsp;</td><td>{master._id}</td><td>{master.total}</td></tr>
+                         (master,index) => <TriPartialsTableBody
+                                                        master={master._id}
+                                                        total={master.total}
+                                            />
                     )}                  
                 </tbody>
               </Table>
+        );
+    }
+}
+
+class TriPartialsTableBody extends React.Component{
+
+    constructor(){
+        super();
+        this.state = {
+            percentage: 1
+        }
+    }
+
+    onChanged(data){
+        this.setState({
+            percentage: data.target.value
+        })
+    }
+
+    render(){
+
+        let percentageTotal = this.props.total * this.state.percentage / 100;
+
+        return(
+
+            <tr>
+                <td>&nbsp;</td>
+                <td>{this.props.master}</td>
+                <td>{this.props.total.toFixed(2)}</td>
+                <td>
+                    <input type="number" name="percentage" placeholder="Porcentaje"  onChange={this.onChanged.bind(this)} />
+                </td>
+                <td>
+                    <h6>{percentageTotal.toFixed(2)}</h6>
+                </td>
+            </tr>
+
         );
     }
 }
@@ -2486,9 +2529,7 @@ class BiPartials extends React.Component{
     }
 
     render(){
-        
-        console.log(this.state.masterAPI);
-        
+                
         return(
             <Table striped bordered condensed hover>
                 <thead>

@@ -42,7 +42,8 @@ var Autosuggest = Autosuggest;
 
 var moment = moment;
 
-var API_URL = 'http://159.203.156.208';
+var API_URL = 'http://localhost';
+//const API_URL = 'http://159.203.156.208';
 
 var API_HEADERS = {
 
@@ -558,7 +559,7 @@ var Login = function (_React$Component7) {
                                             ),
                                             React.createElement(
                                                 'button',
-                                                { className: 'btn\nbtn-lg btn-success btn-block' },
+                                                { className: 'btn\r\nbtn-lg btn-success btn-block' },
                                                 'Login'
                                             )
                                         )
@@ -3700,6 +3701,16 @@ var TriPartialsTable = function (_React$Component33) {
                             'th',
                             null,
                             'Total'
+                        ),
+                        React.createElement(
+                            'th',
+                            null,
+                            'Porcentaje'
+                        ),
+                        React.createElement(
+                            'th',
+                            null,
+                            'Total + Porcentaje'
                         )
                     )
                 ),
@@ -3707,25 +3718,10 @@ var TriPartialsTable = function (_React$Component33) {
                     'tbody',
                     null,
                     this.props.masterAPI.map(function (master, index) {
-                        return React.createElement(
-                            'tr',
-                            null,
-                            React.createElement(
-                                'td',
-                                null,
-                                '\xA0'
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                master._id
-                            ),
-                            React.createElement(
-                                'td',
-                                null,
-                                master.total
-                            )
-                        );
+                        return React.createElement(TriPartialsTableBody, {
+                            master: master._id,
+                            total: master.total
+                        });
                     })
                 )
             );
@@ -3735,31 +3731,97 @@ var TriPartialsTable = function (_React$Component33) {
     return TriPartialsTable;
 }(React.Component);
 
-var BiPartials = function (_React$Component34) {
-    _inherits(BiPartials, _React$Component34);
+var TriPartialsTableBody = function (_React$Component34) {
+    _inherits(TriPartialsTableBody, _React$Component34);
+
+    function TriPartialsTableBody() {
+        _classCallCheck(this, TriPartialsTableBody);
+
+        var _this48 = _possibleConstructorReturn(this, (TriPartialsTableBody.__proto__ || Object.getPrototypeOf(TriPartialsTableBody)).call(this));
+
+        _this48.state = {
+            percentage: 1
+        };
+        return _this48;
+    }
+
+    _createClass(TriPartialsTableBody, [{
+        key: 'onChanged',
+        value: function onChanged(data) {
+            this.setState({
+                percentage: data.target.value
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            var percentageTotal = this.props.total * this.state.percentage / 100;
+
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    '\xA0'
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.master
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.total.toFixed(2)
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    React.createElement('input', { type: 'number', name: 'percentage', placeholder: 'Porcentaje', onChange: this.onChanged.bind(this) })
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    React.createElement(
+                        'h6',
+                        null,
+                        percentageTotal.toFixed(2)
+                    )
+                )
+            );
+        }
+    }]);
+
+    return TriPartialsTableBody;
+}(React.Component);
+
+var BiPartials = function (_React$Component35) {
+    _inherits(BiPartials, _React$Component35);
 
     function BiPartials() {
         _classCallCheck(this, BiPartials);
 
-        var _this48 = _possibleConstructorReturn(this, (BiPartials.__proto__ || Object.getPrototypeOf(BiPartials)).call(this));
+        var _this49 = _possibleConstructorReturn(this, (BiPartials.__proto__ || Object.getPrototypeOf(BiPartials)).call(this));
 
-        _this48.state = {
+        _this49.state = {
 
             masterAPI: []
         };
 
-        return _this48;
+        return _this49;
     }
 
     _createClass(BiPartials, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this49 = this;
+            var _this50 = this;
 
             fetch(API_URL + '/weeklyreport', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this49.setState({
+                _this50.setState({
 
                     masterAPI: responseData
                 });
@@ -3770,8 +3832,6 @@ var BiPartials = function (_React$Component34) {
     }, {
         key: 'render',
         value: function render() {
-
-            console.log(this.state.masterAPI);
 
             return React.createElement(
                 Table,
@@ -3817,8 +3877,8 @@ var BiPartials = function (_React$Component34) {
     return BiPartials;
 }(React.Component);
 
-var BiPartialsTable = function (_React$Component35) {
-    _inherits(BiPartialsTable, _React$Component35);
+var BiPartialsTable = function (_React$Component36) {
+    _inherits(BiPartialsTable, _React$Component36);
 
     function BiPartialsTable() {
         _classCallCheck(this, BiPartialsTable);
@@ -3864,8 +3924,8 @@ var BiPartialsTable = function (_React$Component35) {
     return BiPartialsTable;
 }(React.Component);
 
-var BiPartialsTableBody = function (_React$Component36) {
-    _inherits(BiPartialsTableBody, _React$Component36);
+var BiPartialsTableBody = function (_React$Component37) {
+    _inherits(BiPartialsTableBody, _React$Component37);
 
     function BiPartialsTableBody() {
         _classCallCheck(this, BiPartialsTableBody);
