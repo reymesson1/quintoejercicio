@@ -30,8 +30,8 @@ const Autosuggest = Autosuggest;
 
 const moment = moment;
 
-//const API_URL = 'http://localhost'; 
-const API_URL = 'http://159.203.156.208';
+const API_URL = 'http://localhost'; 
+//const API_URL = 'http://159.203.156.208';
 
 const API_HEADERS = {
 
@@ -2487,7 +2487,7 @@ class TriPartialsTableBody extends React.Component{
                 <td>{this.props.master}</td>
                 <td>{this.props.total.toFixed(2)}</td>
                 <td>
-                    <input type="number" name="percentage" placeholder="Porcentaje"  onChange={this.onChanged.bind(this)} />
+                    <input type="number" name="percentage" placeholder="%"  onChange={this.onChanged.bind(this)} />
                 </td>
                 <td>
                     <h6>{percentageTotal.toFixed(2)}</h6>
