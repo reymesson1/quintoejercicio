@@ -1987,6 +1987,11 @@ var MasterModalField = function (_React$Component18) {
                                     ),
                                     React.createElement(
                                         'option',
+                                        { value: 'Ivelisse' },
+                                        'Ivelisse'
+                                    ),
+                                    React.createElement(
+                                        'option',
                                         { value: 'Juribel' },
                                         'Juribel'
                                     ),
@@ -2004,6 +2009,11 @@ var MasterModalField = function (_React$Component18) {
                                         'option',
                                         { value: 'Marionaisi' },
                                         'Marionaisi'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Marlyn' },
+                                        'Marlyn'
                                     ),
                                     React.createElement(
                                         'option',
@@ -3778,7 +3788,7 @@ var TriPartialsTableBody = function (_React$Component34) {
                 React.createElement(
                     'td',
                     null,
-                    React.createElement('input', { type: 'number', name: 'percentage', placeholder: 'Porcentaje', onChange: this.onChanged.bind(this) })
+                    React.createElement('input', { type: 'number', name: 'percentage', placeholder: '%', onChange: this.onChanged.bind(this) })
                 ),
                 React.createElement(
                     'td',
