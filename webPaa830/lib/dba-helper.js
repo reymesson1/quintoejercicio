@@ -129,7 +129,7 @@ module.exports = function(){
                 MongoClient.connect(url, function(err, db) {
                     if (err) throw err;
                       db.collection("master").aggregate([{"$match":{"date":{"$gte":"2018-01-15","$lte":"2018-01-31"}}},{"$group":{"_id":"$item.development","total":{"$sum":"$project"}}},{"$sort":{"_id":1}}]).toArray(function(err,result){
-                          callback(result);
+                          callback(result); 
                 })
                 db.close();
                 });
