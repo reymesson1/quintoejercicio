@@ -1942,98 +1942,28 @@ var MasterModalField = function (_React$Component18) {
                                     { componentClass: 'select', name: 'development', placeholder: 'Peluquera', required: true },
                                     React.createElement(
                                         'option',
-                                        { value: 'Alexandra' },
-                                        'Alexandra'
+                                        { value: 'Margarita' },
+                                        'Margarita'
                                     ),
                                     React.createElement(
                                         'option',
-                                        { value: 'Angie' },
-                                        'Angie'
+                                        { value: 'Mariluz' },
+                                        'Mariluz'
                                     ),
                                     React.createElement(
                                         'option',
-                                        { value: 'Alfonsina' },
-                                        'Alfonsina'
+                                        { value: 'Ninoska' },
+                                        'Ninoska'
                                     ),
                                     React.createElement(
                                         'option',
-                                        { value: 'Dania' },
-                                        'Dania'
+                                        { value: 'Altagracia' },
+                                        'Altagracia'
                                     ),
                                     React.createElement(
                                         'option',
-                                        { value: 'Daneuri' },
-                                        'Daneuri'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Damirky' },
-                                        'Damirky'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Dayiana' },
-                                        'Dayiana'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Eva' },
-                                        'Eva'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Fatima' },
-                                        'Fatima'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Ivelisse' },
-                                        'Ivelisse'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Juribel' },
-                                        'Juribel'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Kandy' },
-                                        'Kandy'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Massiel' },
-                                        'Massiel'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Marionaisi' },
-                                        'Marionaisi'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Marlyn' },
-                                        'Marlyn'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Mayi' },
-                                        'Mayi'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Naty' },
-                                        'Naty'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Nay' },
-                                        'Nay'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Tati' },
-                                        'Tati'
+                                        { value: 'Alba' },
+                                        'Alba'
                                     ),
                                     React.createElement(
                                         'option',

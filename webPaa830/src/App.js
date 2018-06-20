@@ -1310,25 +1310,11 @@ getSuggestionValue={getSuggestionValue}
                                 </Col>
                                 <Col md={4} sm={6}>
                                   <FormControl componentClass="select" name="development" placeholder="Peluquera" required >
-                                    <option value="Alexandra">Alexandra</option>
-                                    <option value="Angie">Angie</option>
-                                    <option value="Alfonsina">Alfonsina</option>
-                                    <option value="Dania">Dania</option>
-                                    <option value="Daneuri">Daneuri</option>
-                                    <option value="Damirky">Damirky</option>
-                                    <option value="Dayiana">Dayiana</option>
-                                    <option value="Eva">Eva</option>
-                                    <option value="Fatima">Fatima</option>
-                                    <option value="Ivelisse">Ivelisse</option>
-                                    <option value="Juribel">Juribel</option>
-                                    <option value="Kandy">Kandy</option>
-                                    <option value="Massiel">Massiel</option>
-                                    <option value="Marionaisi">Marionaisi</option>
-                                    <option value="Marlyn">Marlyn</option>
-                                    <option value="Mayi">Mayi</option>
-                                    <option value="Naty">Naty</option>
-                                    <option value="Nay">Nay</option>
-                                    <option value="Tati">Tati</option>
+                                    <option value="Margarita">Margarita</option>                                    
+                                    <option value="Mariluz">Mariluz</option>                                    
+                                    <option value="Ninoska">Ninoska</option>                                    
+                                    <option value="Altagracia">Altagracia</option>                                    
+                                    <option value="Alba">Alba</option>                                    
                                     <option value="otras">otras</option>
                                   </FormControl>
                                 </Col>
