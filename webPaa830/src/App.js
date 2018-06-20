@@ -205,10 +205,9 @@ let today = moment(new Date()).format('DD-MM-YYYY');
                     <Row>
                         <Col xs={12}>
                             <img src="/logoprint.png"/>
-                            <h5>"Las mejores adaptaciones de pelos de
-todo el pais"</h5>
-                            <h5>Ubicado en la Plaza Carmen Renata III</h5>
-                            <h5>Tel.: 809-937-5052 Cel:.809-817-3349</h5>
+                            <h5>"Novara Beauty Salon - Spa "</h5>
+                            <h5>Ubicado en la calle 12 de Julio esq. Gral Roman</h5>
+                            <h5>Tel.: 809-535-5500</h5>
                             <br/>
                             <br/>
                             <h5 className="col-xs-offset-7">Fecha:

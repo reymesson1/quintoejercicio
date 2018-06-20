@@ -251,17 +251,17 @@ var ActionsTable = function (_React$Component3) {
                             React.createElement(
                                 'h5',
                                 null,
-                                '"Las mejores adaptaciones de pelos de todo el pais"'
+                                '"Novara Beauty Salon - Spa "'
                             ),
                             React.createElement(
                                 'h5',
                                 null,
-                                'Ubicado en la Plaza Carmen Renata III'
+                                'Ubicado en la calle 12 de Julio esq. Gral Roman'
                             ),
                             React.createElement(
                                 'h5',
                                 null,
-                                'Tel.: 809-937-5052 Cel:.809-817-3349'
+                                'Tel.: 809-535-5500'
                             ),
                             React.createElement('br', null),
                             React.createElement('br', null),
