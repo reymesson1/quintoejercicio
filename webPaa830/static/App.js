@@ -1942,8 +1942,8 @@ var MasterModalField = function (_React$Component18) {
                                     { componentClass: 'select', name: 'development', placeholder: 'Peluquera', required: true },
                                     React.createElement(
                                         'option',
-                                        { value: 'Margarita' },
-                                        'Margarita'
+                                        { value: 'Margaly' },
+                                        'Margaly'
                                     ),
                                     React.createElement(
                                         'option',
@@ -1964,6 +1964,21 @@ var MasterModalField = function (_React$Component18) {
                                         'option',
                                         { value: 'Alba' },
                                         'Alba'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Cristina' },
+                                        'Cristina'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Marlene' },
+                                        'Marlene'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Lucy' },
+                                        'Lucy'
                                     ),
                                     React.createElement(
                                         'option',
