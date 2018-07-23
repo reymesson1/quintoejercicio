@@ -150,13 +150,36 @@ module.exports = function(){
                 db.close();
                 });
 
-	}
+        }
+        
+        function setMaster(master){
+
+                var MongoClient = require('mongodb').MongoClient;
+                var url = "mongodb://localhost:27017/mechy";
+
+                MongoClient.connect(url, function(err, db) {
+
+                        if (err) throw err;
+                        db.collection("master").remove(master, function(err, res) {
+
+                                if (err) throw err;
+                                console.log("1 record removed");
+                                db.close();
+
+                        });
+
+                });
+
+        }
+
+
 
 	return{
 		
 		getUsers: getUsers,
 		addMaster: addMaster,
-		getMaster: getMaster,
+                getMaster: getMaster,
+                setMaster: setMaster,
 		addDetail: addDetail,
 		getDetail: getDetail,
 		removeDetail: removeDetail,

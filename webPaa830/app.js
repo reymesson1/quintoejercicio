@@ -43,8 +43,13 @@ app.post('/master', function(req,res){
 app.post('/deletemaster', function(req,res){
 
     var index = req.body;
+    var id = master[index.id].id;
+    
+    dba.setMaster({"id":id});
+
     master.splice(index,1);
 });
+
 
 
 app.get('/reporte', function(req,res){
