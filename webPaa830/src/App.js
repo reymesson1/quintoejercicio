@@ -1310,14 +1310,15 @@ getSuggestionValue={getSuggestionValue}
                                 </Col>
                                 <Col md={4} sm={6}>
                                   <FormControl componentClass="select" name="development" placeholder="Peluquera" required >
-                                    <option value="Margaly">Margaly</option>                                    
+                                    <option value="Magaly">Magaly</option>                                    
                                     <option value="Mariluz">Mariluz</option>                                    
                                     <option value="Ninoska">Ninoska</option>                                    
-                                    <option value="Altagracia">Altagracia</option>                                    
                                     <option value="Alba">Alba</option>                                    
                                     <option value="Cristina">Cristina</option>                                    
                                     <option value="Marlene">Marlene</option>                                    
                                     <option value="Lucy">Lucy</option>                                    
+                                    <option value="Fabiola">Fabiola</option>                                    
+                                    <option value="Mirian">Mirian</option>                                    
                                     <option value="otras">otras</option>
                                   </FormControl>
                                 </Col>

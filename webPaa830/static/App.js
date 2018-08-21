@@ -1942,8 +1942,8 @@ var MasterModalField = function (_React$Component18) {
                                     { componentClass: 'select', name: 'development', placeholder: 'Peluquera', required: true },
                                     React.createElement(
                                         'option',
-                                        { value: 'Margaly' },
-                                        'Margaly'
+                                        { value: 'Magaly' },
+                                        'Magaly'
                                     ),
                                     React.createElement(
                                         'option',
@@ -1954,11 +1954,6 @@ var MasterModalField = function (_React$Component18) {
                                         'option',
                                         { value: 'Ninoska' },
                                         'Ninoska'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Altagracia' },
-                                        'Altagracia'
                                     ),
                                     React.createElement(
                                         'option',
@@ -1979,6 +1974,16 @@ var MasterModalField = function (_React$Component18) {
                                         'option',
                                         { value: 'Lucy' },
                                         'Lucy'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Fabiola' },
+                                        'Fabiola'
+                                    ),
+                                    React.createElement(
+                                        'option',
+                                        { value: 'Mirian' },
+                                        'Mirian'
                                     ),
                                     React.createElement(
                                         'option',
