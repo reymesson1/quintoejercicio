@@ -411,7 +411,7 @@ onClick={this.onClicked.bind(this)}>Info-Solutions SYS</Link>
                             <MenuItem eventKey={3.2}><Link to="/bipartials">Resume Cuadre por Peluquera</Link></MenuItem>
                             <MenuItem eventKey={3.3}><Link to="/tripartials">Resumen Cuadre General</Link></MenuItem>
                             <MenuItem divider />
-                            <MenuItem eventKey={3.4}>Separated link</MenuItem>
+                            <MenuItem eventKey={3.4}><Link to="/agregar_peluquera">Agregar Peluquera</Link></MenuItem>
                       </NavDropdown>
                       <li
 style={{'float':'right','position':'absolute','left':'80%'}}><Link
@@ -1144,9 +1144,28 @@ class MasterModalField extends React.Component{
         this.state = {
 
             value: '',
-            suggestions: []
+            suggestions: [],
+            peluqueraData: []
         }
     }
+
+    componentDidMount(){
+
+        fetch(API_URL+'/peluquera',{headers: API_HEADERS})
+        .then((response)=>response.json())
+        .then((responseData)=>{
+            this.setState({
+
+                peluqueraData: responseData
+            })
+
+        })
+        .catch((error)=>{
+            console.log('Error fetching and parsing data', error);
+        })
+
+}
+
 
     onChange(event, {newValue,method}){
         this.setState({
@@ -1310,16 +1329,9 @@ getSuggestionValue={getSuggestionValue}
                                 </Col>
                                 <Col md={4} sm={6}>
                                   <FormControl componentClass="select" name="development" placeholder="Peluquera" required >
-                                    <option value="Magaly">Magaly</option>                                    
-                                    <option value="Mariluz">Mariluz</option>                                    
-                                    <option value="Ninoska">Ninoska</option>                                    
-                                    <option value="Alba">Alba</option>                                    
-                                    <option value="Cristina">Cristina</option>                                    
-                                    <option value="Marlene">Marlene</option>                                    
-                                    <option value="Lucy">Lucy</option>                                    
-                                    <option value="Fabiola">Fabiola</option>                                    
-                                    <option value="Mirian">Mirian</option>                                    
-                                    <option value="otras">otras</option>
+                                    {this.state.peluqueraData.sort((a,b)=>a.name>b.name).map(
+                                        item => <option value={item.name}>{item.name}</option>                                    
+                                    )}
                                   </FormControl>
                                 </Col>
                             </FormGroup>
@@ -2580,11 +2592,251 @@ class BiPartialsTableBody extends React.Component{
     }
 }
 
+class AgregarPeluquera extends React.Component{
+
+    constructor() {
+
+        super();
+        this.state = {
+            showModal: false,
+            filterText: '',
+            peluqueraData: []
+        }
+    }
+
+    componentDidMount(){
+
+            fetch(API_URL+'/peluquera',{headers: API_HEADERS})
+            .then((response)=>response.json())
+            .then((responseData)=>{
+                this.setState({
+
+                    peluqueraData: responseData
+                })
+
+            })
+            .catch((error)=>{
+                console.log('Error fetching and parsing data', error);
+            })
+
+    }
+
+    close() {
+        this.setState({
+            showModal: false
+        });
+    }
+
+    open() {
+        this.setState({
+            showModal: true
+        });
+    }
+
+    onDeleted(value){
+
+        let nextState = this.state.peluqueraData;
+
+        var index = nextState.findIndex(x=> x.id==value);
+        console.log(nextState);
+        console.log(value)
+        nextState.splice(index,1);
+
+        this.setState({
+
+            peluqueraData: nextState
+        });
+
+        fetch(API_URL+'/deletepeluquera', {
+
+              method: 'post',
+              headers: API_HEADERS,
+              body: JSON.stringify({"index":index,"id":value})
+        })
+    }
+
+    onSavePeluquera(event){
+
+        event.preventDefault();
+
+        let today = moment(new Date()).format('YYYY-MM-DD');
+
+        let newPeluquera = {
+
+            "id": Date.now(),
+            "date": today,
+            "name": event.target.name.value,
+        }
+
+        let nextState = this.state.peluqueraData;
+
+        nextState.push(newPeluquera);
+
+        fetch(API_URL+'/peluquera', {
+
+                 method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify(newPeluquera)
+        })
+
+        this.setState({
+
+            peluqueraData: nextState,
+            showModal: false
+        });
+
+    }
+
+    onHandleChange(event){
+
+        this.setState({
+
+            filterText: event.target.value
+        });
+    }
+
+    
+    render(){   
+        return(
+                <Grid>
+                <Row>
+                    <PeluqueraSearch/>
+                </Row>
+            <Row>
+            <div className="pull-right">
+                <Button onClick={this.open.bind(this)}>Agregar Peluquera</Button>
+                <PeluqueraModal showModal={this.state.showModal}
+                                            peluqueraCallback={{
+                                                open:this.open,
+                                                close:this.close.bind(this), 
+                                                onsavepeluquera:this.onSavePeluquera.bind(this),
+                                                ondeletepeluquera:this.onDeleted.bind(this)
+                                            }}
+                            />
+
+            </div>
+            </Row>
+            <br/>
+            <Row>
+                <PeluqueraTable
+                                    filterText={this.state.filterText}
+                                    peluqueraData={this.state.peluqueraData}     
+                                    peluqueraCallback={{
+                                        onDeleted: this.onDeleted.bind(this)
+                                    }}                                               
+                />
+            </Row>
+            </Grid>
+        );
+    }
+}
+class PeluqueraSearch extends React.Component{
+    render(){
+        return(
+            <Panel header="Busqueda ">
+                <form>
+                <div className="form-group">
+                    <div className="col-md-2 col-sm-2">
+                        <label>Buscar:</label>
+                    </div>
+                    <div className="col-md-10 col-sm-10">
+                        <input type="text" className="form-control" id="first_name" name="first_name"/>
+                    </div>
+                </div>
+                </form>
+            </Panel>
+        );
+    }
+}
+class PeluqueraTable extends React.Component{
+    render(){
+
+        let filteredMaster = this.props.peluqueraData.filter(
+
+            (master) => master.name.indexOf(this.props.filterText) !== -1
+        );
+
+        return(
+            <Panel header="Listado de peluquera">
+                <Table striped bordered condensed hover>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredMaster.map(
+                            (master, index) => <PeluqueraTableBody
+                                                                    id={master.id}                                                                    date={master.date}
+                                                                    date={master.date}
+                                                                    name={master.name}
+                                                                    peluqueraCallback={this.props.peluqueraCallback}
+                                                />
+                    )}
+                    </tbody>
+                </Table>
+            </Panel>
+        );
+    }
+}
+
+class PeluqueraTableBody extends React.Component{
+    render(){
+        return(
+            <tr>
+                <td>{this.props.id}</td>
+                <td>{this.props.date}</td>
+                <td>{this.props.name}</td>
+                <td>
+                    <Button className="btn btn-default"><i className="fa fa-edit" aria-hidden="true"></i></Button>
+                    <Button onClick={this.props.peluqueraCallback.onDeleted.bind(this,this.props.id)}><i className="fa fa-trash" aria-hidden="true"></i></Button>
+                </td>
+
+            </tr>
+        );
+    }
+}
+
+
+class PeluqueraModal extends React.Component{
+
+    render(){
+        return(
+            <Modal show={this.props.showModal} onHide={this.props.peluqueraCallback.close}>
+            <Modal.Header closeButton>
+              <Modal.Title>Agregar Peluquera</Modal.Title>
+            </Modal.Header>
+            <Form horizontal onSubmit={this.props.peluqueraCallback.onsavepeluquera.bind(this)}>
+                <Modal.Body>
+                          <FormGroup controlId="formHorizontalname">
+                            <Col componentClass={ControlLabel} sm={2}>
+                              Nombre
+                            </Col>
+                            <Col sm={10}>
+                              <FormControl type="text" name="name" placeholder="Nombre" />
+                            </Col>
+                          </FormGroup>
+                </Modal.Body>
+                <Modal.Footer>
+                      <Button type="submit" pullRight>Save</Button>
+                </Modal.Footer>
+            </Form>
+          </Modal>
+
+        );
+    }
+}
+
+
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
+       <Route path="agregar_peluquera" component={AgregarPeluquera}/>
         <Route path="tripartials" component={TriPartials}/>
-	<Route path="bipartials" component={BiPartials}/>
+    	<Route path="bipartials" component={BiPartials}/>
         <Route path="partials" component={Partials}/>
         <Route path="about" component={About}/>
         <Route path="repos/:repo_name" component={Repos}/>

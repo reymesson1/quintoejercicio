@@ -120,4 +120,32 @@ app.get('/weeklyreportbydev',function(req,res){
 	})
 })
 
+app.get('/peluquera', function(req,res){
+
+    dba.getPeluquera({}, function(data){
+
+        res.send(data);
+
+    });
+
+})
+
+app.post('/peluquera', function(req,res){
+
+    dba.addPeluquera(req.body)  
+    res.send(req.body)
+});
+
+app.post('/deletepeluquera', function(req,res){
+
+    var index = req.body;
+
+    var id = index.id;
+    
+    dba.setPeluquera({"id":id});
+
+    res.send(req.body);
+});
+
+
 app.listen(80);

@@ -172,6 +172,58 @@ module.exports = function(){
 
         }
 
+        function getPeluquera(master,callback){ 
+        
+                var MongoClient = require('mongodb').MongoClient;
+                var url = "mongodb://localhost:27017/mechy";
+                MongoClient.connect(url, function(err, db) {
+                        if (err) throw err;        
+                        db.collection("peluquera").find({}).toArray(function(err,result){            
+                                callback(result);   
+                })        
+                db.close();
+                        });
+        }
+        
+        function addPeluquera(peluquera){
+                        
+                        var MongoClient = require('mongodb').MongoClient;
+                        var url = "mongodb://localhost:27017/mechy";
+                        
+                        MongoClient.connect(url, function(err, db) {
+                                
+                                if (err) throw err;
+                                db.collection("peluquera").insertOne(peluquera, function(err, res) {
+                                        
+                                if (err) throw err;
+                                console.log("1 record inserted");
+                                db.close();
+                                
+                        });
+                        
+                });                
+        }
+
+        function setPeluquera(master){
+                        
+                var MongoClient = require('mongodb').MongoClient;
+                var url = "mongodb://localhost:27017/mechy";
+                
+                MongoClient.connect(url, function(err, db) {
+                        
+                        if (err) throw err;
+                        db.collection("peluquera").remove(master, function(err, res) {
+                                
+                                if (err) throw err;
+                                console.log("1 record removed");
+                                db.close();
+                                
+                        });
+                        
+                });
+                
+        }      
+
 
 
 	return{
@@ -181,7 +233,10 @@ module.exports = function(){
                 getMaster: getMaster,
                 setMaster: setMaster,
 		addDetail: addDetail,
-		getDetail: getDetail,
+                getDetail: getDetail,
+                addPeluquera: addPeluquera,
+                getPeluquera: getPeluquera,
+                setPeluquera: setPeluquera,
 		removeDetail: removeDetail,
 		getWeeklyReport: getWeeklyReport,
 		getWeeklyReportRecap: getWeeklyReportRecap,

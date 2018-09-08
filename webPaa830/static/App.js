@@ -672,7 +672,11 @@ var Toolbar = function (_React$Component8) {
                         React.createElement(
                             MenuItem,
                             { eventKey: 3.4 },
-                            'Separated link'
+                            React.createElement(
+                                Link,
+                                { to: '/agregar_peluquera' },
+                                'Agregar Peluquera'
+                            )
                         )
                     ),
                     React.createElement(
@@ -1679,12 +1683,29 @@ var MasterModalField = function (_React$Component18) {
         _this23.state = {
 
             value: '',
-            suggestions: []
+            suggestions: [],
+            peluqueraData: []
         };
         return _this23;
     }
 
     _createClass(MasterModalField, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this24 = this;
+
+            fetch(API_URL + '/peluquera', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this24.setState({
+
+                    peluqueraData: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+        }
+    }, {
         key: 'onChange',
         value: function onChange(event, _ref) {
             var newValue = _ref.newValue,
@@ -1940,56 +1961,15 @@ var MasterModalField = function (_React$Component18) {
                                 React.createElement(
                                     FormControl,
                                     { componentClass: 'select', name: 'development', placeholder: 'Peluquera', required: true },
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Magaly' },
-                                        'Magaly'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Mariluz' },
-                                        'Mariluz'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Ninoska' },
-                                        'Ninoska'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Alba' },
-                                        'Alba'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Cristina' },
-                                        'Cristina'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Marlene' },
-                                        'Marlene'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Lucy' },
-                                        'Lucy'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Fabiola' },
-                                        'Fabiola'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'Mirian' },
-                                        'Mirian'
-                                    ),
-                                    React.createElement(
-                                        'option',
-                                        { value: 'otras' },
-                                        'otras'
-                                    )
+                                    this.state.peluqueraData.sort(function (a, b) {
+                                        return a.name > b.name;
+                                    }).map(function (item) {
+                                        return React.createElement(
+                                            'option',
+                                            { value: item.name },
+                                            item.name
+                                        );
+                                    })
                                 )
                             )
                         )
@@ -2230,25 +2210,25 @@ var Detail = function (_React$Component21) {
     function Detail() {
         _classCallCheck(this, Detail);
 
-        var _this26 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
+        var _this27 = _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).call(this));
 
-        _this26.state = {
+        _this27.state = {
             showModal: false,
             filterText: '',
             detailData: []
         };
-        return _this26;
+        return _this27;
     }
 
     _createClass(Detail, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this27 = this;
+            var _this28 = this;
 
             fetch(API_URL + '/detail', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this27.setState({
+                _this28.setState({
 
                     detailData: responseData
                 });
@@ -2421,12 +2401,12 @@ var DetailPagination = function (_React$Component22) {
     function DetailPagination() {
         _classCallCheck(this, DetailPagination);
 
-        var _this28 = _possibleConstructorReturn(this, (DetailPagination.__proto__ || Object.getPrototypeOf(DetailPagination)).call(this));
+        var _this29 = _possibleConstructorReturn(this, (DetailPagination.__proto__ || Object.getPrototypeOf(DetailPagination)).call(this));
 
-        _this28.state = {
+        _this29.state = {
             activePage: 1
         };
-        return _this28;
+        return _this29;
     }
 
     _createClass(DetailPagination, [{
@@ -2563,10 +2543,10 @@ var DetailTable = function (_React$Component24) {
     _createClass(DetailTable, [{
         key: 'render',
         value: function render() {
-            var _this31 = this;
+            var _this32 = this;
 
             var filteredTable = this.props.detailData.filter(function (detail) {
-                return detail.name.indexOf(_this31.props.filterText) !== -1;
+                return detail.name.indexOf(_this32.props.filterText) !== -1;
             });
 
             var DetailTableEN = React.createElement(
@@ -2620,7 +2600,7 @@ var DetailTable = function (_React$Component24) {
 
                                 environment: detail.environment,
 
-                                detailCallback: _this31.props.detailCallback
+                                detailCallback: _this32.props.detailCallback
                             });
                         })
                     )
@@ -2683,7 +2663,7 @@ var DetailTable = function (_React$Component24) {
 
                                 environment: detail.environment,
 
-                                detailCallback: _this31.props.detailCallback
+                                detailCallback: _this32.props.detailCallback
                             });
                         })
                     )
@@ -2720,9 +2700,9 @@ var DetailModalUpdate = function (_React$Component25) {
     function DetailModalUpdate() {
         _classCallCheck(this, DetailModalUpdate);
 
-        var _this32 = _possibleConstructorReturn(this, (DetailModalUpdate.__proto__ || Object.getPrototypeOf(DetailModalUpdate)).call(this));
+        var _this33 = _possibleConstructorReturn(this, (DetailModalUpdate.__proto__ || Object.getPrototypeOf(DetailModalUpdate)).call(this));
 
-        _this32.state = {
+        _this33.state = {
 
             parameter: '',
             showModal: true,
@@ -2730,7 +2710,7 @@ var DetailModalUpdate = function (_React$Component25) {
             name: ''
         };
 
-        return _this32;
+        return _this33;
     }
 
     _createClass(DetailModalUpdate, [{
@@ -2756,12 +2736,12 @@ var DetailModalUpdate = function (_React$Component25) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this33 = this;
+            var _this34 = this;
 
             fetch(API_URL + '/detail', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this33.setState({
+                _this34.setState({
 
                     detailData: responseData
                 });
@@ -2777,14 +2757,14 @@ var DetailModalUpdate = function (_React$Component25) {
     }, {
         key: 'onSubmitted',
         value: function onSubmitted(event) {
-            var _this34 = this;
+            var _this35 = this;
 
             event.preventDefault();
 
             var nextState = this.state.detailData;
 
             var index = nextState.findIndex(function (x) {
-                return x.id == _this34.state.parameter;
+                return x.id == _this35.state.parameter;
             });
 
             var name = nextState[index].name;
@@ -3213,27 +3193,27 @@ var Partials = function (_React$Component28) {
     function Partials() {
         _classCallCheck(this, Partials);
 
-        var _this37 = _possibleConstructorReturn(this, (Partials.__proto__ || Object.getPrototypeOf(Partials)).call(this));
+        var _this38 = _possibleConstructorReturn(this, (Partials.__proto__ || Object.getPrototypeOf(Partials)).call(this));
 
-        _this37.state = {
+        _this38.state = {
 
             masterAPI: [],
             searchData: '2017-10-06',
             total: 0
         };
 
-        return _this37;
+        return _this38;
     }
 
     _createClass(Partials, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this38 = this;
+            var _this39 = this;
 
             fetch(API_URL + '/reporte', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this38.setState({
+                _this39.setState({
 
                     masterAPI: responseData
                 });
@@ -3260,10 +3240,10 @@ var Partials = function (_React$Component28) {
     }, {
         key: 'onRun',
         value: function onRun() {
-            var _this39 = this;
+            var _this40 = this;
 
             var nextState = this.state.masterAPI.filter(function (master) {
-                return master.date == _this39.state.searchData;
+                return master.date == _this40.state.searchData;
             });
 
             var grand = 0;
@@ -3282,7 +3262,7 @@ var Partials = function (_React$Component28) {
     }, {
         key: 'render',
         value: function render() {
-            var _this40 = this;
+            var _this41 = this;
 
             var PartialsEN = React.createElement(
                 'h1',
@@ -3327,7 +3307,7 @@ var Partials = function (_React$Component28) {
                     React.createElement(PartialsTable, {
 
                         masterAPI: this.state.masterAPI.filter(function (master) {
-                            return master.date == _this40.state.searchData;
+                            return master.date == _this41.state.searchData;
                         }),
                         total: this.state.total
                     })
@@ -3398,7 +3378,7 @@ var PartialsTable = function (_React$Component30) {
     _createClass(PartialsTable, [{
         key: 'render',
         value: function render() {
-            var _this43 = this;
+            var _this44 = this;
 
             var partialsTableEN = React.createElement(
                 'tr',
@@ -3490,7 +3470,7 @@ var PartialsTable = function (_React$Component30) {
                                     date: master.date,
                                     name: master.name,
                                     project: master.project,
-                                    total: _this43.props.total
+                                    total: _this44.props.total
                                 });
                             })
                         ),
@@ -3586,24 +3566,24 @@ var TriPartials = function (_React$Component32) {
     function TriPartials() {
         _classCallCheck(this, TriPartials);
 
-        var _this45 = _possibleConstructorReturn(this, (TriPartials.__proto__ || Object.getPrototypeOf(TriPartials)).call(this));
+        var _this46 = _possibleConstructorReturn(this, (TriPartials.__proto__ || Object.getPrototypeOf(TriPartials)).call(this));
 
-        _this45.state = {
+        _this46.state = {
 
             masterAPI: []
         };
-        return _this45;
+        return _this46;
     }
 
     _createClass(TriPartials, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this46 = this;
+            var _this47 = this;
 
             fetch(API_URL + '/weeklyreportrecap', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this46.setState({
+                _this47.setState({
 
                     masterAPI: responseData
                 });
@@ -3696,12 +3676,12 @@ var TriPartialsTableBody = function (_React$Component34) {
     function TriPartialsTableBody() {
         _classCallCheck(this, TriPartialsTableBody);
 
-        var _this48 = _possibleConstructorReturn(this, (TriPartialsTableBody.__proto__ || Object.getPrototypeOf(TriPartialsTableBody)).call(this));
+        var _this49 = _possibleConstructorReturn(this, (TriPartialsTableBody.__proto__ || Object.getPrototypeOf(TriPartialsTableBody)).call(this));
 
-        _this48.state = {
+        _this49.state = {
             percentage: 1
         };
-        return _this48;
+        return _this49;
     }
 
     _createClass(TriPartialsTableBody, [{
@@ -3762,25 +3742,25 @@ var BiPartials = function (_React$Component35) {
     function BiPartials() {
         _classCallCheck(this, BiPartials);
 
-        var _this49 = _possibleConstructorReturn(this, (BiPartials.__proto__ || Object.getPrototypeOf(BiPartials)).call(this));
+        var _this50 = _possibleConstructorReturn(this, (BiPartials.__proto__ || Object.getPrototypeOf(BiPartials)).call(this));
 
-        _this49.state = {
+        _this50.state = {
 
             masterAPI: []
         };
 
-        return _this49;
+        return _this50;
     }
 
     _createClass(BiPartials, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this50 = this;
+            var _this51 = this;
 
             fetch(API_URL + '/weeklyreport', { headers: API_HEADERS }).then(function (response) {
                 return response.json();
             }).then(function (responseData) {
-                _this50.setState({
+                _this51.setState({
 
                     masterAPI: responseData
                 });
@@ -3916,12 +3896,404 @@ var BiPartialsTableBody = function (_React$Component37) {
     return BiPartialsTableBody;
 }(React.Component);
 
+var AgregarPeluquera = function (_React$Component38) {
+    _inherits(AgregarPeluquera, _React$Component38);
+
+    function AgregarPeluquera() {
+        _classCallCheck(this, AgregarPeluquera);
+
+        var _this54 = _possibleConstructorReturn(this, (AgregarPeluquera.__proto__ || Object.getPrototypeOf(AgregarPeluquera)).call(this));
+
+        _this54.state = {
+            showModal: false,
+            filterText: '',
+            peluqueraData: []
+        };
+        return _this54;
+    }
+
+    _createClass(AgregarPeluquera, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this55 = this;
+
+            fetch(API_URL + '/peluquera', { headers: API_HEADERS }).then(function (response) {
+                return response.json();
+            }).then(function (responseData) {
+                _this55.setState({
+
+                    peluqueraData: responseData
+                });
+            }).catch(function (error) {
+                console.log('Error fetching and parsing data', error);
+            });
+        }
+    }, {
+        key: 'close',
+        value: function close() {
+            this.setState({
+                showModal: false
+            });
+        }
+    }, {
+        key: 'open',
+        value: function open() {
+            this.setState({
+                showModal: true
+            });
+        }
+    }, {
+        key: 'onDeleted',
+        value: function onDeleted(value) {
+
+            var nextState = this.state.peluqueraData;
+
+            var index = nextState.findIndex(function (x) {
+                return x.id == value;
+            });
+            console.log(nextState);
+            console.log(value);
+            nextState.splice(index, 1);
+
+            this.setState({
+
+                peluqueraData: nextState
+            });
+
+            fetch(API_URL + '/deletepeluquera', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify({ "index": index, "id": value })
+            });
+        }
+    }, {
+        key: 'onSavePeluquera',
+        value: function onSavePeluquera(event) {
+
+            event.preventDefault();
+
+            var today = moment(new Date()).format('YYYY-MM-DD');
+
+            var newPeluquera = {
+
+                "id": Date.now(),
+                "date": today,
+                "name": event.target.name.value
+            };
+
+            var nextState = this.state.peluqueraData;
+
+            nextState.push(newPeluquera);
+
+            fetch(API_URL + '/peluquera', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify(newPeluquera)
+            });
+
+            this.setState({
+
+                peluqueraData: nextState,
+                showModal: false
+            });
+        }
+    }, {
+        key: 'onHandleChange',
+        value: function onHandleChange(event) {
+
+            this.setState({
+
+                filterText: event.target.value
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                Grid,
+                null,
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(PeluqueraSearch, null)
+                ),
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'pull-right' },
+                        React.createElement(
+                            Button,
+                            { onClick: this.open.bind(this) },
+                            'Agregar Peluquera'
+                        ),
+                        React.createElement(PeluqueraModal, { showModal: this.state.showModal,
+                            peluqueraCallback: {
+                                open: this.open,
+                                close: this.close.bind(this),
+                                onsavepeluquera: this.onSavePeluquera.bind(this),
+                                ondeletepeluquera: this.onDeleted.bind(this)
+                            }
+                        })
+                    )
+                ),
+                React.createElement('br', null),
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(PeluqueraTable, {
+                        filterText: this.state.filterText,
+                        peluqueraData: this.state.peluqueraData,
+                        peluqueraCallback: {
+                            onDeleted: this.onDeleted.bind(this)
+                        }
+                    })
+                )
+            );
+        }
+    }]);
+
+    return AgregarPeluquera;
+}(React.Component);
+
+var PeluqueraSearch = function (_React$Component39) {
+    _inherits(PeluqueraSearch, _React$Component39);
+
+    function PeluqueraSearch() {
+        _classCallCheck(this, PeluqueraSearch);
+
+        return _possibleConstructorReturn(this, (PeluqueraSearch.__proto__ || Object.getPrototypeOf(PeluqueraSearch)).apply(this, arguments));
+    }
+
+    _createClass(PeluqueraSearch, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                Panel,
+                { header: 'Busqueda ' },
+                React.createElement(
+                    'form',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-2 col-sm-2' },
+                            React.createElement(
+                                'label',
+                                null,
+                                'Buscar:'
+                            )
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-10 col-sm-10' },
+                            React.createElement('input', { type: 'text', className: 'form-control', id: 'first_name', name: 'first_name' })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return PeluqueraSearch;
+}(React.Component);
+
+var PeluqueraTable = function (_React$Component40) {
+    _inherits(PeluqueraTable, _React$Component40);
+
+    function PeluqueraTable() {
+        _classCallCheck(this, PeluqueraTable);
+
+        return _possibleConstructorReturn(this, (PeluqueraTable.__proto__ || Object.getPrototypeOf(PeluqueraTable)).apply(this, arguments));
+    }
+
+    _createClass(PeluqueraTable, [{
+        key: 'render',
+        value: function render() {
+            var _this58 = this;
+
+            var filteredMaster = this.props.peluqueraData.filter(function (master) {
+                return master.name.indexOf(_this58.props.filterText) !== -1;
+            });
+
+            return React.createElement(
+                Panel,
+                { header: 'Listado de peluquera' },
+                React.createElement(
+                    Table,
+                    { striped: true, bordered: true, condensed: true, hover: true },
+                    React.createElement(
+                        'thead',
+                        null,
+                        React.createElement(
+                            'tr',
+                            null,
+                            React.createElement(
+                                'th',
+                                null,
+                                'ID'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Fecha'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Nombre'
+                            ),
+                            React.createElement(
+                                'th',
+                                null,
+                                'Acciones'
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        'tbody',
+                        null,
+                        filteredMaster.map(function (master, index) {
+                            var _React$createElement;
+
+                            return React.createElement(PeluqueraTableBody, (_React$createElement = {
+                                id: master.id, date: master.date
+                            }, _defineProperty(_React$createElement, 'date', master.date), _defineProperty(_React$createElement, 'name', master.name), _defineProperty(_React$createElement, 'peluqueraCallback', _this58.props.peluqueraCallback), _React$createElement));
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return PeluqueraTable;
+}(React.Component);
+
+var PeluqueraTableBody = function (_React$Component41) {
+    _inherits(PeluqueraTableBody, _React$Component41);
+
+    function PeluqueraTableBody() {
+        _classCallCheck(this, PeluqueraTableBody);
+
+        return _possibleConstructorReturn(this, (PeluqueraTableBody.__proto__ || Object.getPrototypeOf(PeluqueraTableBody)).apply(this, arguments));
+    }
+
+    _createClass(PeluqueraTableBody, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.id
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.date
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    this.props.name
+                ),
+                React.createElement(
+                    'td',
+                    null,
+                    React.createElement(
+                        Button,
+                        { className: 'btn btn-default' },
+                        React.createElement('i', { className: 'fa fa-edit', 'aria-hidden': 'true' })
+                    ),
+                    React.createElement(
+                        Button,
+                        { onClick: this.props.peluqueraCallback.onDeleted.bind(this, this.props.id) },
+                        React.createElement('i', { className: 'fa fa-trash', 'aria-hidden': 'true' })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return PeluqueraTableBody;
+}(React.Component);
+
+var PeluqueraModal = function (_React$Component42) {
+    _inherits(PeluqueraModal, _React$Component42);
+
+    function PeluqueraModal() {
+        _classCallCheck(this, PeluqueraModal);
+
+        return _possibleConstructorReturn(this, (PeluqueraModal.__proto__ || Object.getPrototypeOf(PeluqueraModal)).apply(this, arguments));
+    }
+
+    _createClass(PeluqueraModal, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                Modal,
+                { show: this.props.showModal, onHide: this.props.peluqueraCallback.close },
+                React.createElement(
+                    Modal.Header,
+                    { closeButton: true },
+                    React.createElement(
+                        Modal.Title,
+                        null,
+                        'Agregar Peluquera'
+                    )
+                ),
+                React.createElement(
+                    Form,
+                    { horizontal: true, onSubmit: this.props.peluqueraCallback.onsavepeluquera.bind(this) },
+                    React.createElement(
+                        Modal.Body,
+                        null,
+                        React.createElement(
+                            FormGroup,
+                            { controlId: 'formHorizontalname' },
+                            React.createElement(
+                                Col,
+                                { componentClass: ControlLabel, sm: 2 },
+                                'Nombre'
+                            ),
+                            React.createElement(
+                                Col,
+                                { sm: 10 },
+                                React.createElement(FormControl, { type: 'text', name: 'name', placeholder: 'Nombre' })
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        Modal.Footer,
+                        null,
+                        React.createElement(
+                            Button,
+                            { type: 'submit', pullRight: true },
+                            'Save'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return PeluqueraModal;
+}(React.Component);
+
 ReactDOM.render(React.createElement(
     Router,
     { history: browserHistory },
     React.createElement(
         Route,
         { path: '/', component: App },
+        React.createElement(Route, { path: 'agregar_peluquera', component: AgregarPeluquera }),
         React.createElement(Route, { path: 'tripartials', component: TriPartials }),
         React.createElement(Route, { path: 'bipartials', component: BiPartials }),
         React.createElement(Route, { path: 'partials', component: Partials }),
