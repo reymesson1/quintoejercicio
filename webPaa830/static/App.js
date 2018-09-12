@@ -42,8 +42,8 @@ var Autosuggest = Autosuggest;
 
 var moment = moment;
 
-//const API_URL = 'http://localhost'; 
-var API_URL = 'http://159.203.156.208';
+var API_URL = 'http://localhost';
+//const API_URL = 'http://159.203.156.208';
 
 var API_HEADERS = {
 
@@ -51,7 +51,14 @@ var API_HEADERS = {
     Authentication: 'any-string-you-like'
 };
 
+var TOKEN_KEY = "token";
+
 var languageActive = false;
+
+function token() {
+
+    return localStorage.getItem(TOKEN_KEY);
+}
 
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
@@ -97,7 +104,40 @@ var App = function (_React$Component) {
                 "password": event.target.password.value
             };
 
-            fetch(API_URL + '/cookies', {
+            fetch(API_URL + '/login', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify(newCookie)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (response) {
+
+                localStorage.setItem(TOKEN_KEY, response.token);
+            });
+
+            window.location.reload();
+        }
+    }, {
+        key: 'isAuthenticated',
+        value: function isAuthenticated() {
+
+            return !!localStorage.getItem(TOKEN_KEY);
+        }
+    }, {
+        key: 'setRegistration',
+        value: function setRegistration(event) {
+
+            event.preventDefault();
+
+            var newCookie = {
+
+                "id": "1",
+                "username": event.target.email.value,
+                "password": event.target.password.value
+            };
+
+            fetch(API_URL + '/register', {
 
                 method: 'post',
                 headers: API_HEADERS,
@@ -125,10 +165,12 @@ var App = function (_React$Component) {
                 'div',
                 null,
                 React.createElement(Login, {
-                    setcookie: this.setCookie
+                    setcookie: this.setCookie,
+                    setregistration: this.setRegistration
+
                 })
             );
-            if (this.state.cookies) {
+            if (this.isAuthenticated()) {
 
                 return React.createElement(
                     'div',
@@ -594,6 +636,12 @@ var Toolbar = function (_React$Component8) {
         key: 'onClicked',
         value: function onClicked() {
 
+            localStorage.removeItem(TOKEN_KEY);
+            window.location.reload();
+        }
+    }, {
+        key: 'onRefreshed',
+        value: function onRefreshed() {
             window.location.reload();
         }
     }, {
@@ -611,8 +659,7 @@ var Toolbar = function (_React$Component8) {
                         { className: 'navbar-brand' },
                         React.createElement(
                             Link,
-                            { to: '/',
-                                onClick: this.onClicked.bind(this) },
+                            { to: '/', onClick: this.onRefreshed.bind(this) },
                             'Info-Solutions SYS'
                         )
                     )
@@ -4285,6 +4332,76 @@ var PeluqueraModal = function (_React$Component42) {
     }]);
 
     return PeluqueraModal;
+}(React.Component);
+
+var Registration = function (_React$Component43) {
+    _inherits(Registration, _React$Component43);
+
+    function Registration() {
+        _classCallCheck(this, Registration);
+
+        return _possibleConstructorReturn(this, (Registration.__proto__ || Object.getPrototypeOf(Registration)).apply(this, arguments));
+    }
+
+    _createClass(Registration, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                { className: 'container' },
+                React.createElement(
+                    'div',
+                    { className: 'row vertical-offset-100' },
+                    React.createElement(
+                        'div',
+                        { className: 'col-md-4 col-md-offset-4' },
+                        React.createElement(
+                            'div',
+                            { className: 'panel panel-default' },
+                            React.createElement(
+                                'div',
+                                { className: 'panel-heading' },
+                                React.createElement(
+                                    'h3',
+                                    { className: 'panel-title' },
+                                    'Please sign up'
+                                )
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'panel-body' },
+                                React.createElement(
+                                    'form',
+                                    { onSubmit: this.props.setregistration.bind(this) },
+                                    React.createElement(
+                                        'fieldset',
+                                        null,
+                                        React.createElement(
+                                            'div',
+                                            { className: 'form-group' },
+                                            React.createElement('input', { className: 'form-control', placeholder: 'E-mail', name: 'email', type: 'text' })
+                                        ),
+                                        React.createElement(
+                                            'div',
+                                            { className: 'form-group' },
+                                            React.createElement('input', { className: 'form-control', placeholder: 'Password', name: 'password', type: 'password' })
+                                        ),
+                                        React.createElement(
+                                            'button',
+                                            { className: 'btn btn-lg btn-success btn-block' },
+                                            'Save'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Registration;
 }(React.Component);
 
 ReactDOM.render(React.createElement(

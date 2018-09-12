@@ -1,17 +1,14 @@
 var express = require('express');
-
 var bodyParser = require('body-parser');
-
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+var jwt = require('jwt-simple');
 var app = express();
-
 app.use(express.static('static'))
-
 var dba = require('./lib/dba-helper.js')();
-
 app.use(bodyParser.json());
-
-var cookies = true;
-
+var cookies = false;
+var User = require('./models/user.js');
 app.get('/cookies', function(req,res){
 
     res.send(cookies);
@@ -147,5 +144,51 @@ app.post('/deletepeluquera', function(req,res){
     res.send(req.body);
 });
 
+app.post('/register', function(req,res){
+    
+    var userData = req.body;
+    var user = new User(userData);
+  
+    user.save((err, newUser) =>{
+       if(err){
+           return res.status(401).send({message: 'Error Registering the User'})
+       }else {
+           var payload = { sub: newUser._id }
+  
+           var token = jwt.encode(payload, '123')
+       
+           res.status(200).send({token})
+       }
+   })
+  })
+  
+  app.post('/login', async (req, res)=>{
+      var userData = req.body;
+      var user = await User.findOne({username: userData.username});
+      
+      if(!user){
+          return res.status(401).send({message: 'Email or Password Invalid'})
+      }
+  
+      bcrypt.compare(userData.password, user.password, (err, isMatch) =>{
+          if(!isMatch){
+              return res.status(401).send({message: 'Email or Password Invalid'})
+          }
+          
+      var payload = { sub: user._id }
+  
+      var token = jwt.encode(payload, '123')
+  
+      res.status(200).send({token})
+      })
+  
+  })
+  
+
+mongoose.connect('mongodb://localhost:27017/mechy',(err)=>{
+    if(!err){
+        console.log('Connected to mongo Database');
+    }
+})
 
 app.listen(80);
