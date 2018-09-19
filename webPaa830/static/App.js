@@ -112,8 +112,9 @@ var App = function (_React$Component) {
             }).then(function (response) {
                 return response.json();
             }).then(function (response) {
-
-                localStorage.setItem(TOKEN_KEY, response.token);
+                if (response.token != undefined) {
+                    localStorage.setItem(TOKEN_KEY, response.token);
+                }
             });
 
             window.location.reload();
@@ -727,14 +728,25 @@ var Toolbar = function (_React$Component8) {
                         )
                     ),
                     React.createElement(
-                        'li',
-                        {
-                            style: { 'float': 'right', 'position': 'absolute', 'left': '80%' } },
+                        NavDropdown,
+                        { style: { 'float': 'right', 'position': 'absolute', 'left': '80%' }, eventKey: 3, title: 'Perfil Usuario', id: 'basic-nav-dropdown' },
                         React.createElement(
-                            Link,
-                            {
-                                onClick: this.onClicked, to: '/logout' },
-                            'Logout'
+                            MenuItem,
+                            { eventKey: 3.1 },
+                            React.createElement(
+                                Link,
+                                { to: '/account' },
+                                'Cuenta de Usuario'
+                            )
+                        ),
+                        React.createElement(
+                            MenuItem,
+                            { eventKey: 3.2 },
+                            React.createElement(
+                                Link,
+                                { onClick: this.onClicked, to: '/logout' },
+                                'Log Out'
+                            )
                         )
                     )
                 )
@@ -4404,12 +4416,97 @@ var Registration = function (_React$Component43) {
     return Registration;
 }(React.Component);
 
+var Account = function (_React$Component44) {
+    _inherits(Account, _React$Component44);
+
+    function Account() {
+        _classCallCheck(this, Account);
+
+        var _this62 = _possibleConstructorReturn(this, (Account.__proto__ || Object.getPrototypeOf(Account)).call(this));
+
+        _this62.state = {
+
+            password: ""
+        };
+        return _this62;
+    }
+
+    _createClass(Account, [{
+        key: 'onSubmit',
+        value: function onSubmit(event) {
+
+            event.preventDefault();
+
+            var newPassword = {
+                "token": token(),
+                "newpassword": this.state.password
+            };
+            console.log(newPassword);
+
+            fetch(API_URL + '/resetpassword', {
+
+                method: 'post',
+                headers: API_HEADERS,
+                body: JSON.stringify(newPassword)
+            });
+
+            //window.location.reload();
+        }
+    }, {
+        key: 'onhandleuserinput',
+        value: function onhandleuserinput(event) {
+            this.setState({
+                password: event.target.value
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                Panel,
+                { header: 'Reset Password' },
+                React.createElement(
+                    'form',
+                    { onSubmit: this.onSubmit.bind(this) },
+                    React.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-2 col-sm-2' },
+                            React.createElement(
+                                'label',
+                                null,
+                                'Password:'
+                            )
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'col-md-10 col-sm-10' },
+                            React.createElement('input', { onChange: this.onhandleuserinput.bind(this), type: 'password', className: 'form-control', id: 'first_name', name: 'first_name' }),
+                            React.createElement('br', null),
+                            React.createElement(
+                                'button',
+                                { className: 'btn btn-lg btn-success btn-block' },
+                                'Reset'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Account;
+}(React.Component);
+
 ReactDOM.render(React.createElement(
     Router,
     { history: browserHistory },
     React.createElement(
         Route,
         { path: '/', component: App },
+        React.createElement(Route, { path: 'account', component: Account }),
         React.createElement(Route, { path: 'agregar_peluquera', component: AgregarPeluquera }),
         React.createElement(Route, { path: 'tripartials', component: TriPartials }),
         React.createElement(Route, { path: 'bipartials', component: BiPartials }),

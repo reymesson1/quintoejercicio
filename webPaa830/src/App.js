@@ -95,8 +95,9 @@ class App extends React.Component{
         headers: API_HEADERS,
         body: JSON.stringify(newCookie)
     }).then(response => response.json()).then(response => {
-      
-      localStorage.setItem(TOKEN_KEY, response.token)
+        if(response.token!=undefined){
+          localStorage.setItem(TOKEN_KEY, response.token)
+        }
     }); 
     
     window.location.reload();
@@ -459,9 +460,10 @@ class Toolbar extends React.Component{
                             <MenuItem divider />
                             <MenuItem eventKey={3.4}><Link to="/agregar_peluquera">Agregar Peluquera</Link></MenuItem>
                       </NavDropdown>
-                      <li
-style={{'float':'right','position':'absolute','left':'80%'}}><Link
-onClick={this.onClicked} to={'/logout'}>Logout</Link></li>
+                      <NavDropdown style={{'float':'right','position':'absolute','left':'80%'}} eventKey={3} title="Perfil Usuario" id="basic-nav-dropdown">
+                            <MenuItem eventKey={3.1}><Link to="/account">Cuenta de Usuario</Link></MenuItem>
+                            <MenuItem eventKey={3.2}><Link onClick={this.onClicked} to="/logout">Log Out</Link></MenuItem>
+                      </NavDropdown>                      
                     </Nav>
                 </Navbar>
         );
@@ -2910,11 +2912,70 @@ class Registration extends React.Component{
 
 }
 
+class Account extends React.Component{
+
+    constructor(){
+
+        super();
+        this.state = {
+  
+            password: ""
+        }
+    }
+
+    onSubmit(event){
+
+        event.preventDefault();
+
+        let newPassword = {
+            "token": token(),
+            "newpassword":this.state.password
+        }
+        console.log(newPassword)
+
+        fetch(API_URL+'/resetpassword', {
+
+            method: 'post',
+            headers: API_HEADERS,
+            body: JSON.stringify(newPassword)
+        })
+
+        //window.location.reload();
+    }
+  
+
+    onhandleuserinput(event){
+        this.setState({
+            password: event.target.value
+        })
+    }
+    render(){
+        return(
+            <Panel header="Reset Password">
+                  <form onSubmit={this.onSubmit.bind(this)}>
+                    <div className="form-group">
+                        <div className="col-md-2 col-sm-2">
+                          <label>Password:</label>
+                        </div>
+                        <div className="col-md-10 col-sm-10">
+                          <input onChange={this.onhandleuserinput.bind(this)} type="password" className="form-control" id="first_name" name="first_name"/>
+                          <br/>
+                          <button className="btn btn-lg btn-success btn-block">Reset</button>
+                        </div>
+                    </div>
+                  </form>
+                </Panel>
+
+        );
+    }
+}
+
 
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-       <Route path="agregar_peluquera" component={AgregarPeluquera}/>
+        <Route path="account" component={Account}/>
+        <Route path="agregar_peluquera" component={AgregarPeluquera}/>
         <Route path="tripartials" component={TriPartials}/>
     	<Route path="bipartials" component={BiPartials}/>
         <Route path="partials" component={Partials}/>
